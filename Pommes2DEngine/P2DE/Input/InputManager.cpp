@@ -41,7 +41,7 @@ bool InputManager::IsKeyPressed(const BYTE& VK_Keycode)
 bool InputManager::GetScreenMousePos(HWND targetWindow, POINT* mousePos)
 {
 	if (GetCursorPos(mousePos))
-		return ScreenToClient(targetWindow, mousePos);
+		return ScreenToClient(targetWindow, mousePos) == 1 ? true : false;
 	else
 		return false;
 }
@@ -50,8 +50,8 @@ bool InputManager::GetGameMousePos(HWND targetWindow, POINT* mousePos, P2DE::GFX
 {
 	if (GetScreenMousePos(targetWindow, mousePos))
 	{
-		mousePos->x += cam->GetCameraPos().x;
-		mousePos->y += cam->GetCameraPos().y;
+		mousePos->x += (long)cam->GetCameraPos().x;
+		mousePos->y += (long)cam->GetCameraPos().y;
 
 		return true;
 	}

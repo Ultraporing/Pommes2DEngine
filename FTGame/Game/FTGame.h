@@ -1,3 +1,7 @@
+//=================================================================================== 
+// Copyright (c) 2015 Tobias Lenz.  All rights reserved.                                                                  
+//=================================================================================== 
+
 #pragma once
 #include "P2DE\GFX\Camera.h"
 #include "P2DE\Input\InputManager.h"

@@ -49,12 +49,12 @@ bool Graphics::LoadBitmapFromFile(LPCWSTR file, ID2D1Bitmap** output)
 {
 	HRESULT hr;
 
-	ComPtr<IWICBitmapDecoder> decoder;
-	ComPtr<IWICBitmapFrameDecode> bitmapSource;
-	ComPtr<IWICFormatConverter> converter;
-	ComPtr<IWICImagingFactory> factory;
+	P2DE::UTILITIES::ComPtr<IWICBitmapDecoder> decoder;
+	P2DE::UTILITIES::ComPtr<IWICBitmapFrameDecode> bitmapSource;
+	P2DE::UTILITIES::ComPtr<IWICFormatConverter> converter;
+	P2DE::UTILITIES::ComPtr<IWICImagingFactory> factory;
 
-	hr = GetWICFactory(&factory);
+	hr = P2DE::UTILITIES::GetWICFactory(&factory);
 	if (FAILED(hr))
 		return false;
 
