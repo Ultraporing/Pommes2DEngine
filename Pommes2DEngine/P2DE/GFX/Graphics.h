@@ -3,8 +3,16 @@
 //=================================================================================== 
 
 #pragma once
-#include <d2d1.h>
+#include <d2d1_1.h>
 #include <string>
+#include "..\Utilities\ComPtr.h"
+
+#pragma comment (lib, "D3D11.lib")
+#pragma comment (lib, "d2d1.lib")
+
+struct ID3D11DeviceContext;
+struct ID3D11Device;
+struct IDXGISwapChain1;
 
 // pommes 2d engine
 namespace P2DE
@@ -14,21 +22,31 @@ namespace P2DE
 		class Graphics
 		{
 			private:
-			ID2D1Factory* m_Factory;
-			ID2D1HwndRenderTarget* m_RenderTarget;
+			P2DE::UTILITIES::ComPtr<ID2D1Factory1> m_Factory;
+
+			P2DE::UTILITIES::ComPtr<ID3D11DeviceContext> m_D3D11DeviceContext;
+			P2DE::UTILITIES::ComPtr<ID3D11Device> m_D3D11Device;
+
+			P2DE::UTILITIES::ComPtr<ID2D1Device> m_D2D1Device;
+			P2DE::UTILITIES::ComPtr<ID2D1DeviceContext> m_D2D1DeviceContext;
+			P2DE::UTILITIES::ComPtr<ID2D1Bitmap1> m_D2D1TargetBitmap;
+
+			IDXGISwapChain1* m_SwapChain;
+			D3D_FEATURE_LEVEL m_FeatureLevel;
+
 			ID2D1SolidColorBrush* m_Brush;
 
-			public:
+			public:		
 			Graphics();
 			~Graphics();
 
 			bool Init(HWND hWnd);
 
-			void BeginDraw() { m_RenderTarget->BeginDraw(); }
-			void EndDraw() { m_RenderTarget->EndDraw(); }
+			void BeginDraw();
+			void EndDraw();
 
-			void SetTransform(D2D1_MATRIX_3X2_F& matrix) { m_RenderTarget->SetTransform(matrix); }
-			void SetTransform(D2D1_MATRIX_3X2_F* matrix) { m_RenderTarget->SetTransform(matrix); }
+			void SetTransform(D2D1_MATRIX_3X2_F& matrix);
+			void SetTransform(D2D1_MATRIX_3X2_F* matrix);
 
 			bool LoadBitmapFromFile(LPCWSTR file, ID2D1Bitmap** output);
 

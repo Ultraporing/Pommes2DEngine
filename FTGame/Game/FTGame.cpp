@@ -1,9 +1,12 @@
 #include "FTGame.h"
-#include "P2DE\GFX\Graphics.h"
+#include <P2DE\GFX\Graphics.h>
 #include <sstream>
+#include <P2DE\Utilities\ComPtr.h>
 
 namespace FTGame
 {
+	P2DE::UTILITIES::ComPtr<ID2D1Effect> colorMatrixFx;
+
 	FTGame::FTGame(P2DE::GFX::Graphics* gfx, HWND hWndGamewindow)
 	{
 		m_Graphics = NULL;
@@ -12,7 +15,11 @@ namespace FTGame
 		m_hWndGamewindow = hWndGamewindow;
 		
 		m_Graphics->LoadBitmapFromFile(L"av.png", &testbmp);
+
+		//m_Graphics->m_RenderTarget->createe
 	}
+
+	
 
 	FTGame::~FTGame()
 	{
@@ -27,6 +34,8 @@ namespace FTGame
 
 		m_Graphics->DrawCircle(0, 0, 100, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, 1.0f);
 
+		
+		
 		m_Graphics->DrawBitmap(testbmp, 50, 50, testbmp->GetSize().width / 2, testbmp->GetSize().height / 2, 0, 0, testbmp->GetSize().width / 2, testbmp->GetSize().height / 2, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
 
 		m_Graphics->EndDraw();
