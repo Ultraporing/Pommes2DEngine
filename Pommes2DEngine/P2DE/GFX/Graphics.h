@@ -4,10 +4,12 @@
 
 #pragma once
 #include <d2d1_1.h>
+#include <d2d1effects.h>
 #include "..\Utilities\ComPtr.h"
 
 #pragma comment (lib, "D3D11.lib")
 #pragma comment (lib, "d2d1.lib")
+#pragma comment (lib, "dxguid.lib")
 
 struct ID3D11DeviceContext;
 struct ID3D11Device;
@@ -48,6 +50,7 @@ namespace P2DE
 			void SetTransform(D2D1_MATRIX_3X2_F* matrix);
 
 			bool LoadBitmapFromFile(LPCWSTR file, ID2D1Bitmap** output);
+			bool CreateEffect(REFCLSID effectId, ID2D1Effect** effect);
 
 			void ClearScreen(float r, float g, float b);
 			void DrawCircle(float x, float y, float radius, float r, float g, float b, float a);
@@ -58,6 +61,9 @@ namespace P2DE
 			void DrawBitmap(ID2D1Bitmap* bmp, const D2D1_RECT_F& destinationRect, float srcX, float srcY, float srcWidth, float srcHeight, const float& opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
 			void DrawBitmap(ID2D1Bitmap* bmp, const D2D1_RECT_F& destinationRect, const D2D1_RECT_F& sourceRect, const float& opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
 			void DrawBitmap(ID2D1Bitmap* bmp, float dstX, float dstY, float dstWidth, float dstHeight, const D2D1_RECT_F& sourceRect, const float& opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
+
+			void DrawEffect(ID2D1Effect* effect, const D2D1_POINT_2F& destination, const D2D1_RECT_F& srcRect, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+			D2D1_MATRIX_5X4_F CreateColorMatrix(float r, float g, float b, float a = 1.0f);
 		};
 	}
 }

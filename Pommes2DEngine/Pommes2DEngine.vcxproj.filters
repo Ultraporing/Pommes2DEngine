@@ -28,9 +28,6 @@
     <ClInclude Include="P2DE\GFX\Graphics.h">
       <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="P2DE\Timing\HrTimer.h">
-      <Filter>Source Files\Pommes 2D Engine\Timing</Filter>
-    </ClInclude>
     <ClInclude Include="P2DE\Input\InputManager.h">
       <Filter>Source Files\Pommes 2D Engine\Input</Filter>
     </ClInclude>
@@ -39,6 +36,9 @@
     </ClInclude>
     <ClInclude Include="P2DE\Utilities\ComHelpers.h">
       <Filter>Source Files\Pommes 2D Engine\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\Timing\HrTimer.h">
+      <Filter>Source Files\Pommes 2D Engine\Timing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

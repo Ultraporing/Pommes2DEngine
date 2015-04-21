@@ -1,6 +1,6 @@
 #include "FTGame.h"
-#include <P2DE\GFX\Graphics.h>
 #include <sstream>
+#include <P2DE\GFX\Graphics.h>
 #include <P2DE\Utilities\ComPtr.h>
 
 namespace FTGame
@@ -15,11 +15,11 @@ namespace FTGame
 		m_hWndGamewindow = hWndGamewindow;
 		
 		m_Graphics->LoadBitmapFromFile(L"av.png", &testbmp);
-
-		//m_Graphics->m_RenderTarget->createe
+		m_Graphics->CreateEffect(CLSID_D2D1ColorMatrix, &colorMatrixFx);
+		colorMatrixFx->SetInput(0, testbmp);
+		D2D1_MATRIX_5X4_F matrix = m_Graphics->CreateColorMatrix(1.0f, 0, 1.0f);
+		colorMatrixFx->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
 	}
-
-	
 
 	FTGame::~FTGame()
 	{
@@ -33,10 +33,8 @@ namespace FTGame
 		m_Graphics->ClearScreen(0.0f, 0.0f, 0.5f);
 
 		m_Graphics->DrawCircle(0, 0, 100, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, 1.0f);
-
 		
-		
-		m_Graphics->DrawBitmap(testbmp, 50, 50, testbmp->GetSize().width / 2, testbmp->GetSize().height / 2, 0, 0, testbmp->GetSize().width / 2, testbmp->GetSize().height / 2, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
+		m_Graphics->DrawEffect(colorMatrixFx, D2D1::Point2F(50, 50), D2D1::RectF(0, 0, testbmp->GetSize().width / 2, testbmp->GetSize().height / 2), D2D1_INTERPOLATION_MODE_ANISOTROPIC, D2D1_COMPOSITE_MODE_SOURCE_OVER);
 
 		m_Graphics->EndDraw();
 	}

@@ -189,6 +189,15 @@ bool Graphics::LoadBitmapFromFile(LPCWSTR file, ID2D1Bitmap** output)
 	return true;
 }
 
+bool Graphics::CreateEffect(REFCLSID effectId, ID2D1Effect** effect)
+{
+	HRESULT hr = m_D2D1DeviceContext->CreateEffect(effectId, effect);
+	if (FAILED(hr))
+		return false;
+
+	return true;
+}
+
 void Graphics::ClearScreen(float r, float g, float b)
 {
 	m_D2D1DeviceContext->Clear(D2D1::ColorF(r, g, b));
@@ -231,4 +240,18 @@ void Graphics::DrawBitmap(ID2D1Bitmap* bmp, const D2D1_RECT_F& destinationRect, 
 void Graphics::DrawBitmap(ID2D1Bitmap* bmp, float dstX, float dstY, float dstWidth, float dstHeight, const D2D1_RECT_F& sourceRect, const float& opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode)
 {
 	m_D2D1DeviceContext->DrawBitmap(bmp, D2D1::RectF(dstX, dstY, dstWidth, dstHeight), opacity, interpolationMode, sourceRect);
+}
+
+void Graphics::DrawEffect(ID2D1Effect* effect, const D2D1_POINT_2F& destination, const D2D1_RECT_F& srcRect, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode)
+{
+	m_D2D1DeviceContext->DrawImage(effect, destination, srcRect, interpolationMode, compositeMode);
+}
+
+D2D1_MATRIX_5X4_F Graphics::CreateColorMatrix(float r, float g, float b, float a)
+{
+	return D2D1::Matrix5x4F(r, 0, 0, 0,
+							0, g, 0, 0,
+							0, 0, b, 0,
+							0, 0, 0, a,
+							0, 0, 0, 0);
 }
