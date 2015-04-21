@@ -51,6 +51,10 @@ namespace P2DE
 
 			bool LoadBitmapFromFile(LPCWSTR file, ID2D1Bitmap** output);
 			bool CreateEffect(REFCLSID effectId, ID2D1Effect** effect);
+			bool CreateBitmapTintEffect(ID2D1Effect** effect, ID2D1Bitmap* bmp, float r, float g, float b, float a = 1.0f);
+			void SetBitmapTintEffectColor(ID2D1Effect* effect, float r, float g, float b, float a = 1.0f);
+
+			D2D1_MATRIX_5X4_F CreateColorMatrix(float r, float g, float b, float a = 1.0f);
 
 			void ClearScreen(float r, float g, float b);
 			void DrawCircle(float x, float y, float radius, float r, float g, float b, float a);
@@ -63,7 +67,6 @@ namespace P2DE
 			void DrawBitmap(ID2D1Bitmap* bmp, float dstX, float dstY, float dstWidth, float dstHeight, const D2D1_RECT_F& sourceRect, const float& opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
 
 			void DrawEffect(ID2D1Effect* effect, const D2D1_POINT_2F& destination, const D2D1_RECT_F& srcRect, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
-			D2D1_MATRIX_5X4_F CreateColorMatrix(float r, float g, float b, float a = 1.0f);
 		};
 	}
 }

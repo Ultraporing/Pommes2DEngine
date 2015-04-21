@@ -15,10 +15,7 @@ namespace FTGame
 		m_hWndGamewindow = hWndGamewindow;
 		
 		m_Graphics->LoadBitmapFromFile(L"av.png", &testbmp);
-		m_Graphics->CreateEffect(CLSID_D2D1ColorMatrix, &colorMatrixFx);
-		colorMatrixFx->SetInput(0, testbmp);
-		D2D1_MATRIX_5X4_F matrix = m_Graphics->CreateColorMatrix(1.0f, 0, 1.0f);
-		colorMatrixFx->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
+		m_Graphics->CreateBitmapTintEffect(&colorMatrixFx, testbmp, 1.0f, 0, 1.0f);
 	}
 
 	FTGame::~FTGame()
@@ -34,6 +31,7 @@ namespace FTGame
 
 		m_Graphics->DrawCircle(0, 0, 100, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, 1.0f);
 		
+		m_Graphics->SetBitmapTintEffectColor(colorMatrixFx, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f);
 		m_Graphics->DrawEffect(colorMatrixFx, D2D1::Point2F(50, 50), D2D1::RectF(0, 0, testbmp->GetSize().width / 2, testbmp->GetSize().height / 2), D2D1_INTERPOLATION_MODE_ANISOTROPIC, D2D1_COMPOSITE_MODE_SOURCE_OVER);
 
 		m_Graphics->EndDraw();

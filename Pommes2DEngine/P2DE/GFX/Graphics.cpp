@@ -198,6 +198,31 @@ bool Graphics::CreateEffect(REFCLSID effectId, ID2D1Effect** effect)
 	return true;
 }
 
+bool Graphics::CreateBitmapTintEffect(ID2D1Effect** effect, ID2D1Bitmap* bmp, float r, float g, float b, float a)
+{
+	if (CreateEffect(CLSID_D2D1ColorMatrix, effect))
+	{
+		(*effect)->SetInput(0, bmp);
+		(*effect)->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, CreateColorMatrix(r, g, b, a));
+	}
+	else
+		return false;
+}
+
+void Graphics::SetBitmapTintEffectColor(ID2D1Effect* effect, float r, float g, float b, float a)
+{
+	effect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, CreateColorMatrix(r, g, b, a));
+}
+
+D2D1_MATRIX_5X4_F Graphics::CreateColorMatrix(float r, float g, float b, float a)
+{
+	return D2D1::Matrix5x4F(r, 0, 0, 0,
+		0, g, 0, 0,
+		0, 0, b, 0,
+		0, 0, 0, a,
+		0, 0, 0, 0);
+}
+
 void Graphics::ClearScreen(float r, float g, float b)
 {
 	m_D2D1DeviceContext->Clear(D2D1::ColorF(r, g, b));
@@ -245,13 +270,4 @@ void Graphics::DrawBitmap(ID2D1Bitmap* bmp, float dstX, float dstY, float dstWid
 void Graphics::DrawEffect(ID2D1Effect* effect, const D2D1_POINT_2F& destination, const D2D1_RECT_F& srcRect, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode)
 {
 	m_D2D1DeviceContext->DrawImage(effect, destination, srcRect, interpolationMode, compositeMode);
-}
-
-D2D1_MATRIX_5X4_F Graphics::CreateColorMatrix(float r, float g, float b, float a)
-{
-	return D2D1::Matrix5x4F(r, 0, 0, 0,
-							0, g, 0, 0,
-							0, 0, b, 0,
-							0, 0, 0, a,
-							0, 0, 0, 0);
 }
