@@ -32,7 +32,7 @@ namespace FTGame
 		m_Graphics->DrawCircle(0, 0, 100, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, 1.0f);
 		
 		m_Graphics->SetBitmapTintEffectColor(colorMatrixFx, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f);
-		m_Graphics->DrawEffect(colorMatrixFx, D2D1::Point2F(50, 50), D2D1::RectF(0, 0, testbmp->GetSize().width / 2, testbmp->GetSize().height / 2), D2D1_INTERPOLATION_MODE_ANISOTROPIC, D2D1_COMPOSITE_MODE_SOURCE_OVER);
+		m_Graphics->DrawEffect(colorMatrixFx, D2D1::Point2F(50, 50));
 
 		m_Graphics->EndDraw();
 	}

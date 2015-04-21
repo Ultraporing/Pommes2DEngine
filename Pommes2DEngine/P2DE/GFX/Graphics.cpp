@@ -273,3 +273,8 @@ void Graphics::DrawEffect(ID2D1Effect* effect, const D2D1_POINT_2F& destination,
 {
 	m_D2D1DeviceContext->DrawImage(effect, destination, srcRect, interpolationMode, compositeMode);
 }
+
+void Graphics::DrawEffect(ID2D1Effect* effect, const D2D1_POINT_2F& destination, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode)
+{
+	m_D2D1DeviceContext->DrawImage(effect, destination, interpolationMode, compositeMode);
+}
