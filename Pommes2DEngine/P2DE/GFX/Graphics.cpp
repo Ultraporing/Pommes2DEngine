@@ -149,7 +149,7 @@ void Graphics::SetTransform(D2D1_MATRIX_3X2_F& matrix)
 
 void Graphics::SetTransform(D2D1_MATRIX_3X2_F* matrix) 
 { 
-	m_D2D1DeviceContext->SetTransform(matrix); 
+	m_D2D1DeviceContext->SetTransform(matrix);
 }
 
 bool Graphics::LoadBitmapFromFile(LPCWSTR file, ID2D1Bitmap** output)

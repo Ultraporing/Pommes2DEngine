@@ -4,7 +4,6 @@
 
 #pragma once
 #include <d2d1_1.h>
-#include <string>
 #include "..\Utilities\ComPtr.h"
 
 #pragma comment (lib, "D3D11.lib")
