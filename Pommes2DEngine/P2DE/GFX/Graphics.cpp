@@ -204,9 +204,11 @@ bool Graphics::CreateBitmapTintEffect(ID2D1Effect** effect, ID2D1Bitmap* bmp, fl
 	{
 		(*effect)->SetInput(0, bmp);
 		(*effect)->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, CreateColorMatrix(r, g, b, a));
+
+		return true;
 	}
-	else
-		return false;
+	
+	return false;
 }
 
 void Graphics::SetBitmapTintEffectColor(ID2D1Effect* effect, float r, float g, float b, float a)
