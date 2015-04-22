@@ -73,6 +73,12 @@ namespace FTGame
 				MessageBox(NULL, L"fail", L"merp", MB_OK);
 		}
 
+		if (m_InputManager.IsKeyPressed(VK_KEY_D))
+		{
+			m_Graphics->SetGameWindowSize(RECT() = { 0, 0, 1024, 768 });
+			m_Graphics->SetGameWindowPos(POINT() = { 0, 0 });
+		}
+
 		return false;
 	}
 }

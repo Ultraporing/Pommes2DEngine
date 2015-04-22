@@ -55,7 +55,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	graphics = NULL;
 	graphics = new P2DE::GFX::Graphics();
-	if (!graphics->Init(hWnd))
+	if (!graphics->Init(hWnd, dwStyle, dwExStyle))
 	{
 		delete graphics;
 		return -1;

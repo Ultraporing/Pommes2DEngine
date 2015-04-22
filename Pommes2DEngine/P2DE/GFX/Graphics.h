@@ -23,6 +23,11 @@ namespace P2DE
 		class Graphics
 		{
 			private:
+			HWND m_GameWindowHandle;
+			RECT m_GameWindowSize;
+			DWORD m_GameWindowStyle;
+			DWORD m_GameWindowStyleEx;
+
 			P2DE::UTILITIES::ComPtr<ID2D1Factory1> m_Factory;
 
 			P2DE::UTILITIES::ComPtr<ID3D11DeviceContext> m_D3D11DeviceContext;
@@ -41,7 +46,12 @@ namespace P2DE
 			Graphics();
 			~Graphics();
 
-			bool Init(HWND hWnd);
+			bool Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx);
+
+			HWND GetGameWindowHandle() { return m_GameWindowHandle; }
+			RECT GetGameWindowSize() { return m_GameWindowSize; }
+			void SetGameWindowSize(const RECT& newWindowSize);
+			void SetGameWindowPos(const POINT& newWindowPos);
 
 			void BeginDraw();
 			void EndDraw();

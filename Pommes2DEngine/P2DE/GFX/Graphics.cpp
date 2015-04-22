@@ -41,10 +41,15 @@ Graphics::~Graphics()
 		m_SwapChain->Release();
 }
 
-bool Graphics::Init(HWND hWnd)
+bool Graphics::Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx)
 {
 	RECT rect;
 	GetClientRect(hWnd, &rect);
+
+	m_GameWindowHandle = hWnd;
+	m_GameWindowSize = rect;
+	m_GameWindowStyle = dwStyle;
+	m_GameWindowStyleEx = dwStyleEx;
 
 	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &m_Factory);
 	if (hr != S_OK)
@@ -129,6 +134,20 @@ bool Graphics::Init(HWND hWnd)
 	m_D2D1DeviceContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &m_Brush);
 
 	return true;
+}
+
+void Graphics::SetGameWindowSize(const RECT& newWindowSize)
+{
+	RECT finalWindowSize = newWindowSize;
+	AdjustWindowRectEx(&finalWindowSize, m_GameWindowStyle, false, m_GameWindowStyleEx);
+	SetWindowPos(m_GameWindowHandle, HWND_TOP, NULL, NULL, newWindowSize.right - newWindowSize.left, newWindowSize.bottom - newWindowSize.top, SWP_NOMOVE);
+	GetClientRect(m_GameWindowHandle, &m_GameWindowSize);
+}
+
+void Graphics::SetGameWindowPos(const POINT& newWindowPos)
+{
+	SetWindowPos(m_GameWindowHandle, HWND_TOP, newWindowPos.x, newWindowPos.y, NULL, NULL, SWP_NOSIZE);
+	GetClientRect(m_GameWindowHandle, &m_GameWindowSize);
 }
 
 void Graphics::BeginDraw()
