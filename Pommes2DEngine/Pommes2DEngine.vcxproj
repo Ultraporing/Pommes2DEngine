@@ -79,6 +79,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="P2DE\Game\BaseGame.h" />
     <ClInclude Include="P2DE\GFX\Camera.h" />
     <ClInclude Include="P2DE\GFX\Graphics.h" />
     <ClInclude Include="P2DE\Input\InputManager.h" />

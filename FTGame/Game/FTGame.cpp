@@ -13,19 +13,47 @@ namespace FTGame
 		m_Graphics = gfx;
 		m_Camera = P2DE::GFX::Camera(gfx);
 		m_hWndGamewindow = hWndGamewindow;
-		
-		m_Graphics->LoadBitmapFromFile(L"av.png", &testbmp);
-		m_Graphics->CreateBitmapTintEffect(&colorMatrixFx, testbmp, 1.0f, 0, 1.0f);
+		m_Graphics->SetCurrentGame(this);
+
+		LoadResources();
 	}
 
 	FTGame::~FTGame()
 	{
+		UnloadResources();
 		m_Graphics = NULL;
-		testbmp->Release();
+	}
+
+	bool FTGame::LoadResources()
+	{
+		if (m_Graphics->LoadBitmapFromFile(L"av.png", &testbmp))
+		{
+			if (m_Graphics->CreateBitmapTintEffect(&colorMatrixFx, testbmp, 1.0f, 0, 1.0f))
+				return true;
+		}
+		
+		return false;
+	}
+
+	bool FTGame::UnloadResources()
+	{
+		if (testbmp)
+		{
+			testbmp->Release();
+			testbmp = NULL;
+		}
+
+		if (colorMatrixFx)
+			colorMatrixFx.~ComPtr();
+
+		return true;
 	}
 
 	void FTGame::Render()
 	{
+		if (!m_Graphics->CanDraw())
+			return;
+
 		m_Graphics->BeginDraw();
 		m_Graphics->ClearScreen(0.0f, 0.0f, 0.5f);
 

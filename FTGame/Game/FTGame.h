@@ -4,6 +4,7 @@
 
 #pragma once
 #include "P2DE\GFX\Camera.h"
+#include <P2DE\Game\BaseGame.h>
 #include "P2DE\Input\InputManager.h"
 
 namespace P2DE
@@ -16,7 +17,7 @@ namespace P2DE
 
 namespace FTGame
 {
-	class FTGame
+	class FTGame : public P2DE::GAME::BaseGame
 	{
 		private:
 			HWND m_hWndGamewindow;
@@ -26,6 +27,9 @@ namespace FTGame
 			P2DE::INPUT::InputManager m_InputManager;
 
 			ID2D1Bitmap* testbmp;
+
+			bool LoadResources() override;
+			bool UnloadResources() override;
 
 		public:
 			FTGame(P2DE::GFX::Graphics* gfx, HWND hWndGamewindow);

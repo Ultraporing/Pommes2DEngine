@@ -6,6 +6,7 @@
 #include <d2d1_1.h>
 #include <d2d1effects.h>
 #include "..\Utilities\ComPtr.h"
+#include "..\Game\BaseGame.h"
 
 #pragma comment (lib, "D3D11.lib")
 #pragma comment (lib, "d2d1.lib")
@@ -42,11 +43,19 @@ namespace P2DE
 
 			ID2D1SolidColorBrush* m_Brush;
 
+			P2DE::GAME::BaseGame* m_CurrentGame;
+
+			bool ResizeDirectX();
+
 			public:		
 			Graphics();
 			~Graphics();
 
 			bool Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx);
+
+			bool CanDraw() { return m_SwapChain ? true : false; }
+
+			void SetCurrentGame(P2DE::GAME::BaseGame* game) { m_CurrentGame = game; }
 
 			HWND GetGameWindowHandle() { return m_GameWindowHandle; }
 			RECT GetGameWindowSize() { return m_GameWindowSize; }

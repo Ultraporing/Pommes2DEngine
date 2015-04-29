@@ -39,6 +39,8 @@ Graphics::~Graphics()
 
 	if (m_SwapChain)
 		m_SwapChain->Release();
+
+	m_CurrentGame = NULL;
 }
 
 bool Graphics::Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx)
@@ -130,10 +132,44 @@ bool Graphics::Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx)
 
 	// Now we can set the Direct2D render target.
 	m_D2D1DeviceContext->SetTarget(m_D2D1TargetBitmap);
-
+	
 	m_D2D1DeviceContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &m_Brush);
 
 	return true;
+}
+
+bool Graphics::ResizeDirectX()
+{
+	m_CurrentGame->UnloadResources();
+
+	if (m_D2D1TargetBitmap)
+		m_D2D1TargetBitmap.~ComPtr();
+
+	if (m_SwapChain)
+		m_SwapChain->Release();
+	m_SwapChain = NULL;
+
+	if (m_D2D1DeviceContext)
+		m_D2D1DeviceContext.~ComPtr();
+
+	if (m_Factory)
+		m_Factory.~ComPtr();
+
+	if (m_D3D11DeviceContext)
+		m_D3D11DeviceContext.~ComPtr();
+
+	if (m_D3D11Device)
+		m_D3D11Device.~ComPtr();
+
+	if (m_D2D1Device)
+		m_D2D1Device.~ComPtr();
+
+	m_Brush->Release();
+
+	if (Init(m_GameWindowHandle, m_GameWindowStyle, m_GameWindowStyleEx) && m_CurrentGame->LoadResources())
+		return true;
+
+	return false;
 }
 
 void Graphics::SetGameWindowSize(const RECT& newWindowSize)
@@ -142,6 +178,8 @@ void Graphics::SetGameWindowSize(const RECT& newWindowSize)
 	AdjustWindowRectEx(&finalWindowSize, m_GameWindowStyle, false, m_GameWindowStyleEx);
 	SetWindowPos(m_GameWindowHandle, HWND_TOP, NULL, NULL, newWindowSize.right - newWindowSize.left, newWindowSize.bottom - newWindowSize.top, SWP_NOMOVE);
 	GetClientRect(m_GameWindowHandle, &m_GameWindowSize);
+
+	ResizeDirectX();
 }
 
 void Graphics::SetGameWindowPos(const POINT& newWindowPos)
