@@ -43,6 +43,7 @@ Graphics::~Graphics()
 	m_CurrentGame = NULL;
 }
 
+#pragma region DirectX_Init
 bool Graphics::Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx)
 {
 	RECT rect;
@@ -138,6 +139,15 @@ bool Graphics::Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx)
 	return true;
 }
 
+bool Graphics::Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx, P2DE::GAME::BaseGame* game)
+{
+	SetCurrentGame(game);
+
+	return Init(hWnd, dwStyle, dwStyleEx);
+}
+#pragma endregion
+
+#pragma region DirectX_Helper
 bool Graphics::ResizeDirectX()
 {
 	m_CurrentGame->UnloadResources();
@@ -171,7 +181,9 @@ bool Graphics::ResizeDirectX()
 
 	return false;
 }
+#pragma endregion
 
+#pragma region Getter/Setter
 void Graphics::SetGameWindowSize(const RECT& newWindowSize)
 {
 	RECT finalWindowSize = newWindowSize;
@@ -188,6 +200,18 @@ void Graphics::SetGameWindowPos(const POINT& newWindowPos)
 	GetClientRect(m_GameWindowHandle, &m_GameWindowSize);
 }
 
+void Graphics::SetTransform(D2D1_MATRIX_3X2_F& matrix)
+{
+	m_D2D1DeviceContext->SetTransform(matrix);
+}
+
+void Graphics::SetTransform(D2D1_MATRIX_3X2_F* matrix)
+{
+	m_D2D1DeviceContext->SetTransform(matrix);
+}
+#pragma endregion
+
+#pragma region Begin/EndDraw/Clear
 void Graphics::BeginDraw()
 { 
 	m_D2D1DeviceContext->BeginDraw(); 
@@ -199,16 +223,13 @@ void Graphics::EndDraw()
 	m_SwapChain->Present(1, 0); 
 }
 	
-void Graphics::SetTransform(D2D1_MATRIX_3X2_F& matrix) 
-{ 
-	m_D2D1DeviceContext->SetTransform(matrix); 
+void Graphics::ClearScreen(float r, float g, float b)
+{
+	m_D2D1DeviceContext->Clear(D2D1::ColorF(r, g, b));
 }
+#pragma endregion
 
-void Graphics::SetTransform(D2D1_MATRIX_3X2_F* matrix) 
-{ 
-	m_D2D1DeviceContext->SetTransform(matrix);
-}
-
+#pragma region Resources_From_File
 bool Graphics::LoadBitmapFromFile(LPCWSTR file, ID2D1Bitmap** output)
 {
 	HRESULT hr;
@@ -245,7 +266,9 @@ bool Graphics::LoadBitmapFromFile(LPCWSTR file, ID2D1Bitmap** output)
 
 	return true;
 }
+#pragma endregion
 
+#pragma region Bitmaps/Effects_Creation/Helpers
 bool Graphics::CreateEffect(REFCLSID effectId, ID2D1Effect** effect)
 {
 	HRESULT hr = m_D2D1DeviceContext->CreateEffect(effectId, effect);
@@ -272,7 +295,9 @@ void Graphics::SetBitmapTintEffectColor(ID2D1Effect* effect, float r, float g, f
 {
 	effect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, CreateColorMatrix(r, g, b, a));
 }
+#pragma endregion
 
+#pragma region Matrix_Helper
 D2D1_MATRIX_5X4_F Graphics::CreateColorMatrix(float r, float g, float b, float a)
 {
 	return D2D1::Matrix5x4F(r, 0, 0, 0,
@@ -281,19 +306,67 @@ D2D1_MATRIX_5X4_F Graphics::CreateColorMatrix(float r, float g, float b, float a
 		0, 0, 0, a,
 		0, 0, 0, 0);
 }
+#pragma endregion
 
-void Graphics::ClearScreen(float r, float g, float b)
-{
-	m_D2D1DeviceContext->Clear(D2D1::ColorF(r, g, b));
-}
-
-void Graphics::DrawCircle(float x, float y, float radius, float r, float g, float b, float a)
+#pragma region Draw_Primitives
+void Graphics::DrawCircle(float x, float y, float radius, float r, float g, float b, float a, float strokeWidth)
 {
 	m_Brush->SetColor(D2D1::ColorF(r, g, b, a));
 
-	m_D2D1DeviceContext->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius), m_Brush, 3.0f);
+	m_D2D1DeviceContext->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius), m_Brush, strokeWidth);
 }
 
+void Graphics::DrawCircle(float x, float y, float radius, const D2D1_COLOR_F& color, float strokeWidth)
+{
+	m_Brush->SetColor(color);
+
+	m_D2D1DeviceContext->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius), m_Brush, strokeWidth);
+}
+
+void Graphics::DrawFilledCircle(float x, float y, float radius, float r, float g, float b, float a)
+{
+	m_Brush->SetColor(D2D1::ColorF(r, g, b, a));
+
+	m_D2D1DeviceContext->FillEllipse(D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius), m_Brush);
+}
+
+void Graphics::DrawFilledCircle(float x, float y, float radius, const D2D1_COLOR_F& color)
+{
+	m_Brush->SetColor(color);
+
+	m_D2D1DeviceContext->FillEllipse(D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius), m_Brush);
+}
+
+void Graphics::DrawRectangle(const D2D1_RECT_F& destinationRect, float r, float g, float b, float a, float strokeWidth)
+{
+	m_Brush->SetColor(D2D1::ColorF(r, g, b, a));
+
+	m_D2D1DeviceContext->DrawRectangle(destinationRect, m_Brush, strokeWidth);
+}
+
+void Graphics::DrawRectangle(const D2D1_RECT_F& destinationRect, const D2D1_COLOR_F& color, float strokeWidth)
+{
+	m_Brush->SetColor(color);
+
+	m_D2D1DeviceContext->DrawRectangle(destinationRect, m_Brush, strokeWidth);
+}
+
+void Graphics::DrawFilledRectangle(const D2D1_RECT_F& destinationRect, float r, float g, float b, float a)
+{
+	m_Brush->SetColor(D2D1::ColorF(r, g, b, a));
+
+	m_D2D1DeviceContext->FillRectangle(destinationRect, m_Brush);
+}
+
+void Graphics::DrawFilledRectangle(const D2D1_RECT_F& destinationRect, const D2D1_COLOR_F& color)
+{
+	m_Brush->SetColor(color);
+
+	m_D2D1DeviceContext->FillRectangle(destinationRect, m_Brush);
+}
+#pragma endregion
+
+#pragma region Draw_Bitmaps
 void Graphics::DrawBitmap(ID2D1Bitmap* bmp, float dstX, float dstY, float dstWidth, float dstHeight, float opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode)
 {
 	D2D1_SIZE_F bmpSize = bmp->GetSize();
@@ -325,7 +398,9 @@ void Graphics::DrawBitmap(ID2D1Bitmap* bmp, float dstX, float dstY, float dstWid
 {
 	m_D2D1DeviceContext->DrawBitmap(bmp, D2D1::RectF(dstX, dstY, dstWidth, dstHeight), opacity, interpolationMode, sourceRect);
 }
+#pragma endregion
 
+#pragma region Draw_Effects
 void Graphics::DrawEffect(ID2D1Effect* effect, const D2D1_POINT_2F& destination, const D2D1_RECT_F& srcRect, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode)
 {
 	m_D2D1DeviceContext->DrawImage(effect, destination, srcRect, interpolationMode, compositeMode);
@@ -335,3 +410,4 @@ void Graphics::DrawEffect(ID2D1Effect* effect, const D2D1_POINT_2F& destination,
 {
 	m_D2D1DeviceContext->DrawImage(effect, destination, interpolationMode, compositeMode);
 }
+#pragma endregion

@@ -57,7 +57,7 @@ namespace FTGame
 		m_Graphics->BeginDraw();
 		m_Graphics->ClearScreen(0.0f, 0.0f, 0.5f);
 
-		m_Graphics->DrawCircle(0, 0, 100, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, 1.0f);
+		m_Graphics->DrawFilledCircle(0, 0, 100, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, 1.0f);
 		
 		m_Graphics->SetBitmapTintEffectColor(colorMatrixFx, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f);
 		m_Graphics->DrawEffect(colorMatrixFx, D2D1::Point2F(50, 50));

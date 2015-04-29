@@ -24,6 +24,7 @@ namespace P2DE
 		class Graphics
 		{
 			private:
+#pragma region Member_Variables
 			HWND m_GameWindowHandle;
 			RECT m_GameWindowSize;
 			DWORD m_GameWindowStyle;
@@ -44,17 +45,23 @@ namespace P2DE
 			ID2D1SolidColorBrush* m_Brush;
 
 			P2DE::GAME::BaseGame* m_CurrentGame;
+#pragma endregion
 
+			private:
+#pragma region DirectX_Helper
 			bool ResizeDirectX();
+#pragma endregion
 
 			public:		
 			Graphics();
 			~Graphics();
 
+#pragma region DirectX_Init
 			bool Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx);
+			bool Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx, P2DE::GAME::BaseGame* game);
+#pragma endregion
 
-			bool CanDraw() { return m_SwapChain ? true : false; }
-
+#pragma region Getter/Setter
 			void SetCurrentGame(P2DE::GAME::BaseGame* game) { m_CurrentGame = game; }
 
 			HWND GetGameWindowHandle() { return m_GameWindowHandle; }
@@ -62,31 +69,56 @@ namespace P2DE
 			void SetGameWindowSize(const RECT& newWindowSize);
 			void SetGameWindowPos(const POINT& newWindowPos);
 
-			void BeginDraw();
-			void EndDraw();
-
 			void SetTransform(D2D1_MATRIX_3X2_F& matrix);
 			void SetTransform(D2D1_MATRIX_3X2_F* matrix);
 
+			bool CanDraw() { return m_SwapChain ? true : false; }
+#pragma endregion
+
+#pragma region Begin/EndDraw/Clear
+			void BeginDraw();
+			void EndDraw();
+			void ClearScreen(float r, float g, float b);
+#pragma endregion
+			
+#pragma region Resources_From_File
 			bool LoadBitmapFromFile(LPCWSTR file, ID2D1Bitmap** output);
+#pragma endregion
+
+#pragma region Bitmaps/Effects_Creation/Helpers
 			bool CreateEffect(REFCLSID effectId, ID2D1Effect** effect);
 			bool CreateBitmapTintEffect(ID2D1Effect** effect, ID2D1Bitmap* bmp, float r, float g, float b, float a = 1.0f);
 			void SetBitmapTintEffectColor(ID2D1Effect* effect, float r, float g, float b, float a = 1.0f);
+#pragma endregion
 
+#pragma region Matrix_Helper
 			D2D1_MATRIX_5X4_F CreateColorMatrix(float r, float g, float b, float a = 1.0f);
+#pragma endregion	
 
-			void ClearScreen(float r, float g, float b);
-			void DrawCircle(float x, float y, float radius, float r, float g, float b, float a);
+#pragma region Draw_Primitives
+			void DrawCircle(float x, float y, float radius, float r, float g, float b, float a, float strokeWidth = 3.0f);
+			void DrawCircle(float x, float y, float radius, const D2D1_COLOR_F& color, float strokeWidth = 3.0f);
+			void DrawFilledCircle(float x, float y, float radius, float r, float g, float b, float a);
+			void DrawFilledCircle(float x, float y, float radius, const D2D1_COLOR_F& color);
+			void DrawRectangle(const D2D1_RECT_F& destinationRect, float r, float g, float b, float a, float strokeWidth = 3.0f);
+			void DrawRectangle(const D2D1_RECT_F& destinationRect, const D2D1_COLOR_F& color, float strokeWidth = 3.0f);
+			void DrawFilledRectangle(const D2D1_RECT_F& destinationRect, float r, float g, float b, float a);
+			void DrawFilledRectangle(const D2D1_RECT_F& destinationRect, const D2D1_COLOR_F& color);
+#pragma endregion
 
+#pragma region Draw_Bitmaps
 			void DrawBitmap(ID2D1Bitmap* bmp, float dstX, float dstY, float dstWidth, float dstHeight, float opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
 			void DrawBitmap(ID2D1Bitmap* bmp, const D2D1_RECT_F& destinationRect, float opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
 			void DrawBitmap(ID2D1Bitmap* bmp, float dstX, float dstY, float dstWidth, float dstHeight, float srcX, float srcY, float srcWidth, float srcHeight, float opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
 			void DrawBitmap(ID2D1Bitmap* bmp, const D2D1_RECT_F& destinationRect, float srcX, float srcY, float srcWidth, float srcHeight, const float& opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
 			void DrawBitmap(ID2D1Bitmap* bmp, const D2D1_RECT_F& destinationRect, const D2D1_RECT_F& sourceRect, const float& opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
 			void DrawBitmap(ID2D1Bitmap* bmp, float dstX, float dstY, float dstWidth, float dstHeight, const D2D1_RECT_F& sourceRect, const float& opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
+#pragma endregion
 
+#pragma region Draw_Effects
 			void DrawEffect(ID2D1Effect* effect, const D2D1_POINT_2F& destination, const D2D1_RECT_F& srcRect, D2D1_INTERPOLATION_MODE interpolationMode = D2D1_INTERPOLATION_MODE_LINEAR, D2D1_COMPOSITE_MODE compositeMode = D2D1_COMPOSITE_MODE_SOURCE_OVER);
 			void DrawEffect(ID2D1Effect* effect, const D2D1_POINT_2F& destination, D2D1_INTERPOLATION_MODE interpolationMode = D2D1_INTERPOLATION_MODE_LINEAR, D2D1_COMPOSITE_MODE compositeMode = D2D1_COMPOSITE_MODE_SOURCE_OVER);
+#pragma endregion
 		};
 	}
 }
