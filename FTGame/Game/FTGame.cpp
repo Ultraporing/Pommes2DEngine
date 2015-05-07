@@ -2,10 +2,12 @@
 #include <sstream>
 #include <P2DE\GFX\Graphics.h>
 #include <P2DE\Utilities\ComPtr.h>
+#include "Graphics\Spritesheet.h"
 
 namespace FTGame
 {
 	P2DE::UTILITIES::ComPtr<ID2D1Effect> colorMatrixFx;
+	GFX::Spritesheet sheet;
 
 	FTGame::FTGame(P2DE::GFX::Graphics* gfx, HWND hWndGamewindow)
 	{
@@ -28,9 +30,14 @@ namespace FTGame
 	{
 		if (m_Graphics->LoadBitmapFromFile(L"av.png", &testbmp))
 		{
-			if (m_Graphics->CreateBitmapTintEffect(&colorMatrixFx, testbmp, 1.0f, 0, 1.0f))
-				return true;
+			if (!m_Graphics->CreateBitmapTintEffect(&colorMatrixFx, testbmp, 1.0f, 0, 1.0f))
+				return false;
 		}
+		else
+			return false;
+
+		if (!sheet.LoadSpritesheet(L"Assets\\Graphics\\Spritesheets\\roguelikeSheet_transparent_Info.txt", m_Graphics))
+			return false;
 		
 		return false;
 	}
@@ -46,6 +53,8 @@ namespace FTGame
 		if (colorMatrixFx)
 			colorMatrixFx.~ComPtr();
 
+		sheet.UnloadSpritesheetBitmap();
+
 		return true;
 	}
 
@@ -58,9 +67,12 @@ namespace FTGame
 		m_Graphics->ClearScreen(0.0f, 0.0f, 0.5f);
 
 		m_Graphics->DrawFilledCircle(0, 0, 100, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, 1.0f);
-		
-		m_Graphics->SetBitmapTintEffectColor(colorMatrixFx, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f);
-		m_Graphics->DrawEffect(colorMatrixFx, D2D1::Point2F(50, 50));
+
+		sheet.DrawFrame(100, 100, 70, m_Graphics, 5.0f, 1.0f, false);
+		sheet.DrawFrame(200, 100, 70, m_Graphics, 5.0f, 0.5f, false);
+
+		sheet.DrawFrame(100, 200, 70, m_Graphics, 5.0f, 1.0f, true);
+		sheet.DrawFrame(200, 200, 70, m_Graphics, 5.0f, 0.5f, true);
 
 		m_Graphics->EndDraw();
 	}

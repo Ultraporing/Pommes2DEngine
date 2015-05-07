@@ -1,0 +1,8 @@
+The tiles are 16 x 16px and have a 1px margin between them.
+
+---
+
+#NAME=roguelikeSheet_transparent.png
+#TILE_SIZE_W=16
+#TILE_SIZE_H=16
+#MARGIN=1

@@ -8,6 +8,9 @@
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{db17a120-fd37-4e23-a8a3-3042b5c635c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Graphics">
+      <UniqueIdentifier>{3aa972c5-c0ce-4d6a-bb0a-986bdae83a8a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -16,10 +19,16 @@
     <ClCompile Include="Game\FTGame.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Graphics\Spritesheet.cpp">
+      <Filter>Source Files\Game\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\FTGame.h">
       <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Graphics\Spritesheet.h">
+      <Filter>Source Files\Game\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
