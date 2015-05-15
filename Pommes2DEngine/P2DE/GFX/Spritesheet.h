@@ -40,8 +40,8 @@ namespace P2DE
 			Spritesheet();
 			~Spritesheet();
 
-			SpritesheetInfo GetSpritesheetInfo();
-			ID2D1Bitmap* GetSpritesheetBitmap();
+			SpritesheetInfo GetSpritesheetInfo() { return m_SpritesheetInfo; };
+			ID2D1Bitmap* GetSpritesheetBitmap() { return m_SpritesheetBitmap; };
 
 			bool LoadSpritesheet(const std::wstring& pathToSpritesheetInfoTXT, P2DE::GFX::Graphics* graphics);
 			bool UnloadSpritesheetBitmap();
