@@ -71,11 +71,11 @@ namespace FTGame
 
 		m_Graphics->DrawFilledCircle(0, 0, 100, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, 1.0f);
 
-		sheet.DrawFrame(D2D1::Point2F(100, 100), 70, D2D1::Point2F(scale, scale), D2D1::ColorF(color), false);
-		sheet.DrawFrame(D2D1::Point2F(200, 100), 70, D2D1::Point2F(scale, scale), D2D1::ColorF(color), false);
+		sheet.DrawFrame(D2D1::Point2F(100, 100), 70, D2D1::Point2F(scale, scale), D2D1::ColorF(1.0f, 1.0f, 1.0f), false);
+		sheet.DrawFrame(D2D1::Point2F(200, 100), 70, D2D1::Point2F(2.0f, 2.0f), D2D1::ColorF(color), false);
 
-		sheet.DrawFrame(D2D1::Point2F(100, 200), 70, D2D1::Point2F(scale, scale), D2D1::ColorF(color), true);
-		sheet.DrawFrame(D2D1::Point2F(200, 200), 70, D2D1::Point2F(scale, scale), D2D1::ColorF(color), true);
+		sheet.DrawFrame(D2D1::Point2F(100, 200), 70, D2D1::Point2F(scale, scale), D2D1::ColorF(1.0f, 1.0f, 1.0f), true);
+		sheet.DrawFrame(D2D1::Point2F(200, 200), 70, D2D1::Point2F(2.0f, 2.0f), D2D1::ColorF(color), true);
 
 		m_Graphics->EndDraw();
 	}

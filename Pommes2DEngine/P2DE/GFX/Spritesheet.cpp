@@ -105,6 +105,7 @@ namespace P2DE
 		{
 			m_Graphics->SetBitmapTintEffectColor(m_ColorMatrixFx, color.r, color.g, color.b, color.a);
 			m_Graphics->SetBitmapScaleEffectScale(m_ScaleFx, scale.x, scale.y);
+			m_ScaleFx->SetValue(D2D1_SCALE_PROP_INTERPOLATION_MODE, interpolationLinear ? D2D1_SCALE_INTERPOLATION_MODE_LINEAR : D2D1_SCALE_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
 
 			D2D1_RECT_F drawRec;
 			drawRec.left = (frameId % m_SpritesheetInfo.m_NumXframes) * (m_SpritesheetInfo.m_TileWidth * scale.x + m_SpritesheetInfo.m_Margin * scale.x);
