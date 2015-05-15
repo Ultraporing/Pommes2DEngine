@@ -87,8 +87,10 @@ namespace P2DE
 
 #pragma region Bitmaps/Effects_Creation/Helpers
 			bool CreateEffect(REFCLSID effectId, ID2D1Effect** effect);
-			bool CreateBitmapTintEffect(ID2D1Effect** effect, ID2D1Bitmap* bmp, float r, float g, float b, float a = 1.0f);
+			bool CreateBitmapTintEffect(ID2D1Effect** effect, ID2D1Image* img, float r, float g, float b, float a = 1.0f);
+			bool CreateBitmapScaleEffect(ID2D1Effect** effect, ID2D1Image* img, float scaleX = 1.0f, float scaleY = 1.0f);
 			void SetBitmapTintEffectColor(ID2D1Effect* effect, float r, float g, float b, float a = 1.0f);
+			void SetBitmapScaleEffectScale(ID2D1Effect* effect, float scaleX = 1.0f, float scaleY = 1.0f);
 #pragma endregion
 
 #pragma region Matrix_Helper

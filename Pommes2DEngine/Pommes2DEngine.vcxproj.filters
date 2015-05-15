@@ -46,6 +46,9 @@
     <ClInclude Include="P2DE\Game\BaseGame.h">
       <Filter>Source Files\Pommes 2D Engine\Game</Filter>
     </ClInclude>
+    <ClInclude Include="P2DE\GFX\Spritesheet.h">
+      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P2DE\GFX\Camera.cpp">
@@ -59,6 +62,9 @@
     </ClCompile>
     <ClCompile Include="P2DE\Input\InputManager.cpp">
       <Filter>Source Files\Pommes 2D Engine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="P2DE\GFX\Spritesheet.cpp">
+      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -82,6 +82,7 @@
     <ClInclude Include="P2DE\Game\BaseGame.h" />
     <ClInclude Include="P2DE\GFX\Camera.h" />
     <ClInclude Include="P2DE\GFX\Graphics.h" />
+    <ClInclude Include="P2DE\GFX\Spritesheet.h" />
     <ClInclude Include="P2DE\Input\InputManager.h" />
     <ClInclude Include="P2DE\Timing\HrTimer.h" />
     <ClInclude Include="P2DE\Utilities\ComHelpers.h" />
@@ -90,6 +91,7 @@
   <ItemGroup>
     <ClCompile Include="P2DE\GFX\Camera.cpp" />
     <ClCompile Include="P2DE\GFX\Graphics.cpp" />
+    <ClCompile Include="P2DE\GFX\Spritesheet.cpp" />
     <ClCompile Include="P2DE\Input\InputManager.cpp" />
     <ClCompile Include="P2DE\Timing\HrTimer.cpp" />
   </ItemGroup>

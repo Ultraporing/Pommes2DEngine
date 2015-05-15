@@ -1,16 +1,10 @@
 #pragma once
+#include "Graphics.h"
 #include <string>
 
 struct ID2D1Bitmap;
-namespace P2DE
-{
-	namespace GFX
-	{
-		class Graphics;
-	}
-}
 
-namespace FTGame
+namespace P2DE
 {
 	namespace GFX
 	{
@@ -34,20 +28,28 @@ namespace FTGame
 
 		class Spritesheet
 		{
-			public:
+			private:
+			P2DE::GFX::Graphics* m_Graphics;
+			ID2D1Effect* m_ColorMatrixFx;
+			ID2D1Effect* m_ScaleFx;
+			P2DE::UTILITIES::ComPtr<ID2D1Image> m_IntermediateOutputImage;
 			SpritesheetInfo m_SpritesheetInfo;
 			ID2D1Bitmap* m_SpritesheetBitmap;
 
+			public:
 			Spritesheet();
 			~Spritesheet();
+
+			SpritesheetInfo GetSpritesheetInfo();
+			ID2D1Bitmap* GetSpritesheetBitmap();
 
 			bool LoadSpritesheet(const std::wstring& pathToSpritesheetInfoTXT, P2DE::GFX::Graphics* graphics);
 			bool UnloadSpritesheetBitmap();
 
-			void DrawFrame(int dstX, int dstY, unsigned int frameId, P2DE::GFX::Graphics* graphics, float scale = 1.0f, float opacity = 1.0f, bool interpolationLinear = true);
+			void DrawFrame(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale = { 1.0f, 1.0f }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), bool interpolationLinear = true);
 
 			private:
-			bool ReloadSpritesheetBitmap(P2DE::GFX::Graphics* graphics);
+			bool ReloadSpritesheetBitmap();
 		};
 	}
 }

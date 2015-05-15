@@ -92,11 +92,9 @@
   <ItemGroup>
     <ClCompile Include="Game\FTGame.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Game\Graphics\Spritesheet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\FTGame.h" />
-    <ClInclude Include="Game\Graphics\Spritesheet.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Pommes2DEngine\Pommes2DEngine.vcxproj">

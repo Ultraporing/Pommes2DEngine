@@ -2,12 +2,12 @@
 #include <sstream>
 #include <P2DE\GFX\Graphics.h>
 #include <P2DE\Utilities\ComPtr.h>
-#include "Graphics\Spritesheet.h"
+#include "P2DE\GFX\Spritesheet.h"
 
 namespace FTGame
 {
 	P2DE::UTILITIES::ComPtr<ID2D1Effect> colorMatrixFx;
-	GFX::Spritesheet sheet;
+	P2DE::GFX::Spritesheet sheet;
 
 	FTGame::FTGame(P2DE::GFX::Graphics* gfx, HWND hWndGamewindow)
 	{
@@ -58,6 +58,9 @@ namespace FTGame
 		return true;
 	}
 
+	static float scale = 2.0f;
+	static D2D1::ColorF color = { 1.0f, 1.0f, 1.0f };
+
 	void FTGame::Render()
 	{
 		if (!m_Graphics->CanDraw())
@@ -68,11 +71,11 @@ namespace FTGame
 
 		m_Graphics->DrawFilledCircle(0, 0, 100, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, 1.0f);
 
-		sheet.DrawFrame(100, 100, 70, m_Graphics, 5.0f, 1.0f, false);
-		sheet.DrawFrame(200, 100, 70, m_Graphics, 5.0f, 0.5f, false);
+		sheet.DrawFrame(D2D1::Point2F(100, 100), 70, D2D1::Point2F(scale, scale), D2D1::ColorF(color), false);
+		sheet.DrawFrame(D2D1::Point2F(200, 100), 70, D2D1::Point2F(scale, scale), D2D1::ColorF(color), false);
 
-		sheet.DrawFrame(100, 200, 70, m_Graphics, 5.0f, 1.0f, true);
-		sheet.DrawFrame(200, 200, 70, m_Graphics, 5.0f, 0.5f, true);
+		sheet.DrawFrame(D2D1::Point2F(100, 200), 70, D2D1::Point2F(scale, scale), D2D1::ColorF(color), true);
+		sheet.DrawFrame(D2D1::Point2F(200, 200), 70, D2D1::Point2F(scale, scale), D2D1::ColorF(color), true);
 
 		m_Graphics->EndDraw();
 	}
@@ -111,6 +114,12 @@ namespace FTGame
 			}
 			else
 				MessageBox(NULL, L"fail", L"merp", MB_OK);
+		}
+
+		if (m_InputManager.IsKeyPressed(VK_KEY_A))
+		{
+			scale = 5.0f;
+			color = { 1.0f, 0.0f, 1.0f, 1.0f };
 		}
 
 		if (m_InputManager.IsKeyPressed(VK_KEY_D))

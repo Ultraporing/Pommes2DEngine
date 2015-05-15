@@ -278,11 +278,11 @@ bool Graphics::CreateEffect(REFCLSID effectId, ID2D1Effect** effect)
 	return true;
 }
 
-bool Graphics::CreateBitmapTintEffect(ID2D1Effect** effect, ID2D1Bitmap* bmp, float r, float g, float b, float a)
+bool Graphics::CreateBitmapTintEffect(ID2D1Effect** effect, ID2D1Image* img, float r, float g, float b, float a)
 {
 	if (CreateEffect(CLSID_D2D1ColorMatrix, effect))
 	{
-		(*effect)->SetInput(0, bmp);
+		(*effect)->SetInput(0, img);
 		(*effect)->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, CreateColorMatrix(r, g, b, a));
 
 		return true;
@@ -291,9 +291,27 @@ bool Graphics::CreateBitmapTintEffect(ID2D1Effect** effect, ID2D1Bitmap* bmp, fl
 	return false;
 }
 
+bool Graphics::CreateBitmapScaleEffect(ID2D1Effect** effect, ID2D1Image* img, float scaleX, float scaleY)
+{
+	if (CreateEffect(CLSID_D2D1Scale, effect))
+	{
+		(*effect)->SetInput(0, img);
+		(*effect)->SetValue(D2D1_SCALE_PROP_SCALE, D2D1::Vector2F(scaleX, scaleY));
+
+		return true;
+	}
+
+	return false;
+}
+
 void Graphics::SetBitmapTintEffectColor(ID2D1Effect* effect, float r, float g, float b, float a)
 {
 	effect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, CreateColorMatrix(r, g, b, a));
+}
+
+void Graphics::SetBitmapScaleEffectScale(ID2D1Effect* effect, float scaleX, float scaleY)
+{
+	effect->SetValue(D2D1_SCALE_PROP_SCALE, D2D1::Vector2F(scaleX, scaleY));
 }
 #pragma endregion
 
