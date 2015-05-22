@@ -58,7 +58,6 @@ namespace P2DE
 		class Camera;
 	}
 
-
 	/// <summary>	Pommes2D Engine Input Related Namespace. </summary>
 	///
 	/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -82,7 +81,6 @@ namespace P2DE
 			///
 			/// <returns>	true if key down, false if not. </returns>
 			bool IsKeyDown(const BYTE& VK_Keycode);
-
 			/// <summary>	Query if 'VK_Keycode' is key up. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -91,7 +89,6 @@ namespace P2DE
 			///
 			/// <returns>	true if key up, false if not. </returns>
 			bool IsKeyUp(const BYTE& VK_Keycode);
-
 			/// <summary>	Query if 'VK_Keycode' is key pressed once. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -110,7 +107,6 @@ namespace P2DE
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool GetScreenMousePos(HWND targetWindow, POINT* mousePos);
-
 			/// <summary>	Gets game mouse position. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -130,7 +126,6 @@ namespace P2DE
 			///
 			/// <returns>	true if mouse down, false if not. </returns>
 			bool IsMouseDown(const BYTE& mouseButton);
-
 			/// <summary>	Query if 'mouseButton' is mouse up. 0 = left, 1 = middle, 2 = right, else = left</summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -139,7 +134,6 @@ namespace P2DE
 			///
 			/// <returns>	true if mouse up, false if not. </returns>
 			bool IsMouseUp(const BYTE& mouseButton);
-
 			/// <summary>	Query if 'mouseButton' is mouse clicked. 0 = left, 1 = middle, 2 = right, else = left</summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>

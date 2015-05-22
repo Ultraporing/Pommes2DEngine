@@ -82,7 +82,6 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 18.05.2015. </remarks>
 			Spritesheet();
-
 			/// <summary>	Destructor. </summary>
 			///
 			/// <remarks>	Tobias, 18.05.2015. </remarks>
@@ -93,8 +92,7 @@ namespace P2DE
 			/// <remarks>	Tobias, 18.05.2015. </remarks>
 			///
 			/// <returns>	The spritesheet information. </returns>
-			SpritesheetInfo GetSpritesheetInfo() { return m_SpritesheetInfo; };
-			
+			SpritesheetInfo GetSpritesheetInfo() { return m_SpritesheetInfo; };		
 			/// <summary>	Gets spritesheet bitmap. </summary>
 			///
 			/// <remarks>	Tobias, 18.05.2015. </remarks>
@@ -111,7 +109,6 @@ namespace P2DE
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool LoadSpritesheet(const std::wstring& pathToSpritesheetInfoTXT, P2DE::GFX::Graphics* graphics);
-
 			/// <summary>	Unloads the spritesheet bitmap. Mostly used if we have to resize the Swapchain. </summary>
 			///
 			/// <remarks>	Tobias, 18.05.2015. </remarks>
@@ -128,8 +125,7 @@ namespace P2DE
 			/// <param name="scale">	Scale for the frame. </param>
 			/// <param name="color">	Color tint for the frame. </param>
 			/// <param name="interpolationLinear">	If TRUE Linear Interpolation is used, otherwise Nearest Neighbor. </param>
-			void DrawFrame(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale = { 1.0f, 1.0f }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), bool interpolationLinear = true);	
-			
+			void DrawFrame(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale = { 1.0f, 1.0f }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), bool interpolationLinear = true);			
 			/// <summary>	Draws a frame of the spritesheet by use of an source Rectangle. </summary>
 			///
 			/// <remarks>	Tobias, 18.05.2015. </remarks>

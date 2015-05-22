@@ -43,14 +43,14 @@ namespace P2DE
 			/// <summary>	The game window style ex. </summary>
 			DWORD m_GameWindowStyleEx;
 
-			/// <summary>	The Direct2D1 factory. </summary>
-			P2DE::UTILITIES::ComPtr<ID2D1Factory1> m_Factory;
 
 			/// <summary>	Context for the Direct3D11 device. </summary>
 			P2DE::UTILITIES::ComPtr<ID3D11DeviceContext> m_D3D11DeviceContext;
 			/// <summary>	The Direct3D11 device. </summary>
 			P2DE::UTILITIES::ComPtr<ID3D11Device> m_D3D11Device;
 
+			/// <summary>	The Direct2D1 factory. </summary>
+			P2DE::UTILITIES::ComPtr<ID2D1Factory1> m_Factory;
 			/// <summary>	The Direct2D1 device. </summary>
 			P2DE::UTILITIES::ComPtr<ID2D1Device> m_D2D1Device;
 			/// <summary>	Context for the Direct2D1 device. </summary>
@@ -65,7 +65,6 @@ namespace P2DE
 
 			/// <summary>	Reused Color brush. </summary>
 			ID2D1SolidColorBrush* m_Brush;
-
 			/// <summary>	The current game. </summary>
 			P2DE::GAME::BaseGame* m_CurrentGame;
 #pragma endregion
@@ -85,7 +84,6 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			Graphics();
-
 			/// <summary>	Destructor. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -102,7 +100,6 @@ namespace P2DE
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx);
-
 			/// <summary>	Initialises DirectX. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -123,49 +120,42 @@ namespace P2DE
 			///
 			/// <param name="game">	[in,out] If non-null, the game. </param>
 			void SetCurrentGame(P2DE::GAME::BaseGame* game) { m_CurrentGame = game; }
-
 			/// <summary>	Gets game window handle. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
 			/// <returns>	The game window handle. </returns>
 			HWND GetGameWindowHandle() { return m_GameWindowHandle; }
-
 			/// <summary>	Gets game window size. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
 			/// <returns>	The game window size. </returns>
 			RECT GetGameWindowSize() { return m_GameWindowSize; }
-
 			/// <summary>	Sets game window size. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
 			/// <param name="newWindowSize">	Size of the new window. </param>
 			void SetGameWindowSize(const RECT& newWindowSize);
-
 			/// <summary>	Sets game window position. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
 			/// <param name="newWindowPos">	The new window position. </param>
 			void SetGameWindowPos(const POINT& newWindowPos);
-
 			/// <summary>	Sets the Viewport transform. Used by the Camera to move it.</summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
 			/// <param name="matrix">	[in,out] The matrix. </param>
 			void SetViewportTransform(D2D1_MATRIX_3X2_F& matrix);
-
 			/// <summary>	Sets the Viewport transform. Used by the Camera to move it. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
 			/// <param name="matrix">	[in,out] If non-null, the matrix. </param>
 			void SetViewportTransform(D2D1_MATRIX_3X2_F* matrix);
-
 			/// <summary>	Determine if we can draw. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -179,12 +169,10 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			void BeginDraw();
-
 			/// <summary>	Ends a draw. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			void EndDraw();
-
 			/// <summary>	Clears the screen to Color. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -217,7 +205,6 @@ namespace P2DE
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool CreateEffect(REFCLSID effectId, ID2D1Effect** effect);
-
 			/// <summary>	Creates bitmap tint effect. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -231,7 +218,6 @@ namespace P2DE
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool CreateBitmapTintEffect(ID2D1Effect** effect, ID2D1Image* img, float r, float g, float b, float a = 1.0f);
-
 			/// <summary>	Creates bitmap scale effect. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -243,7 +229,6 @@ namespace P2DE
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool CreateBitmapScaleEffect(ID2D1Effect** effect, ID2D1Image* img, float scaleX = 1.0f, float scaleY = 1.0f);
-
 			/// <summary>	Sets bitmap TintEffect color. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -254,7 +239,6 @@ namespace P2DE
 			/// <param name="b">	 	The float to process. </param>
 			/// <param name="a">	 	The float to process. </param>
 			void SetBitmapTintEffectColor(ID2D1Effect* effect, float r, float g, float b, float a = 1.0f);
-
 			/// <summary>	Sets bitmap ScaleEffect scale. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -293,7 +277,6 @@ namespace P2DE
 			/// <param name="a">		  	Alpha color part. </param>
 			/// <param name="strokeWidth">	Width of the stroke. </param>
 			void DrawCircle(float x, float y, float radius, float r, float g, float b, float a, float strokeWidth = 3.0f);
-
 			/// <summary>	Draw circle. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -317,7 +300,6 @@ namespace P2DE
 			/// <param name="b">		Blue color part. </param>
 			/// <param name="a">		Alpha color part. </param>
 			void DrawFilledCircle(float x, float y, float radius, float r, float g, float b, float a);
-
 			/// <summary>	Draw filled circle. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -339,7 +321,6 @@ namespace P2DE
 			/// <param name="a">				Alpha color part. </param>
 			/// <param name="strokeWidth">	  	Width of the stroke. </param>
 			void DrawRectangle(const D2D1_RECT_F& destinationRect, float r, float g, float b, float a, float strokeWidth = 3.0f);
-
 			/// <summary>	Draw rectangle. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -359,7 +340,6 @@ namespace P2DE
 			/// <param name="b">				Blue color part. </param>
 			/// <param name="a">				Alpha color part. </param>
 			void DrawFilledRectangle(const D2D1_RECT_F& destinationRect, float r, float g, float b, float a);
-
 			/// <summary>	Draw filled rectangle. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -382,7 +362,6 @@ namespace P2DE
 			/// <param name="opacity">				The opacity. </param>
 			/// <param name="interpolationMode">	The interpolation mode. </param>
 			void DrawBitmap(ID2D1Bitmap* bmp, float dstX, float dstY, float dstWidth, float dstHeight, float opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
-
 			/// <summary>	Draws the ID2D1Bitmap. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -392,7 +371,6 @@ namespace P2DE
 			/// <param name="opacity">				The opacity. </param>
 			/// <param name="interpolationMode">	The interpolation mode. </param>
 			void DrawBitmap(ID2D1Bitmap* bmp, const D2D1_RECT_F& destinationRect, float opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
-
 			/// <summary>	Draws the ID2D1Bitmap. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -409,7 +387,6 @@ namespace P2DE
 			/// <param name="opacity">				The opacity. </param>
 			/// <param name="interpolationMode">	The interpolation mode. </param>
 			void DrawBitmap(ID2D1Bitmap* bmp, float dstX, float dstY, float dstWidth, float dstHeight, float srcX, float srcY, float srcWidth, float srcHeight, float opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
-
 			/// <summary>	Draws the ID2D1Bitmap. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -423,7 +400,6 @@ namespace P2DE
 			/// <param name="opacity">				The opacity. </param>
 			/// <param name="interpolationMode">	The interpolation mode. </param>
 			void DrawBitmap(ID2D1Bitmap* bmp, const D2D1_RECT_F& destinationRect, float srcX, float srcY, float srcWidth, float srcHeight, const float& opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
-
 			/// <summary>	Draws the ID2D1Bitmap. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -434,7 +410,6 @@ namespace P2DE
 			/// <param name="opacity">				The opacity. </param>
 			/// <param name="interpolationMode">	The interpolation mode. </param>
 			void DrawBitmap(ID2D1Bitmap* bmp, const D2D1_RECT_F& destinationRect, const D2D1_RECT_F& sourceRect, const float& opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
-
 			/// <summary>	Draws the ID2D1Bitmap. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -451,7 +426,6 @@ namespace P2DE
 #pragma endregion
 
 #pragma region Draw_Effects
-
 			/// <summary>	Draws the Effect. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -462,7 +436,6 @@ namespace P2DE
 			/// <param name="interpolationMode">	The interpolation mode. </param>
 			/// <param name="compositeMode">		The composite mode. </param>
 			void DrawEffect(ID2D1Effect* effect, const D2D1_POINT_2F& destination, const D2D1_RECT_F& srcRect, D2D1_INTERPOLATION_MODE interpolationMode = D2D1_INTERPOLATION_MODE_LINEAR, D2D1_COMPOSITE_MODE compositeMode = D2D1_COMPOSITE_MODE_SOURCE_OVER);
-
 			/// <summary>	Draws the Effect. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>

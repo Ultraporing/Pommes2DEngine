@@ -23,19 +23,16 @@ namespace P2DE
 			D2D1_POINT_2F m_CameraPos;
 
 			public:
-
 			/// <summary>	Default constructor. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			Camera();
-
 			/// <summary>	Constructor. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
 			/// <param name="gfx">	[in,out] If non-null, the graphics. </param>
 			Camera(P2DE::GFX::Graphics* gfx);
-
 			/// <summary>	Destructor. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -47,7 +44,6 @@ namespace P2DE
 			///
 			/// <returns>	The camera position. </returns>
 			D2D1_POINT_2F GetCameraPos() { return m_CameraPos; }
-
 			/// <summary>	Sets camera position. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>

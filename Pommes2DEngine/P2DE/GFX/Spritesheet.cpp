@@ -166,7 +166,5 @@ namespace P2DE
 
 			m_Graphics->DrawEffect(m_ColorMatrixFx, dest, drawRec, interpolationLinear ? (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_LINEAR : (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
 		}
-
-		
 	}
 }

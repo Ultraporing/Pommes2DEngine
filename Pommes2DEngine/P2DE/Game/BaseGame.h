@@ -23,7 +23,6 @@ namespace P2DE
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			virtual bool LoadResources() = 0;
-
 			/// <summary>
 			/// 	Use this Method to Unload Resources wich use the Graphics Class, or Windowresizing will
 			/// 	fail.
