@@ -37,12 +37,22 @@ namespace P2DE
 
 		bool Spritesheet::LoadSpritesheet(const std::wstring& pathToSpritesheetInfoTXT, P2DE::GFX::Graphics* graphics)
 		{
+			std::wstring errorString(L"Failed to load spritesheet: ");
+			errorString.append(pathToSpritesheetInfoTXT);
+
 			if (!m_Graphics)
 				m_Graphics = graphics;
 
 			if (m_SpritesheetInfo.m_FileName.compare(L"") != 0)
-				return ReloadSpritesheetBitmap();
-			
+			{
+				bool ret = ReloadSpritesheetBitmap();
+				if (!ret)
+					MessageBox(NULL, errorString.c_str(), L"Spritesheet Loading Error", MB_ICONERROR | MB_OK);
+
+				return ret;
+			}
+				
+
 			std::wifstream infoFile(pathToSpritesheetInfoTXT);
 			std::wstring line;
 
@@ -76,15 +86,25 @@ namespace P2DE
 			m_SpritesheetInfo.m_DirPath = pathToSpritesheetInfoTXT.substr(0, pathToSpritesheetInfoTXT.find_last_of(L"/\\"));
 
 			if (!m_Graphics->LoadBitmapFromFile(m_SpritesheetInfo.GetFullRelativeBitmapPath().c_str(), &m_SpritesheetBitmap))
+			{
+				MessageBox(NULL, errorString.c_str(), L"Spritesheet Loading Error", MB_ICONERROR | MB_OK);
 				return false;
+			}
 
 			if (!m_Graphics->CreateBitmapScaleEffect(&m_ScaleFx, m_SpritesheetBitmap))
+			{
+				MessageBox(NULL, errorString.c_str(), L"Spritesheet Loading Error", MB_ICONERROR | MB_OK);
 				return false;
+			}
+
 
 			m_ScaleFx->GetOutput(&m_IntermediateOutputImage);
 			
 			if (!m_Graphics->CreateBitmapTintEffect(&m_ColorMatrixFx, m_IntermediateOutputImage, 1.0f, 1.0f, 1.0f))
+			{
+				MessageBox(NULL, errorString.c_str(), L"Spritesheet Loading Error", MB_ICONERROR | MB_OK);
 				return false;
+			}
 
 			m_SpritesheetInfo.m_NumXframes = (int)ceil(m_SpritesheetBitmap->GetSize().width / (m_SpritesheetInfo.m_FrameWidth + m_SpritesheetInfo.m_Margin));
 			m_SpritesheetInfo.m_NumYframes = (int)ceil(m_SpritesheetBitmap->GetSize().height / (m_SpritesheetInfo.m_FrameHeight + m_SpritesheetInfo.m_Margin));

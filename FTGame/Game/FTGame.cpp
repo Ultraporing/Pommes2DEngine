@@ -16,8 +16,9 @@ namespace FTGame
 		m_Camera = P2DE::GFX::Camera(gfx);
 		m_hWndGamewindow = hWndGamewindow;
 		m_Graphics->SetCurrentGame(this);
+		m_GameCrashed = false;
 
-		LoadResources();
+		m_GameCrashed = !LoadResources();
 	}
 
 	FTGame::~FTGame()
@@ -28,28 +29,14 @@ namespace FTGame
 
 	bool FTGame::LoadResources()
 	{
-		if (m_Graphics->LoadBitmapFromFile(L"av.png", &testbmp))
-		{
-			if (!m_Graphics->CreateBitmapTintEffect(&colorMatrixFx, testbmp, 1.0f, 0, 1.0f))
-				return false;
-		}
-		else
-			return false;
-
 		if (!sheet.LoadSpritesheet(L"Assets\\Graphics\\Spritesheets\\roguelikeSheet_transparent_Info.txt", m_Graphics))
 			return false;
 		
-		return false;
+		return true;
 	}
 
 	bool FTGame::UnloadResources()
 	{
-		if (testbmp)
-		{
-			testbmp->Release();
-			testbmp = NULL;
-		}
-
 		if (colorMatrixFx)
 			colorMatrixFx.~ComPtr();
 

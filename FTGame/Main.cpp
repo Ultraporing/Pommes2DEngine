@@ -66,11 +66,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	ShowWindow(hWnd, nCmdShow);
 
-	MSG msg;
+	MSG msg = MSG();
 
 	P2DE::TIMING::HrTimer hrTimer;
 
-	while (TRUE)
+	while (TRUE && !ftGame->IsGameCrashed())
 	{
 		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
@@ -92,7 +92,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	delete ftGame;
 	delete graphics;
 
-	return msg.wParam;
+	return msg.hwnd ? msg.wParam : -1;
 }
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

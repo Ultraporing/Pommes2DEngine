@@ -16,6 +16,10 @@ namespace P2DE
 		/// <remarks>	Tobias, 22.05.2015. </remarks>
 		class BaseGame
 		{
+			protected:
+			/// <summary>	true if game crashed. </summary>
+			bool m_GameCrashed;
+
 			public:
 			/// <summary>	Use this Method to Load Resources wich use the Graphics Class. </summary>
 			///
@@ -32,6 +36,13 @@ namespace P2DE
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			virtual bool UnloadResources() = 0;
+
+			/// <summary>	Query if this game crashed. </summary>
+			///
+			/// <remarks>	Tobias, 23.05.2015. </remarks>
+			///
+			/// <returns>	true if game crashed, false if not. </returns>
+			bool IsGameCrashed() { return m_GameCrashed; }
 		};
 	}
 }

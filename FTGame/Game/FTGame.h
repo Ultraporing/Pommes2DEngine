@@ -26,8 +26,6 @@ namespace FTGame
 			P2DE::GFX::Camera m_Camera;
 			P2DE::INPUT::InputManager m_InputManager;
 
-			ID2D1Bitmap* testbmp;
-
 			bool LoadResources() override;
 			bool UnloadResources() override;
 
