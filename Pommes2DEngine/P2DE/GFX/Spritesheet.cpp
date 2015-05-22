@@ -1,4 +1,11 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// file:	P2DE\GFX\Spritesheet.cpp
+//
+// summary:	Implements the spritesheet class
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 #include "Spritesheet.h"
+#include "Graphics.h"
 #include <fstream>
 #include <vector>
 
@@ -14,10 +21,10 @@ namespace P2DE
 			m_ScaleFx = NULL;
 			m_SpritesheetInfo = SpritesheetInfo();
 			m_SpritesheetInfo.m_Margin = 0;
-			m_SpritesheetInfo.m_Name = L"";
+			m_SpritesheetInfo.m_FileName = L"";
 			m_SpritesheetInfo.m_DirPath = L"";
-			m_SpritesheetInfo.m_TileWidth = 0;
-			m_SpritesheetInfo.m_TileHeight = 0;
+			m_SpritesheetInfo.m_FrameWidth = 0;
+			m_SpritesheetInfo.m_FrameHeight = 0;
 			m_SpritesheetInfo.m_NumXframes = 0;
 			m_SpritesheetInfo.m_NumYframes = 0;
 		}
@@ -33,7 +40,7 @@ namespace P2DE
 			if (!m_Graphics)
 				m_Graphics = graphics;
 
-			if (m_SpritesheetInfo.m_Name.compare(L"") != 0)
+			if (m_SpritesheetInfo.m_FileName.compare(L"") != 0)
 				return ReloadSpritesheetBitmap();
 			
 			std::wifstream infoFile(pathToSpritesheetInfoTXT);
@@ -46,17 +53,17 @@ namespace P2DE
 
 				if (line.find(L"#NAME=") != std::wstring::npos)
 				{
-					m_SpritesheetInfo.m_Name = line.substr(6);
+					m_SpritesheetInfo.m_FileName = line.substr(6);
 					continue;
 				}
 				if (line.find(L"#TILE_SIZE_W=") != std::wstring::npos)
 				{
-					m_SpritesheetInfo.m_TileWidth = _wtoi(line.substr(13).c_str());
+					m_SpritesheetInfo.m_FrameWidth = _wtoi(line.substr(13).c_str());
 					continue;
 				}
 				if (line.find(L"#TILE_SIZE_H=") != std::wstring::npos)
 				{
-					m_SpritesheetInfo.m_TileHeight = _wtoi(line.substr(13).c_str());
+					m_SpritesheetInfo.m_FrameHeight = _wtoi(line.substr(13).c_str());
 					continue;
 				}
 				if (line.find(L"#MARGIN=") != std::wstring::npos)
@@ -79,8 +86,37 @@ namespace P2DE
 			if (!m_Graphics->CreateBitmapTintEffect(&m_ColorMatrixFx, m_IntermediateOutputImage, 1.0f, 1.0f, 1.0f))
 				return false;
 
-			m_SpritesheetInfo.m_NumXframes = (int)ceil(m_SpritesheetBitmap->GetSize().width / (m_SpritesheetInfo.m_TileWidth + m_SpritesheetInfo.m_Margin));
-			m_SpritesheetInfo.m_NumYframes = (int)ceil(m_SpritesheetBitmap->GetSize().height / (m_SpritesheetInfo.m_TileHeight + m_SpritesheetInfo.m_Margin));
+			m_SpritesheetInfo.m_NumXframes = (int)ceil(m_SpritesheetBitmap->GetSize().width / (m_SpritesheetInfo.m_FrameWidth + m_SpritesheetInfo.m_Margin));
+			m_SpritesheetInfo.m_NumYframes = (int)ceil(m_SpritesheetBitmap->GetSize().height / (m_SpritesheetInfo.m_FrameHeight + m_SpritesheetInfo.m_Margin));
+
+			return true;
+		}
+
+		bool Spritesheet::UnloadSpritesheetBitmap()
+		{
+			if (m_SpritesheetBitmap)
+			{
+				m_SpritesheetBitmap->Release();
+				m_SpritesheetBitmap = NULL;
+			}
+
+			if (m_IntermediateOutputImage)
+			{
+				m_IntermediateOutputImage->Release();
+				m_IntermediateOutputImage = NULL;
+			}
+
+			if (m_ColorMatrixFx)
+			{
+				m_ColorMatrixFx->Release();
+				m_ColorMatrixFx = NULL;
+			}
+
+			if (m_ScaleFx)
+			{
+				m_ScaleFx->Release();
+				m_ScaleFx = NULL;
+			}
 
 			return true;
 		}
@@ -108,40 +144,29 @@ namespace P2DE
 			m_ScaleFx->SetValue(D2D1_SCALE_PROP_INTERPOLATION_MODE, interpolationLinear ? D2D1_SCALE_INTERPOLATION_MODE_LINEAR : D2D1_SCALE_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
 
 			D2D1_RECT_F drawRec;
-			drawRec.left = (frameId % m_SpritesheetInfo.m_NumXframes) * (m_SpritesheetInfo.m_TileWidth * scale.x + m_SpritesheetInfo.m_Margin * scale.x);
-			drawRec.top = floorf(frameId / (float)m_SpritesheetInfo.m_NumXframes) * (m_SpritesheetInfo.m_TileHeight * scale.y + m_SpritesheetInfo.m_Margin * scale.y);
-			drawRec.right = drawRec.left + m_SpritesheetInfo.m_TileWidth * scale.x;
-			drawRec.bottom = drawRec.top + m_SpritesheetInfo.m_TileHeight * scale.y;
+			drawRec.left = (frameId % m_SpritesheetInfo.m_NumXframes) * (m_SpritesheetInfo.m_FrameWidth * scale.x + m_SpritesheetInfo.m_Margin * scale.x);
+			drawRec.top = floorf(frameId / (float)m_SpritesheetInfo.m_NumXframes) * (m_SpritesheetInfo.m_FrameHeight * scale.y + m_SpritesheetInfo.m_Margin * scale.y);
+			drawRec.right = drawRec.left + m_SpritesheetInfo.m_FrameWidth * scale.x;
+			drawRec.bottom = drawRec.top + m_SpritesheetInfo.m_FrameHeight * scale.y;
 
 			m_Graphics->DrawEffect(m_ColorMatrixFx, dest, drawRec, interpolationLinear ? (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_LINEAR : (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
 		}
 
-		bool Spritesheet::UnloadSpritesheetBitmap()
+		void Spritesheet::DrawFrame(D2D1_POINT_2F dest, D2D1_RECT_F source, D2D1_POINT_2F scale, D2D1::ColorF color, bool interpolationLinear)
 		{
-			if (m_SpritesheetBitmap)
-			{
-				m_SpritesheetBitmap->Release();
-				m_SpritesheetBitmap = NULL;
-			}
+			m_Graphics->SetBitmapTintEffectColor(m_ColorMatrixFx, color.r, color.g, color.b, color.a);
+			m_Graphics->SetBitmapScaleEffectScale(m_ScaleFx, scale.x, scale.y);
+			m_ScaleFx->SetValue(D2D1_SCALE_PROP_INTERPOLATION_MODE, interpolationLinear ? D2D1_SCALE_INTERPOLATION_MODE_LINEAR : D2D1_SCALE_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
 
-			if (m_IntermediateOutputImage)
-			{
-				m_IntermediateOutputImage.~ComPtr();
-			}
+			D2D1_RECT_F drawRec;
+			drawRec.left = source.left * scale.x;
+			drawRec.top = source.top * scale.y;
+			drawRec.right = drawRec.left + source.right * scale.x;
+			drawRec.bottom = drawRec.top + source.bottom * scale.y;
 
-			if (m_ColorMatrixFx)
-			{
-				m_ColorMatrixFx->Release();
-				m_ColorMatrixFx = NULL;
-			}
-
-			if (m_ScaleFx)
-			{
-				m_ScaleFx->Release();
-				m_ScaleFx = NULL;
-			}
-
-			return true;
+			m_Graphics->DrawEffect(m_ColorMatrixFx, dest, drawRec, interpolationLinear ? (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_LINEAR : (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
 		}
+
+		
 	}
 }

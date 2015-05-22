@@ -16,7 +16,16 @@ namespace P2DE
 {
 	namespace UTILITIES
 	{
+		
 		template<class T>
+		/// <summary>	Assign to output pointer. </summary>
+		///
+		/// <remarks>	Tobias, 22.05.2015. </remarks>
+		///
+		/// <param name="pp">	[in,out] If non-null, the pp. </param>
+		/// <param name="p"> 	The const ComPtr&lt;T&gt; &amp; to process. </param>
+		///
+		/// <returns>	A hResult. </returns>
 		HRESULT AssignToOutputPointer(T** pp, const ComPtr<T> &p)
 		{
 			assert(pp);
@@ -29,6 +38,13 @@ namespace P2DE
 			return S_OK;
 		}
 
+		/// <summary>	Gets wic factory. </summary>
+		///
+		/// <remarks>	Tobias, 22.05.2015. </remarks>
+		///
+		/// <param name="factory">	[in,out] If non-null, the factory. </param>
+		///
+		/// <returns>	The wic factory. </returns>
 		HRESULT GetWICFactory(IWICImagingFactory** factory)
 		{
 			static ComPtr<IWICImagingFactory> m_pWICFactory;

@@ -148,7 +148,7 @@ bool Graphics::Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx, P2DE::GAME::BaseG
 #pragma endregion
 
 #pragma region DirectX_Helper
-bool Graphics::ResizeDirectX()
+bool Graphics::ReloadDirectX()
 {
 	m_CurrentGame->UnloadResources();
 
@@ -191,7 +191,7 @@ void Graphics::SetGameWindowSize(const RECT& newWindowSize)
 	SetWindowPos(m_GameWindowHandle, HWND_TOP, NULL, NULL, newWindowSize.right - newWindowSize.left, newWindowSize.bottom - newWindowSize.top, SWP_NOMOVE);
 	GetClientRect(m_GameWindowHandle, &m_GameWindowSize);
 
-	ResizeDirectX();
+	ReloadDirectX();
 }
 
 void Graphics::SetGameWindowPos(const POINT& newWindowPos)
@@ -200,12 +200,12 @@ void Graphics::SetGameWindowPos(const POINT& newWindowPos)
 	GetClientRect(m_GameWindowHandle, &m_GameWindowSize);
 }
 
-void Graphics::SetTransform(D2D1_MATRIX_3X2_F& matrix)
+void Graphics::SetViewportTransform(D2D1_MATRIX_3X2_F& matrix)
 {
 	m_D2D1DeviceContext->SetTransform(matrix);
 }
 
-void Graphics::SetTransform(D2D1_MATRIX_3X2_F* matrix)
+void Graphics::SetViewportTransform(D2D1_MATRIX_3X2_F* matrix)
 {
 	m_D2D1DeviceContext->SetTransform(matrix);
 }
