@@ -184,7 +184,7 @@ namespace P2DE
 #pragma endregion
 			
 #pragma region Resources_From_File
-			/// <summary>	Loads an image from file. PNG, JPG, BMP supported. </summary>
+			/// <summary>	Loads an image from file. PNG, JPG, BMP, GIF, TIF supported. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
@@ -229,6 +229,20 @@ namespace P2DE
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool CreateBitmapScaleEffect(ID2D1Effect** effect, ID2D1Image* img, float scaleX = 1.0f, float scaleY = 1.0f);
+			/// <summary>	Creates bitmap scale rotate effect. </summary>
+			///
+			/// <remarks>	Tobias, 25.05.2015. </remarks>
+			///
+			/// <param name="effect">			[in,out] If non-null, the effect. </param>
+			/// <param name="img">				[in,out] If non-null, the image. </param>
+			/// <param name="scaleX">			The scale x coordinate. </param>
+			/// <param name="scaleY">			The scale y coordinate. </param>
+			/// <param name="rotateDegrees">	The rotate in degrees. </param>
+			/// <param name="rotateAround">		The rotation point. </param>
+			///
+			/// <returns>	true if it succeeds, false if it fails. </returns>
+			bool CreateBitmapScaleRotateEffect(ID2D1Effect** effect, ID2D1Image* img, float scaleX = 1.0f, float scaleY = 1.0f, float rotateDegrees = 0.0f, D2D1_POINT_2F rotateAround = { 0, 0 });
+
 			/// <summary>	Sets bitmap TintEffect color. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -247,6 +261,27 @@ namespace P2DE
 			/// <param name="scaleX">	The scale x coordinate. </param>
 			/// <param name="scaleY">	The scale y coordinate. </param>
 			void SetBitmapScaleEffectScale(ID2D1Effect* effect, float scaleX = 1.0f, float scaleY = 1.0f);
+			/// <summary>	Sets bitmap scale rotate. </summary>
+			///
+			/// <remarks>	Tobias, 26.05.2015. </remarks>
+			///
+			/// <param name="effect">			[in,out] If non-null, the effect. </param>
+			/// <param name="scaleX">			The scale x coordinate. </param>
+			/// <param name="scaleY">			The scale y coordinate. </param>
+			/// <param name="rotateDegrees">	The rotate in degrees. </param>
+			/// <param name="rotateAround">		The rotation point. </param>
+			void SetBitmapScaleRotate(ID2D1Effect* effect, float scaleX = 1.0f, float scaleY = 1.0f, float rotateDegrees = 0.0f, D2D1_POINT_2F rotateAround = { 0, 0 });
+
+			/// <summary>	Creates bitmap from bitmap region. </summary>
+			///
+			/// <remarks>	Tobias, 26.05.2015. </remarks>
+			///
+			/// <param name="bmp">   	[in] If non-null, the bitmap. </param>
+			/// <param name="region">	The region to create the bitmap of. </param>
+			/// <param name="newBmp">   [out] If non-null, the newly created bitmap. </param>
+			///
+			/// <returns>	null if it fails, else the new bitmap from bitmap region. </returns>
+			void CreateBitmapFromBitmapRegion(ID2D1Bitmap* bmp, D2D1_RECT_U region, ID2D1Bitmap** newBmp);
 #pragma endregion
 
 #pragma region Matrix_Helper

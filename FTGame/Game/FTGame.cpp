@@ -45,8 +45,10 @@ namespace FTGame
 		return true;
 	}
 
-	static float scale = 2.0f;
+	static float scale = 1.0f;
 	static D2D1::ColorF color = { 1.0f, 1.0f, 1.0f };
+	static float rotation = 0.0f;
+	static int flip = P2DE::GFX::SPRITE_FLIP_MODE::NONE;
 
 	void FTGame::Render()
 	{
@@ -58,13 +60,13 @@ namespace FTGame
 
 		m_Graphics->DrawFilledCircle(0, 0, 100, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, 1.0f);
 
-		sheet.DrawFrame(D2D1::Point2F(100, 100), 70, D2D1::Point2F(scale, scale), D2D1::ColorF(1.0f, 1.0f, 1.0f), false);
-		sheet.DrawFrame(D2D1::Point2F(200, 100), 70, D2D1::Point2F(2.0f, 2.0f), D2D1::ColorF(color), false);
+		//sheet.DrawFrameCenterRotated(D2D1::Point2F(100, 100), 2, D2D1::Point2F(scale, scale), D2D1::ColorF(1.0f, 1.0f, 1.0f), rotation, (P2DE::GFX::SPRITE_FLIP_MODE)flip, false);
+		//sheet.DrawFramePointRotated(D2D1::Point2F(200, 100), 2, D2D1::Point2F(2.0f, 2.0f), D2D1::ColorF(color), rotation, D2D1::Point2F(0, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, false);
 
-		sheet.DrawFrame(D2D1::Point2F(100, 200), 70, D2D1::Point2F(scale, scale), D2D1::ColorF(1.0f, 1.0f, 1.0f), true);
-		sheet.DrawFrame(D2D1::Point2F(200, 200), 70, D2D1::Point2F(2.0f, 2.0f), D2D1::ColorF(color), true);
+		//sheet.DrawFramePointRotated(D2D1::Point2F(100, 200), 70, D2D1::Point2F(scale, scale), D2D1::ColorF(1.0f, 1.0f, 1.0f), -90.0f, D2D1::Point2F(0, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, true);
+		sheet.DrawFrameCenterRotated(D2D1::Point2F(200, 200), 70, D2D1::Point2F(2.0f, 2.0f), D2D1::ColorF(color), 90.0f, (P2DE::GFX::SPRITE_FLIP_MODE)flip, false);
 
-		sheet.DrawFrame(D2D1::Point2F(300, 100), D2D1::RectF(0, 102, 16, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, false);
+		sheet.DrawFramePointRotated(D2D1::Point2F(300, 100), D2D1::RectF(0, 102, 16, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, D2D1::Point2F(8,0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, false);
 
 		m_Graphics->EndDraw();
 	}
@@ -105,16 +107,39 @@ namespace FTGame
 				MessageBox(NULL, L"fail", L"merp", MB_OK);
 		}
 
-		if (m_InputManager.IsKeyPressed(VK_KEY_A))
+		if (m_InputManager.IsKeyDown(VK_KEY_A))
 		{
-			scale = 5.0f;
-			color = { 1.0f, 0.0f, 1.0f, 1.0f };
+			rotation -= 1.0f;
+			if (rotation < 0.0f)
+				rotation = 360.0f;
+		}
+
+		if (m_InputManager.IsKeyDown(VK_KEY_S))
+		{
+			rotation += 1.0f;
+			if (rotation > 360.0f)
+				rotation = 0;
 		}
 
 		if (m_InputManager.IsKeyPressed(VK_KEY_D))
 		{
 			m_Graphics->SetGameWindowSize(RECT() = { 0, 0, 1024, 768 });
 			m_Graphics->SetGameWindowPos(POINT() = { 0, 0 });
+		}
+
+		if (m_InputManager.IsKeyPressed(VK_KEY_X))
+		{
+			flip |= P2DE::GFX::SPRITE_FLIP_MODE::HORIZONTAL;
+		}
+
+		if (m_InputManager.IsKeyPressed(VK_KEY_C))
+		{
+			flip |= P2DE::GFX::SPRITE_FLIP_MODE::VERTICAL;
+		}
+
+		if (m_InputManager.IsKeyPressed(VK_KEY_V))
+		{
+			flip = P2DE::GFX::SPRITE_FLIP_MODE::NONE;
 		}
 
 		return false;

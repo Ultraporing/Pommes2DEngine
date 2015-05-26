@@ -18,7 +18,7 @@ namespace P2DE
 			m_SpritesheetBitmap = NULL;
 			m_Graphics = NULL;
 			m_ColorMatrixFx = NULL;
-			m_ScaleFx = NULL;
+			m_ScaleRotateFx = NULL;
 			m_SpritesheetInfo = SpritesheetInfo();
 			m_SpritesheetInfo.m_Margin = 0;
 			m_SpritesheetInfo.m_FileName = L"";
@@ -47,7 +47,7 @@ namespace P2DE
 			{
 				bool ret = ReloadSpritesheetBitmap();
 				if (!ret)
-					MessageBox(NULL, errorString.c_str(), L"Spritesheet Loading Error", MB_ICONERROR | MB_OK);
+					MessageBox(NULL, errorString.c_str(), L"(ReloadSpritesheetBitmap) Spritesheet Loading Error", MB_ICONERROR | MB_OK);
 
 				return ret;
 			}
@@ -87,22 +87,22 @@ namespace P2DE
 
 			if (!m_Graphics->LoadBitmapFromFile(m_SpritesheetInfo.GetFullRelativeBitmapPath().c_str(), &m_SpritesheetBitmap))
 			{
-				MessageBox(NULL, errorString.c_str(), L"Spritesheet Loading Error", MB_ICONERROR | MB_OK);
+				MessageBox(NULL, errorString.c_str(), L"(LoadBitmapFromFile) Spritesheet Loading Error", MB_ICONERROR | MB_OK);
 				return false;
 			}
 
-			if (!m_Graphics->CreateBitmapScaleEffect(&m_ScaleFx, m_SpritesheetBitmap))
+			if (!m_Graphics->CreateBitmapScaleRotateEffect(&m_ScaleRotateFx, m_SpritesheetBitmap))
 			{
-				MessageBox(NULL, errorString.c_str(), L"Spritesheet Loading Error", MB_ICONERROR | MB_OK);
+				MessageBox(NULL, errorString.c_str(), L"(CreateBitmapScaleEffect) Spritesheet Loading Error", MB_ICONERROR | MB_OK);
 				return false;
 			}
 
+			P2DE::UTILITIES::ComPtr<ID2D1Image> tmpImg;
+			m_ScaleRotateFx->GetOutput(&tmpImg);
 
-			m_ScaleFx->GetOutput(&m_IntermediateOutputImage);
-			
-			if (!m_Graphics->CreateBitmapTintEffect(&m_ColorMatrixFx, m_IntermediateOutputImage, 1.0f, 1.0f, 1.0f))
+			if (!m_Graphics->CreateBitmapTintEffect(&m_ColorMatrixFx, tmpImg, 1.0f, 1.0f, 1.0f))
 			{
-				MessageBox(NULL, errorString.c_str(), L"Spritesheet Loading Error", MB_ICONERROR | MB_OK);
+				MessageBox(NULL, errorString.c_str(), L"(CreateBitmapTintEffect) Spritesheet Loading Error", MB_ICONERROR | MB_OK);
 				return false;
 			}
 
@@ -132,10 +132,10 @@ namespace P2DE
 				m_ColorMatrixFx = NULL;
 			}
 
-			if (m_ScaleFx)
+			if (m_ScaleRotateFx)
 			{
-				m_ScaleFx->Release();
-				m_ScaleFx = NULL;
+				m_ScaleRotateFx->Release();
+				m_ScaleRotateFx = NULL;
 			}
 
 			return true;
@@ -146,45 +146,166 @@ namespace P2DE
 			if (!m_Graphics->LoadBitmapFromFile(m_SpritesheetInfo.GetFullRelativeBitmapPath().c_str(), &m_SpritesheetBitmap))
 				return false;
 
-			if (!m_Graphics->CreateBitmapScaleEffect(&m_ScaleFx, m_SpritesheetBitmap))
+			if (!m_Graphics->CreateBitmapScaleRotateEffect(&m_ScaleRotateFx, m_SpritesheetBitmap))
 				return false;
 
-			m_ScaleFx->GetOutput(&m_IntermediateOutputImage);
+			P2DE::UTILITIES::ComPtr<ID2D1Image> tmpImg;
+			m_ScaleRotateFx->GetOutput(&tmpImg);
 
-			if (!m_Graphics->CreateBitmapTintEffect(&m_ColorMatrixFx, m_IntermediateOutputImage, 1.0f, 1.0f, 1.0f))
+			if (!m_Graphics->CreateBitmapTintEffect(&m_ColorMatrixFx, tmpImg, 1.0f, 1.0f, 1.0f))
 				return false;	
 
 			return true;
 		}
 
-		void Spritesheet::DrawFrame(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale, D2D1::ColorF color, bool interpolationLinear)
+		D2D1_RECT_F Spritesheet::CreateDrawRect(unsigned int frameId)
 		{
-			m_Graphics->SetBitmapTintEffectColor(m_ColorMatrixFx, color.r, color.g, color.b, color.a);
-			m_Graphics->SetBitmapScaleEffectScale(m_ScaleFx, scale.x, scale.y);
-			m_ScaleFx->SetValue(D2D1_SCALE_PROP_INTERPOLATION_MODE, interpolationLinear ? D2D1_SCALE_INTERPOLATION_MODE_LINEAR : D2D1_SCALE_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
-
 			D2D1_RECT_F drawRec;
-			drawRec.left = (frameId % m_SpritesheetInfo.m_NumXframes) * (m_SpritesheetInfo.m_FrameWidth * scale.x + m_SpritesheetInfo.m_Margin * scale.x);
-			drawRec.top = floorf(frameId / (float)m_SpritesheetInfo.m_NumXframes) * (m_SpritesheetInfo.m_FrameHeight * scale.y + m_SpritesheetInfo.m_Margin * scale.y);
-			drawRec.right = drawRec.left + m_SpritesheetInfo.m_FrameWidth * scale.x;
-			drawRec.bottom = drawRec.top + m_SpritesheetInfo.m_FrameHeight * scale.y;
+			drawRec.left = (frameId % m_SpritesheetInfo.m_NumXframes) * (m_SpritesheetInfo.m_FrameWidth + m_SpritesheetInfo.m_Margin);
+			drawRec.top = floorf(frameId / (float)m_SpritesheetInfo.m_NumXframes) * (m_SpritesheetInfo.m_FrameHeight + m_SpritesheetInfo.m_Margin);
+			drawRec.right = drawRec.left + m_SpritesheetInfo.m_FrameWidth;
+			drawRec.bottom = drawRec.top + m_SpritesheetInfo.m_FrameHeight;
 
-			m_Graphics->DrawEffect(m_ColorMatrixFx, dest, drawRec, interpolationLinear ? (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_LINEAR : (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
+			return drawRec;
 		}
 
-		void Spritesheet::DrawFrame(D2D1_POINT_2F dest, D2D1_RECT_F source, D2D1_POINT_2F scale, D2D1::ColorF color, bool interpolationLinear)
+		D2D1_RECT_F Spritesheet::CreateDrawRect(D2D1_RECT_F source)
 		{
-			m_Graphics->SetBitmapTintEffectColor(m_ColorMatrixFx, color.r, color.g, color.b, color.a);
-			m_Graphics->SetBitmapScaleEffectScale(m_ScaleFx, scale.x, scale.y);
-			m_ScaleFx->SetValue(D2D1_SCALE_PROP_INTERPOLATION_MODE, interpolationLinear ? D2D1_SCALE_INTERPOLATION_MODE_LINEAR : D2D1_SCALE_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
-
 			D2D1_RECT_F drawRec;
-			drawRec.left = source.left * scale.x;
-			drawRec.top = source.top * scale.y;
-			drawRec.right = drawRec.left + source.right * scale.x;
-			drawRec.bottom = drawRec.top + source.bottom * scale.y;
+			drawRec.left = source.left;
+			drawRec.top = source.top;
+			drawRec.right = drawRec.left + source.right;
+			drawRec.bottom = drawRec.top + source.bottom;
 
-			m_Graphics->DrawEffect(m_ColorMatrixFx, dest, drawRec, interpolationLinear ? (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_LINEAR : (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
+			return drawRec;
+		}
+
+		void Spritesheet::CheckFlipMode(const D2D1_RECT_F& drawRect, const SPRITE_FLIP_MODE& flipMode, const D2D1_POINT_2F& scale, const D2D1_POINT_2F* rotationPoint, D2D1_POINT_2F* destOffset, D2D1_POINT_2F* scaleFlip, D2D1_POINT_2F* newRotationPoint)
+		{
+			D2D1_POINT_2F frameSize = D2D1::Point2F(drawRect.right - drawRect.left, drawRect.bottom - drawRect.top);
+
+			if (flipMode & SPRITE_FLIP_MODE::HORIZONTAL || flipMode & SPRITE_FLIP_MODE::VERTICAL)
+			{
+				if (flipMode & SPRITE_FLIP_MODE::HORIZONTAL)
+				{
+					if (destOffset)
+						(*destOffset).x = frameSize.x * scale.x;
+					if (scaleFlip)
+						(*scaleFlip).x = -1.0f;
+					if (newRotationPoint && rotationPoint)
+						(*newRotationPoint).x = (*rotationPoint).x * scale.x - (frameSize.x * scale.x);
+				}
+
+				if (flipMode & SPRITE_FLIP_MODE::VERTICAL)
+				{
+					if (destOffset)
+						(*destOffset).y = frameSize.y * scale.y;
+					if (scaleFlip)
+						(*scaleFlip).y = -1.0f;
+					if (newRotationPoint && rotationPoint)
+						(*newRotationPoint).y = (*rotationPoint).y * scale.y - (frameSize.y * scale.y);
+				}
+			}
+			else
+			{
+				if (newRotationPoint && rotationPoint)
+				{
+					(*newRotationPoint).x = (*rotationPoint).x * scale.x;
+					(*newRotationPoint).y = (*rotationPoint).y * scale.y;
+				}
+			}
+		}
+
+		D2D1_POINT_2F Spritesheet::SetupDrawFrameCenterRotated(const D2D1_RECT_F& drawRect, const D2D1_POINT_2F& scale, const D2D1::ColorF& color, const float& rotateDegree, const SPRITE_FLIP_MODE& flipMode, const bool& interpolationLinear)
+		{
+			if (m_IntermediateOutputImage)
+			{
+				m_IntermediateOutputImage->Release();
+				m_IntermediateOutputImage = NULL;
+			}
+
+			D2D1_POINT_2F destOffset = D2D1::Point2F();
+			D2D1_POINT_2F scaleFlip = D2D1::Point2F(1.0f, 1.0f);;
+
+			CheckFlipMode(drawRect, flipMode, scale, nullptr, &destOffset, &scaleFlip, nullptr);
+
+			m_Graphics->CreateBitmapFromBitmapRegion(m_SpritesheetBitmap, D2D1::RectU(drawRect.left, drawRect.top, drawRect.right, drawRect.bottom), &m_IntermediateOutputImage);
+
+			m_ScaleRotateFx->SetInput(0, m_IntermediateOutputImage);
+			m_Graphics->SetBitmapScaleRotate(m_ScaleRotateFx, scale.x * scaleFlip.x, scale.y * scaleFlip.y, rotateDegree, D2D1::Point2F(scaleFlip.x* (m_SpritesheetInfo.m_FrameWidth * scale.x * 0.5f), scaleFlip.y * (m_SpritesheetInfo.m_FrameHeight * scale.y * 0.5f)));
+			m_ScaleRotateFx->SetValue(D2D1_2DAFFINETRANSFORM_PROP_INTERPOLATION_MODE, interpolationLinear ? D2D1_2DAFFINETRANSFORM_INTERPOLATION_MODE_LINEAR : D2D1_2DAFFINETRANSFORM_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
+
+			P2DE::UTILITIES::ComPtr<ID2D1Image> tmpImg;
+			m_ScaleRotateFx->GetOutput(&tmpImg);
+
+			m_ColorMatrixFx->SetInput(0, tmpImg);
+			m_Graphics->SetBitmapTintEffectColor(m_ColorMatrixFx, color.r, color.g, color.b, color.a);
+
+			return destOffset;
+		}
+
+		D2D1_POINT_2F Spritesheet::SetupDrawFramePointRotated(const D2D1_RECT_F& drawRect, const D2D1_POINT_2F& scale, const D2D1::ColorF& color, const float& rotateDegree, const D2D1_POINT_2F& rotatePoint, const SPRITE_FLIP_MODE& flipMode, const bool& interpolationLinear)
+		{
+			if (m_IntermediateOutputImage)
+			{
+				m_IntermediateOutputImage->Release();
+				m_IntermediateOutputImage = NULL;
+			}
+
+			D2D1_POINT_2F destOffset = D2D1::Point2F();
+			D2D1_POINT_2F scaleFlip = D2D1::Point2F(1.0f, 1.0f);
+			D2D1_POINT_2F newRotationPoint = D2D1::Point2F();
+			CheckFlipMode(drawRect, flipMode, scale, &rotatePoint, &destOffset, &scaleFlip, &newRotationPoint);
+
+			m_Graphics->CreateBitmapFromBitmapRegion(m_SpritesheetBitmap, D2D1::RectU(drawRect.left, drawRect.top, drawRect.right, drawRect.bottom), &m_IntermediateOutputImage);
+
+			m_ScaleRotateFx->SetInput(0, m_IntermediateOutputImage);
+			m_Graphics->SetBitmapScaleRotate(m_ScaleRotateFx, scale.x * scaleFlip.x, scale.y * scaleFlip.y, rotateDegree, D2D1::Point2F(newRotationPoint.x, newRotationPoint.y));
+			m_ScaleRotateFx->SetValue(D2D1_2DAFFINETRANSFORM_PROP_INTERPOLATION_MODE, interpolationLinear ? D2D1_2DAFFINETRANSFORM_INTERPOLATION_MODE_LINEAR : D2D1_2DAFFINETRANSFORM_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
+
+			P2DE::UTILITIES::ComPtr<ID2D1Image> tmpImg;
+			m_ScaleRotateFx->GetOutput(&tmpImg);
+
+			m_ColorMatrixFx->SetInput(0, tmpImg);
+			m_Graphics->SetBitmapTintEffectColor(m_ColorMatrixFx, color.r, color.g, color.b, color.a);
+
+			return destOffset;
+		}
+
+		void Spritesheet::DrawFramePointRotated(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale, D2D1::ColorF color, float rotateDegree, D2D1_POINT_2F rotatePoint, SPRITE_FLIP_MODE flipMode, bool interpolationLinear)
+		{
+			D2D1_RECT_F drawRec = CreateDrawRect(frameId);
+			
+			D2D1_POINT_2F destOffset = SetupDrawFramePointRotated(drawRec, scale, color, rotateDegree, rotatePoint, flipMode, interpolationLinear);
+			
+			m_Graphics->DrawEffect(m_ColorMatrixFx, D2D1::Point2F(dest.x + destOffset.x, dest.y + destOffset.y), interpolationLinear ? (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_LINEAR : (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
+		}
+
+		void Spritesheet::DrawFramePointRotated(D2D1_POINT_2F dest, D2D1_RECT_F source, D2D1_POINT_2F scale, D2D1::ColorF color, float rotateDegree, D2D1_POINT_2F rotatePoint, SPRITE_FLIP_MODE flipMode, bool interpolationLinear)
+		{
+			D2D1_RECT_F drawRec = CreateDrawRect(source);
+
+			D2D1_POINT_2F destOffset = SetupDrawFramePointRotated(drawRec, scale, color, rotateDegree, rotatePoint, flipMode, interpolationLinear);
+
+			m_Graphics->DrawEffect(m_ColorMatrixFx, D2D1::Point2F(dest.x + destOffset.x, dest.y + destOffset.y), interpolationLinear ? (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_LINEAR : (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
+		}
+
+		void Spritesheet::DrawFrameCenterRotated(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale, D2D1::ColorF color, float rotateDegree, SPRITE_FLIP_MODE flipMode, bool interpolationLinear)
+		{
+			D2D1_RECT_F drawRec = CreateDrawRect(frameId);
+
+			D2D1_POINT_2F destOffset = SetupDrawFrameCenterRotated(drawRec, scale, color, rotateDegree, flipMode, interpolationLinear);
+
+			m_Graphics->DrawEffect(m_ColorMatrixFx, D2D1::Point2F(dest.x + destOffset.x, dest.y + destOffset.y), interpolationLinear ? (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_LINEAR : (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
+		}
+
+		void Spritesheet::DrawFrameCenterRotated(D2D1_POINT_2F dest, D2D1_RECT_F source, D2D1_POINT_2F scale, D2D1::ColorF color, float rotateDegree, SPRITE_FLIP_MODE flipMode, bool interpolationLinear)
+		{
+			D2D1_RECT_F drawRec = CreateDrawRect(source);
+
+			D2D1_POINT_2F destOffset = SetupDrawFrameCenterRotated(drawRec, scale, color, rotateDegree, flipMode, interpolationLinear);
+
+			m_Graphics->DrawEffect(m_ColorMatrixFx, D2D1::Point2F(dest.x + destOffset.x, dest.y + destOffset.y), interpolationLinear ? (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_LINEAR : (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
 		}
 	}
 }

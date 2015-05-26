@@ -22,6 +22,16 @@ namespace P2DE
 	{
 		class Graphics;
 
+		/// <summary>	Values that represent sprite flip modes. </summary>
+		///
+		/// <remarks>	Tobias, 26.05.2015. </remarks>
+		enum SPRITE_FLIP_MODE
+		{
+			NONE = 0,
+			HORIZONTAL = 1 << 0,
+			VERTICAL = 1 << 1
+		};
+
 		/// <summary>	Information about the spritesheet. </summary>
 		///
 		/// <remarks>	Tobias, 18.05.2015. </remarks>
@@ -68,10 +78,10 @@ namespace P2DE
 			P2DE::GFX::Graphics* m_Graphics;
 			/// <summary>	The color matrix effect used for drawing the frames.</summary>
 			ID2D1Effect* m_ColorMatrixFx;
-			/// <summary>	The scale effect used for drawing the frames. </summary>
-			ID2D1Effect* m_ScaleFx;
+			/// <summary>	The scale and Rotate effect used for drawing the frames. </summary>
+			ID2D1Effect* m_ScaleRotateFx;
 			/// <summary>	The intermediate output image. </summary>
-			ID2D1Image* m_IntermediateOutputImage;
+			ID2D1Bitmap* m_IntermediateOutputImage;
 			/// <summary>	Information describing the spritesheet. </summary>
 			SpritesheetInfo m_SpritesheetInfo;
 			/// <summary>	The spritesheet bitmap. </summary>
@@ -104,8 +114,8 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 18.05.2015. </remarks>
 			///
-			/// <param name="pathToSpritesheetInfoTXT">	The path to spritesheet information text. </param>
-			/// <param name="graphics">				   	[in,out] If non-null, the graphics class to be used. Sets m_Graphics to this parameter. </param>
+			/// <param name="pathToSpritesheetInfoTXT">	[in] The path to spritesheet information text. </param>
+			/// <param name="graphics">				   	[in] If non-null, the graphics class to be used. Sets m_Graphics to this parameter. </param>
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool LoadSpritesheet(const std::wstring& pathToSpritesheetInfoTXT, P2DE::GFX::Graphics* graphics);
@@ -116,26 +126,52 @@ namespace P2DE
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool UnloadSpritesheetBitmap();
 
-			/// <summary>	Draws a frame of the spritesheet by use of the frameId. </summary>
+			/// <summary>	Draws a frame of the spritesheet by use of the frameId. Rotates around a certain Point.</summary>
 			///
 			/// <remarks>	Tobias, 18.05.2015. </remarks>
 			///
-			/// <param name="dest">   	Destination for the frame. </param>
-			/// <param name="frameId">	Identifier for the frame. </param>
-			/// <param name="scale">	Scale for the frame. </param>
-			/// <param name="color">	Color tint for the frame. </param>
-			/// <param name="interpolationLinear">	If TRUE Linear Interpolation is used, otherwise Nearest Neighbor. </param>
-			void DrawFrame(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale = { 1.0f, 1.0f }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), bool interpolationLinear = true);			
-			/// <summary>	Draws a frame of the spritesheet by use of an source Rectangle. </summary>
+			/// <param name="dest">   	[in] Destination for the frame. </param>
+			/// <param name="frameId">	[in] Identifier for the frame. </param>
+			/// <param name="scale">	[in] Scale for the frame. </param>
+			/// <param name="color">	[in] Color tint for the frame. </param>
+			/// <param name="rotateDegree">	[in] Frame rotation in Degree. </param>
+			/// <param name="rotatePoint">	[in] Point to rotate frame around. </param>
+			/// <param name="interpolationLinear">	[in] If TRUE Linear Interpolation is used, otherwise Nearest Neighbor. </param>
+			void DrawFramePointRotated(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale = { 1, 1 }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), float rotateDegree = 0.0f, D2D1_POINT_2F rotatePoint = { 0, 0 }, SPRITE_FLIP_MODE flipMode = SPRITE_FLIP_MODE::NONE, bool interpolationLinear = true);
+			/// <summary>	Draws a frame of the spritesheet by use of an source Rectangle. Rotates around a certain Point.</summary>
 			///
 			/// <remarks>	Tobias, 18.05.2015. </remarks>
 			///
-			/// <param name="dest">   	Destination for the frame. </param>
-			/// <param name="source">	Source rectangle of the frame. Rect: left = x, top = y, right = width, bottom = height </param>
-			/// <param name="scale">	Scale for the frame. </param>
-			/// <param name="color">	Color tint for the frame. </param>
-			/// <param name="interpolationLinear">	If TRUE Linear Interpolation is used, otherwise Nearest Neighbor. </param>
-			void DrawFrame(D2D1_POINT_2F dest, D2D1_RECT_F source, D2D1_POINT_2F scale = { 1.0f, 1.0f }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), bool interpolationLinear = true);
+			/// <param name="dest">   	[in] Destination for the frame. </param>
+			/// <param name="source">	[in] Source rectangle of the frame. Rect: left = x, top = y, right = width, bottom = height </param>
+			/// <param name="scale">	[in] Scale for the frame. </param>
+			/// <param name="color">	[in] Color tint for the frame. </param>
+			/// <param name="rotateDegree">	[in] Frame rotation in Degree. </param>
+			/// <param name="rotatePoint">	[in] Point to rotate frame around. </param>
+			/// <param name="interpolationLinear">	[in] If TRUE Linear Interpolation is used, otherwise Nearest Neighbor. </param>
+			void DrawFramePointRotated(D2D1_POINT_2F dest, D2D1_RECT_F source, D2D1_POINT_2F scale = { 1, 1 }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), float rotateDegree = 0.0f, D2D1_POINT_2F rotatePoint = { 0, 0 }, SPRITE_FLIP_MODE flipMode = SPRITE_FLIP_MODE::NONE, bool interpolationLinear = true);
+			/// <summary>	Draws a frame of the spritesheet by use of the frameId. Rotates around the center.</summary>
+			///
+			/// <remarks>	Tobias, 18.05.2015. </remarks>
+			///
+			/// <param name="dest">   	[in] Destination for the frame. </param>
+			/// <param name="frameId">	[in] Identifier for the frame. </param>
+			/// <param name="scale">	[in] Scale for the frame. </param>
+			/// <param name="color">	[in] Color tint for the frame. </param>
+			/// <param name="rotateDegree">	[in] Frame rotation in Degree. </param>
+			/// <param name="interpolationLinear">	[in] If TRUE Linear Interpolation is used, otherwise Nearest Neighbor. </param>
+			void DrawFrameCenterRotated(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale = { 1, 1 }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), float rotateDegree = 0.0f, SPRITE_FLIP_MODE flipMode = SPRITE_FLIP_MODE::NONE, bool interpolationLinear = true);
+			/// <summary>	Draws a frame of the spritesheet by use of an source Rectangle. Rotates around the center.</summary>
+			///
+			/// <remarks>	Tobias, 18.05.2015. </remarks>
+			///
+			/// <param name="dest">   	[in] Destination for the frame. </param>
+			/// <param name="source">	[in] Source rectangle of the frame. Rect: left = x, top = y, right = width, bottom = height </param>
+			/// <param name="scale">	[in] Scale for the frame. </param>
+			/// <param name="color">	[in] Color tint for the frame. </param>
+			/// <param name="rotateDegree">	[in] Frame rotation in Degree. </param>
+			/// <param name="interpolationLinear">	[in] If TRUE Linear Interpolation is used, otherwise Nearest Neighbor. </param>
+			void DrawFrameCenterRotated(D2D1_POINT_2F dest, D2D1_RECT_F source, D2D1_POINT_2F scale = { 1, 1 }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), float rotateDegree = 0.0f, SPRITE_FLIP_MODE flipMode = SPRITE_FLIP_MODE::NONE, bool interpolationLinear = true);
 
 			private:
 			/// <summary>	Reload the spritesheet bitmap. Mostly used after unloading the spritesheet bitmap. </summary>
@@ -144,6 +180,64 @@ namespace P2DE
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool ReloadSpritesheetBitmap();
+
+			/// <summary>	Creates draw rectangle. </summary>
+			///
+			/// <remarks>	Tobias, 26.05.2015. </remarks>
+			///
+			/// <param name="frameId">	[in] Identifier for the frame. </param>
+			///
+			/// <returns>	The new draw rectangle. </returns>
+			D2D1_RECT_F CreateDrawRect(unsigned int frameId);
+			/// <summary>	Creates draw rectangle. </summary>
+			///
+			/// <remarks>	Tobias, 26.05.2015. </remarks>
+			///
+			/// <param name="source">	[in] Source rectangle of the frame. Rect: left = x, top = y, right = width, bottom = height. </param>
+			///
+			/// <returns>	The new draw rectangle. </returns>
+			D2D1_RECT_F CreateDrawRect(D2D1_RECT_F source);
+
+			/// <summary>	Check flip mode. </summary>
+			///
+			/// <remarks>	Tobias, 26.05.2015. </remarks>
+			///
+			/// <param name="drawRect">		   	[in] The draw rectangle. </param>
+			/// <param name="flipMode">		   	[in] The flip mode. </param>
+			/// <param name="scale">		   	[in] The scale. </param>
+			/// <param name="rotationPoint">   	[in] If non-null and newRotationPoint non-null, The rotation point. </param>
+			/// <param name="destOffset">	   	[out] If non-null, destination offset. </param>
+			/// <param name="scaleFlip">	   	[out] If non-null, the scale flip. </param>
+			/// <param name="newRotationPoint">	[out] If non-null and rotationPoint non-null, the new rotation point. </param>
+			void CheckFlipMode(const D2D1_RECT_F& drawRect, const SPRITE_FLIP_MODE& flipMode, const D2D1_POINT_2F& scale, const D2D1_POINT_2F* rotationPoint, D2D1_POINT_2F* destOffset, D2D1_POINT_2F* scaleFlip, D2D1_POINT_2F* newRotationPoint);
+
+			/// <summary>	Sets up the draw frame center rotated and its effects. </summary>
+			///
+			/// <remarks>	Tobias, 26.05.2015. </remarks>
+			///
+			/// <param name="drawRect">			  	[in] The draw rectangle. </param>
+			/// <param name="scale">			  	[in] The scale. </param>
+			/// <param name="color">			  	[in] The color. </param>
+			/// <param name="rotateDegree">		  	[in] The rotate degree. </param>
+			/// <param name="flipMode">			  	[in] The flip mode. </param>
+			/// <param name="interpolationLinear">	[in] The interpolation linear. </param>
+			///
+			/// <returns>	The destination Offset. </returns>
+			D2D1_POINT_2F SetupDrawFrameCenterRotated(const D2D1_RECT_F& drawRect, const D2D1_POINT_2F& scale, const D2D1::ColorF& color, const float& rotateDegree, const SPRITE_FLIP_MODE& flipMode, const bool& interpolationLinear);
+			/// <summary>	Sets up the draw frame point rotated and its effects. </summary>
+			///
+			/// <remarks>	Tobias, 26.05.2015. </remarks>
+			///
+			/// <param name="drawRect">			  	[in] The draw rectangle. </param>
+			/// <param name="scale">			  	[in] The scale. </param>
+			/// <param name="color">			  	[in] The color. </param>
+			/// <param name="rotateDegree">		  	[in] The rotate degree. </param>
+			/// <param name="rotatePoint">		  	[in] The rotate point. </param>
+			/// <param name="flipMode">			  	[in] The flip mode. </param>
+			/// <param name="interpolationLinear">	[in] The interpolation linear. </param>
+			///
+			/// <returns>	The destination Offset. </returns>
+			D2D1_POINT_2F SetupDrawFramePointRotated(const D2D1_RECT_F& drawRect, const D2D1_POINT_2F& scale, const D2D1::ColorF& color, const float& rotateDegree, const D2D1_POINT_2F& rotatePoint, const SPRITE_FLIP_MODE& flipMode, const bool& interpolationLinear);
 		};
 	}
 }

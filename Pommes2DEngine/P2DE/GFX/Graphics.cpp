@@ -233,7 +233,7 @@ void Graphics::ClearScreen(float r, float g, float b)
 bool Graphics::LoadBitmapFromFile(LPCWSTR file, ID2D1Bitmap** output)
 {
 	HRESULT hr;
-
+	
 	P2DE::UTILITIES::ComPtr<IWICBitmapDecoder> decoder;
 	P2DE::UTILITIES::ComPtr<IWICBitmapFrameDecode> bitmapSource;
 	P2DE::UTILITIES::ComPtr<IWICFormatConverter> converter;
@@ -304,6 +304,24 @@ bool Graphics::CreateBitmapScaleEffect(ID2D1Effect** effect, ID2D1Image* img, fl
 	return false;
 }
 
+bool Graphics::CreateBitmapScaleRotateEffect(ID2D1Effect** effect, ID2D1Image* img, float scaleX, float scaleY, float rotateDegrees, D2D1_POINT_2F rotateAround)
+{
+	if (CreateEffect(CLSID_D2D12DAffineTransform, effect))
+	{
+		(*effect)->SetInput(0, img);
+
+		D2D1::Matrix3x2F matrixRotation = D2D1::Matrix3x2F::Rotation(rotateDegrees, rotateAround);
+		D2D1::Matrix3x2F matrixScale = D2D1::Matrix3x2F::Scale(scaleX, scaleY);
+		D2D1::Matrix3x2F matrixFinal = matrixScale*matrixRotation;
+
+		(*effect)->SetValue(D2D1_2DAFFINETRANSFORM_PROP_TRANSFORM_MATRIX, matrixFinal);
+
+		return true;
+	}
+
+	return false;
+}
+
 void Graphics::SetBitmapTintEffectColor(ID2D1Effect* effect, float r, float g, float b, float a)
 {
 	effect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, CreateColorMatrix(r, g, b, a));
@@ -312,6 +330,24 @@ void Graphics::SetBitmapTintEffectColor(ID2D1Effect* effect, float r, float g, f
 void Graphics::SetBitmapScaleEffectScale(ID2D1Effect* effect, float scaleX, float scaleY)
 {
 	effect->SetValue(D2D1_SCALE_PROP_SCALE, D2D1::Vector2F(scaleX, scaleY));
+}
+
+void Graphics::SetBitmapScaleRotate(ID2D1Effect* effect, float scaleX, float scaleY, float rotateDegrees, D2D1_POINT_2F rotateAround)
+{
+	D2D1::Matrix3x2F matrixRotation = D2D1::Matrix3x2F::Rotation(rotateDegrees, rotateAround);
+	D2D1::Matrix3x2F matrixScale = D2D1::Matrix3x2F::Scale(scaleX, scaleY);
+	D2D1::Matrix3x2F matrixFinal = matrixScale*matrixRotation;
+	
+	effect->SetValue(D2D1_2DAFFINETRANSFORM_PROP_TRANSFORM_MATRIX, matrixFinal);
+}
+
+void Graphics::CreateBitmapFromBitmapRegion(ID2D1Bitmap* bmp, D2D1_RECT_U region, ID2D1Bitmap** newBmp)
+{
+	float dpiX, dpiY;
+	bmp->GetDpi(&dpiX, &dpiY);
+
+	m_D2D1DeviceContext->CreateBitmap(D2D1::SizeU(region.right - region.left, region.bottom - region.top), D2D1::BitmapProperties(bmp->GetPixelFormat(), dpiX, dpiY), newBmp);
+	(*newBmp)->CopyFromBitmap(&D2D1::Point2U(0, 0), bmp, &region);
 }
 #pragma endregion
 
