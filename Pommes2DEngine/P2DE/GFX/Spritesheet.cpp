@@ -161,7 +161,7 @@ namespace P2DE
 		D2D1_RECT_F Spritesheet::CreateDrawRect(unsigned int frameId)
 		{
 			D2D1_RECT_F drawRec;
-			drawRec.left = (frameId % m_SpritesheetInfo.m_NumXframes) * (m_SpritesheetInfo.m_FrameWidth + m_SpritesheetInfo.m_Margin);
+			drawRec.left = (float)(frameId % m_SpritesheetInfo.m_NumXframes) * (m_SpritesheetInfo.m_FrameWidth + m_SpritesheetInfo.m_Margin);
 			drawRec.top = floorf(frameId / (float)m_SpritesheetInfo.m_NumXframes) * (m_SpritesheetInfo.m_FrameHeight + m_SpritesheetInfo.m_Margin);
 			drawRec.right = drawRec.left + m_SpritesheetInfo.m_FrameWidth;
 			drawRec.bottom = drawRec.top + m_SpritesheetInfo.m_FrameHeight;
@@ -216,7 +216,7 @@ namespace P2DE
 			}
 		}
 
-		D2D1_POINT_2F Spritesheet::SetupDrawFrameCenterRotated(const D2D1_RECT_F& drawRect, const D2D1_POINT_2F& scale, const D2D1::ColorF& color, const float& rotateDegree, const SPRITE_FLIP_MODE& flipMode, const bool& interpolationLinear)
+		D2D1_POINT_2F Spritesheet::SetupDrawFrameCenterRotated(const D2D1_RECT_F& drawRect, const D2D1_POINT_2F& scale, const D2D1::ColorF& color, const float& rotateDegree, const SPRITE_FLIP_MODE& flipMode, const SPRITE_INTERPOLATION_MODE& interpolationMode)
 		{
 			if (m_IntermediateOutputImage)
 			{
@@ -229,11 +229,11 @@ namespace P2DE
 
 			CheckFlipMode(drawRect, flipMode, scale, nullptr, &destOffset, &scaleFlip, nullptr);
 
-			m_Graphics->CreateBitmapFromBitmapRegion(m_SpritesheetBitmap, D2D1::RectU(drawRect.left, drawRect.top, drawRect.right, drawRect.bottom), &m_IntermediateOutputImage);
+			m_Graphics->CreateBitmapFromBitmapRegion(m_SpritesheetBitmap, D2D1::RectU((UINT32)drawRect.left, (UINT32)drawRect.top, (UINT32)drawRect.right, (UINT32)drawRect.bottom), &m_IntermediateOutputImage);
 
 			m_ScaleRotateFx->SetInput(0, m_IntermediateOutputImage);
 			m_Graphics->SetBitmapScaleRotate(m_ScaleRotateFx, scale.x * scaleFlip.x, scale.y * scaleFlip.y, rotateDegree, D2D1::Point2F(scaleFlip.x* (m_SpritesheetInfo.m_FrameWidth * scale.x * 0.5f), scaleFlip.y * (m_SpritesheetInfo.m_FrameHeight * scale.y * 0.5f)));
-			m_ScaleRotateFx->SetValue(D2D1_2DAFFINETRANSFORM_PROP_INTERPOLATION_MODE, interpolationLinear ? D2D1_2DAFFINETRANSFORM_INTERPOLATION_MODE_LINEAR : D2D1_2DAFFINETRANSFORM_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
+			m_ScaleRotateFx->SetValue(D2D1_2DAFFINETRANSFORM_PROP_INTERPOLATION_MODE, (D2D1_2DAFFINETRANSFORM_INTERPOLATION_MODE)interpolationMode);
 
 			P2DE::UTILITIES::ComPtr<ID2D1Image> tmpImg;
 			m_ScaleRotateFx->GetOutput(&tmpImg);
@@ -244,7 +244,7 @@ namespace P2DE
 			return destOffset;
 		}
 
-		D2D1_POINT_2F Spritesheet::SetupDrawFramePointRotated(const D2D1_RECT_F& drawRect, const D2D1_POINT_2F& scale, const D2D1::ColorF& color, const float& rotateDegree, const D2D1_POINT_2F& rotatePoint, const SPRITE_FLIP_MODE& flipMode, const bool& interpolationLinear)
+		D2D1_POINT_2F Spritesheet::SetupDrawFramePointRotated(const D2D1_RECT_F& drawRect, const D2D1_POINT_2F& scale, const D2D1::ColorF& color, const float& rotateDegree, const D2D1_POINT_2F& rotatePoint, const SPRITE_FLIP_MODE& flipMode, const SPRITE_INTERPOLATION_MODE& interpolationMode)
 		{
 			if (m_IntermediateOutputImage)
 			{
@@ -257,11 +257,11 @@ namespace P2DE
 			D2D1_POINT_2F newRotationPoint = D2D1::Point2F();
 			CheckFlipMode(drawRect, flipMode, scale, &rotatePoint, &destOffset, &scaleFlip, &newRotationPoint);
 
-			m_Graphics->CreateBitmapFromBitmapRegion(m_SpritesheetBitmap, D2D1::RectU(drawRect.left, drawRect.top, drawRect.right, drawRect.bottom), &m_IntermediateOutputImage);
+			m_Graphics->CreateBitmapFromBitmapRegion(m_SpritesheetBitmap, D2D1::RectU((UINT32)drawRect.left, (UINT32)drawRect.top, (UINT32)drawRect.right, (UINT32)drawRect.bottom), &m_IntermediateOutputImage);
 
 			m_ScaleRotateFx->SetInput(0, m_IntermediateOutputImage);
 			m_Graphics->SetBitmapScaleRotate(m_ScaleRotateFx, scale.x * scaleFlip.x, scale.y * scaleFlip.y, rotateDegree, D2D1::Point2F(newRotationPoint.x, newRotationPoint.y));
-			m_ScaleRotateFx->SetValue(D2D1_2DAFFINETRANSFORM_PROP_INTERPOLATION_MODE, interpolationLinear ? D2D1_2DAFFINETRANSFORM_INTERPOLATION_MODE_LINEAR : D2D1_2DAFFINETRANSFORM_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
+			m_ScaleRotateFx->SetValue(D2D1_2DAFFINETRANSFORM_PROP_INTERPOLATION_MODE, (D2D1_2DAFFINETRANSFORM_INTERPOLATION_MODE)interpolationMode);
 
 			P2DE::UTILITIES::ComPtr<ID2D1Image> tmpImg;
 			m_ScaleRotateFx->GetOutput(&tmpImg);
@@ -272,40 +272,40 @@ namespace P2DE
 			return destOffset;
 		}
 
-		void Spritesheet::DrawFramePointRotated(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale, D2D1::ColorF color, float rotateDegree, D2D1_POINT_2F rotatePoint, SPRITE_FLIP_MODE flipMode, bool interpolationLinear)
+		void Spritesheet::DrawFramePointRotated(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale, D2D1::ColorF color, float rotateDegree, D2D1_POINT_2F rotatePoint, SPRITE_FLIP_MODE flipMode, const SPRITE_INTERPOLATION_MODE& interpolationMode)
 		{
 			D2D1_RECT_F drawRec = CreateDrawRect(frameId);
 			
-			D2D1_POINT_2F destOffset = SetupDrawFramePointRotated(drawRec, scale, color, rotateDegree, rotatePoint, flipMode, interpolationLinear);
+			D2D1_POINT_2F destOffset = SetupDrawFramePointRotated(drawRec, scale, color, rotateDegree, rotatePoint, flipMode, interpolationMode);
 			
-			m_Graphics->DrawEffect(m_ColorMatrixFx, D2D1::Point2F(dest.x + destOffset.x, dest.y + destOffset.y), interpolationLinear ? (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_LINEAR : (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
+			m_Graphics->DrawEffect(m_ColorMatrixFx, D2D1::Point2F(dest.x + destOffset.x, dest.y + destOffset.y), (D2D1_INTERPOLATION_MODE)interpolationMode);
 		}
 
-		void Spritesheet::DrawFramePointRotated(D2D1_POINT_2F dest, D2D1_RECT_F source, D2D1_POINT_2F scale, D2D1::ColorF color, float rotateDegree, D2D1_POINT_2F rotatePoint, SPRITE_FLIP_MODE flipMode, bool interpolationLinear)
+		void Spritesheet::DrawFramePointRotated(D2D1_POINT_2F dest, D2D1_RECT_F source, D2D1_POINT_2F scale, D2D1::ColorF color, float rotateDegree, D2D1_POINT_2F rotatePoint, SPRITE_FLIP_MODE flipMode, const SPRITE_INTERPOLATION_MODE& interpolationMode)
 		{
 			D2D1_RECT_F drawRec = CreateDrawRect(source);
 
-			D2D1_POINT_2F destOffset = SetupDrawFramePointRotated(drawRec, scale, color, rotateDegree, rotatePoint, flipMode, interpolationLinear);
+			D2D1_POINT_2F destOffset = SetupDrawFramePointRotated(drawRec, scale, color, rotateDegree, rotatePoint, flipMode, interpolationMode);
 
-			m_Graphics->DrawEffect(m_ColorMatrixFx, D2D1::Point2F(dest.x + destOffset.x, dest.y + destOffset.y), interpolationLinear ? (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_LINEAR : (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
+			m_Graphics->DrawEffect(m_ColorMatrixFx, D2D1::Point2F(dest.x + destOffset.x, dest.y + destOffset.y), (D2D1_INTERPOLATION_MODE)interpolationMode);
 		}
 
-		void Spritesheet::DrawFrameCenterRotated(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale, D2D1::ColorF color, float rotateDegree, SPRITE_FLIP_MODE flipMode, bool interpolationLinear)
+		void Spritesheet::DrawFrameCenterRotated(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale, D2D1::ColorF color, float rotateDegree, SPRITE_FLIP_MODE flipMode, const SPRITE_INTERPOLATION_MODE& interpolationMode)
 		{
 			D2D1_RECT_F drawRec = CreateDrawRect(frameId);
 
-			D2D1_POINT_2F destOffset = SetupDrawFrameCenterRotated(drawRec, scale, color, rotateDegree, flipMode, interpolationLinear);
+			D2D1_POINT_2F destOffset = SetupDrawFrameCenterRotated(drawRec, scale, color, rotateDegree, flipMode, interpolationMode);
 
-			m_Graphics->DrawEffect(m_ColorMatrixFx, D2D1::Point2F(dest.x + destOffset.x, dest.y + destOffset.y), interpolationLinear ? (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_LINEAR : (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
+			m_Graphics->DrawEffect(m_ColorMatrixFx, D2D1::Point2F(dest.x + destOffset.x, dest.y + destOffset.y), (D2D1_INTERPOLATION_MODE)interpolationMode);
 		}
 
-		void Spritesheet::DrawFrameCenterRotated(D2D1_POINT_2F dest, D2D1_RECT_F source, D2D1_POINT_2F scale, D2D1::ColorF color, float rotateDegree, SPRITE_FLIP_MODE flipMode, bool interpolationLinear)
+		void Spritesheet::DrawFrameCenterRotated(D2D1_POINT_2F dest, D2D1_RECT_F source, D2D1_POINT_2F scale, D2D1::ColorF color, float rotateDegree, SPRITE_FLIP_MODE flipMode, const SPRITE_INTERPOLATION_MODE& interpolationMode)
 		{
 			D2D1_RECT_F drawRec = CreateDrawRect(source);
 
-			D2D1_POINT_2F destOffset = SetupDrawFrameCenterRotated(drawRec, scale, color, rotateDegree, flipMode, interpolationLinear);
+			D2D1_POINT_2F destOffset = SetupDrawFrameCenterRotated(drawRec, scale, color, rotateDegree, flipMode, interpolationMode);
 
-			m_Graphics->DrawEffect(m_ColorMatrixFx, D2D1::Point2F(dest.x + destOffset.x, dest.y + destOffset.y), interpolationLinear ? (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_LINEAR : (D2D1_INTERPOLATION_MODE)D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
+			m_Graphics->DrawEffect(m_ColorMatrixFx, D2D1::Point2F(dest.x + destOffset.x, dest.y + destOffset.y), (D2D1_INTERPOLATION_MODE)interpolationMode);
 		}
 	}
 }

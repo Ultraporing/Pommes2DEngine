@@ -94,9 +94,9 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="hWnd">			Handle of the window. </param>
-			/// <param name="dwStyle">  	The style. </param>
-			/// <param name="dwStyleEx">	The style ex. </param>
+			/// <param name="hWnd">			[in] Handle of the window. </param>
+			/// <param name="dwStyle">  	[in] The style. </param>
+			/// <param name="dwStyleEx">	[in] The style ex. </param>
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx);
@@ -104,10 +104,10 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="hWnd">			Handle of the window. </param>
-			/// <param name="dwStyle">  	The style. </param>
-			/// <param name="dwStyleEx">	The style ex. </param>
-			/// <param name="game">			[in,out] If non-null, the game. </param>
+			/// <param name="hWnd">			[in] Handle of the window. </param>
+			/// <param name="dwStyle">  	[in] The style. </param>
+			/// <param name="dwStyleEx">	[in] The style ex. </param>
+			/// <param name="game">			[in] If non-null, the game using this class. </param>
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx, P2DE::GAME::BaseGame* game);
@@ -177,9 +177,9 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="r">	The float to process. </param>
-			/// <param name="g">	The float to process. </param>
-			/// <param name="b">	The float to process. </param>
+			/// <param name="r">	[in] Red (0-1). </param>
+			/// <param name="g">	[in] Green (0-1). </param>
+			/// <param name="b">	[in] Blue (0-1). </param>
 			void ClearScreen(float r, float g, float b);
 #pragma endregion
 			
@@ -188,8 +188,8 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="file">  	The file. </param>
-			/// <param name="output">	[in,out] If non-null, the output. </param>
+			/// <param name="file">  	[in] The Image filepath. </param>
+			/// <param name="output">	[out] If non-null, the output bitmap. </param>
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool LoadBitmapFromFile(LPCWSTR file, ID2D1Bitmap** output);
@@ -200,8 +200,8 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="effectId">	Identifier for the effect. </param>
-			/// <param name="effect">  	[in,out] If non-null, the effect. </param>
+			/// <param name="effectId">	[in] Identifier for the effect. </param>
+			/// <param name="effect">  	[out] If non-null, the effect. </param>
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool CreateEffect(REFCLSID effectId, ID2D1Effect** effect);
@@ -209,12 +209,12 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="effect">	[in,out] If non-null, the effect. </param>
-			/// <param name="img">   	[in,out] If non-null, the image. </param>
-			/// <param name="r">	 	The float to process. </param>
-			/// <param name="g">	 	The float to process. </param>
-			/// <param name="b">	 	The float to process. </param>
-			/// <param name="a">	 	The float to process. </param>
+			/// <param name="effect">	[out] The newly created effect. </param>
+			/// <param name="img">   	[in] The image. </param>
+			/// <param name="r">	 	[in] Red (0-1). </param>
+			/// <param name="g">	 	[in] Green (0-1).</param>
+			/// <param name="b">	 	[in] Blue (0-1). </param>
+			/// <param name="a">	 	[in] Alpha (0-1). </param>
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool CreateBitmapTintEffect(ID2D1Effect** effect, ID2D1Image* img, float r, float g, float b, float a = 1.0f);
@@ -222,10 +222,10 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="effect">	[in,out] If non-null, the effect. </param>
-			/// <param name="img">   	[in,out] If non-null, the image. </param>
-			/// <param name="scaleX">	The scale x coordinate. </param>
-			/// <param name="scaleY">	The scale y coordinate. </param>
+			/// <param name="effect">	[out] The newly created effect. </param>
+			/// <param name="img">   	[in] The image. </param>
+			/// <param name="scaleX">	[in] The scale x coordinate. </param>
+			/// <param name="scaleY">	[in] The scale y coordinate. </param>
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool CreateBitmapScaleEffect(ID2D1Effect** effect, ID2D1Image* img, float scaleX = 1.0f, float scaleY = 1.0f);
@@ -233,12 +233,12 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 25.05.2015. </remarks>
 			///
-			/// <param name="effect">			[in,out] If non-null, the effect. </param>
-			/// <param name="img">				[in,out] If non-null, the image. </param>
-			/// <param name="scaleX">			The scale x coordinate. </param>
-			/// <param name="scaleY">			The scale y coordinate. </param>
-			/// <param name="rotateDegrees">	The rotate in degrees. </param>
-			/// <param name="rotateAround">		The rotation point. </param>
+			/// <param name="effect">			[out] The newly created effect. </param>
+			/// <param name="img">				[in] The image. </param>
+			/// <param name="scaleX">			[in] The scale x coordinate. </param>
+			/// <param name="scaleY">			[in] The scale y coordinate. </param>
+			/// <param name="rotateDegrees">	[in] The rotate in degrees. </param>
+			/// <param name="rotateAround">		[in] The rotation point. </param>
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool CreateBitmapScaleRotateEffect(ID2D1Effect** effect, ID2D1Image* img, float scaleX = 1.0f, float scaleY = 1.0f, float rotateDegrees = 0.0f, D2D1_POINT_2F rotateAround = { 0, 0 });
@@ -247,38 +247,38 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="effect">	[in,out] If non-null, the effect. </param>
-			/// <param name="r">	 	The float to process. </param>
-			/// <param name="g">	 	The float to process. </param>
-			/// <param name="b">	 	The float to process. </param>
-			/// <param name="a">	 	The float to process. </param>
+			/// <param name="effect">	[in] The Tint effect to change. </param>
+			/// <param name="r">	 	[in] The float to process. </param>
+			/// <param name="g">	 	[in] The float to process. </param>
+			/// <param name="b">	 	[in] The float to process. </param>
+			/// <param name="a">	 	[in] The float to process. </param>
 			void SetBitmapTintEffectColor(ID2D1Effect* effect, float r, float g, float b, float a = 1.0f);
 			/// <summary>	Sets bitmap ScaleEffect scale. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="effect">	[in,out] If non-null, the effect. </param>
-			/// <param name="scaleX">	The scale x coordinate. </param>
-			/// <param name="scaleY">	The scale y coordinate. </param>
+			/// <param name="effect">	[in] The Scale effect to change. </param>
+			/// <param name="scaleX">	[in] The scale x coordinate. </param>
+			/// <param name="scaleY">	[in] The scale y coordinate. </param>
 			void SetBitmapScaleEffectScale(ID2D1Effect* effect, float scaleX = 1.0f, float scaleY = 1.0f);
 			/// <summary>	Sets bitmap scale rotate. </summary>
 			///
 			/// <remarks>	Tobias, 26.05.2015. </remarks>
 			///
-			/// <param name="effect">			[in,out] If non-null, the effect. </param>
-			/// <param name="scaleX">			The scale x coordinate. </param>
-			/// <param name="scaleY">			The scale y coordinate. </param>
-			/// <param name="rotateDegrees">	The rotate in degrees. </param>
-			/// <param name="rotateAround">		The rotation point. </param>
+			/// <param name="effect">			[in] The ScaleRotate effect to change. </param>
+			/// <param name="scaleX">			[in] The scale x coordinate. </param>
+			/// <param name="scaleY">			[in] The scale y coordinate. </param>
+			/// <param name="rotateDegrees">	[in] The rotate in degrees. </param>
+			/// <param name="rotateAround">		[in] The rotation point. </param>
 			void SetBitmapScaleRotate(ID2D1Effect* effect, float scaleX = 1.0f, float scaleY = 1.0f, float rotateDegrees = 0.0f, D2D1_POINT_2F rotateAround = { 0, 0 });
 
 			/// <summary>	Creates bitmap from bitmap region. </summary>
 			///
 			/// <remarks>	Tobias, 26.05.2015. </remarks>
 			///
-			/// <param name="bmp">   	[in] If non-null, the bitmap. </param>
-			/// <param name="region">	The region to create the bitmap of. </param>
-			/// <param name="newBmp">   [out] If non-null, the newly created bitmap. </param>
+			/// <param name="bmp">   	[in] The source bitmap. </param>
+			/// <param name="region">	[in] The region to create the bitmap of. </param>
+			/// <param name="newBmp">   [out] the newly created bitmap. </param>
 			///
 			/// <returns>	null if it fails, else the new bitmap from bitmap region. </returns>
 			void CreateBitmapFromBitmapRegion(ID2D1Bitmap* bmp, D2D1_RECT_U region, ID2D1Bitmap** newBmp);
@@ -289,10 +289,10 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="r">		  	Red color part. </param>
-			/// <param name="g">		  	Green color part. </param>
-			/// <param name="b">		  	Blue color part. </param>
-			/// <param name="a">		  	Alpha color part. </param>
+			/// <param name="r">		  	[in] Red color part. </param>
+			/// <param name="g">		  	[in] Green color part. </param>
+			/// <param name="b">		  	[in] Blue color part. </param>
+			/// <param name="a">		  	[in] Alpha color part. </param>
 			///
 			/// <returns>	The new color matrix. </returns>
 			D2D1_MATRIX_5X4_F CreateColorMatrix(float r, float g, float b, float a = 1.0f);
@@ -303,84 +303,84 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="x">		  	The x coordinate. </param>
-			/// <param name="y">		  	The y coordinate. </param>
-			/// <param name="radius">	  	The radius. </param>
-			/// <param name="r">		  	Red color part. </param>
-			/// <param name="g">		  	Green color part. </param>
-			/// <param name="b">		  	Blue color part. </param>
-			/// <param name="a">		  	Alpha color part. </param>
-			/// <param name="strokeWidth">	Width of the stroke. </param>
+			/// <param name="x">		  	[in] The x coordinate. </param>
+			/// <param name="y">		  	[in] The y coordinate. </param>
+			/// <param name="radius">	  	[in] The radius. </param>
+			/// <param name="r">		  	[in] Red color part. </param>
+			/// <param name="g">		  	[in] Green color part. </param>
+			/// <param name="b">		  	[in] Blue color part. </param>
+			/// <param name="a">		  	[in] Alpha color part. </param>
+			/// <param name="strokeWidth">	[in] Width of the stroke. </param>
 			void DrawCircle(float x, float y, float radius, float r, float g, float b, float a, float strokeWidth = 3.0f);
 			/// <summary>	Draw circle. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="x">		  	The x coordinate. </param>
-			/// <param name="y">		  	The y coordinate. </param>
-			/// <param name="radius">	  	The radius. </param>
-			/// <param name="color">	  	The color. </param>
-			/// <param name="strokeWidth">	Width of the stroke. </param>
+			/// <param name="x">		  	[in] The x coordinate. </param>
+			/// <param name="y">		  	[in] The y coordinate. </param>
+			/// <param name="radius">	  	[in] The radius. </param>
+			/// <param name="color">	  	[in] The color. </param>
+			/// <param name="strokeWidth">	[in] Width of the stroke. </param>
 			void DrawCircle(float x, float y, float radius, const D2D1_COLOR_F& color, float strokeWidth = 3.0f);
 
 			/// <summary>	Draw filled circle. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="x">	 	The x coordinate. </param>
-			/// <param name="y">	 	The y coordinate. </param>
-			/// <param name="radius">	The radius. </param>
-			/// <param name="r">		Red color part. </param>
-			/// <param name="g">		Green color part. </param>
-			/// <param name="b">		Blue color part. </param>
-			/// <param name="a">		Alpha color part. </param>
+			/// <param name="x">	 	[in] The x coordinate. </param>
+			/// <param name="y">	 	[in] The y coordinate. </param>
+			/// <param name="radius">	[in] The radius. </param>
+			/// <param name="r">		[in] Red color part. </param>
+			/// <param name="g">		[in] Green color part. </param>
+			/// <param name="b">		[in] Blue color part. </param>
+			/// <param name="a">		[in] Alpha color part. </param>
 			void DrawFilledCircle(float x, float y, float radius, float r, float g, float b, float a);
 			/// <summary>	Draw filled circle. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="x">	 	The x coordinate. </param>
-			/// <param name="y">	 	The y coordinate. </param>
-			/// <param name="radius">	The radius. </param>
-			/// <param name="color"> 	The color. </param>
+			/// <param name="x">	 	[in] The x coordinate. </param>
+			/// <param name="y">	 	[in] The y coordinate. </param>
+			/// <param name="radius">	[in] The radius. </param>
+			/// <param name="color"> 	[in] The color. </param>
 			void DrawFilledCircle(float x, float y, float radius, const D2D1_COLOR_F& color);
 
 			/// <summary>	Draw rectangle. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="destinationRect">	Destination rectangle. </param>
-			/// <param name="r">				Red color part. </param>
-			/// <param name="g">				Green color part. </param>
-			/// <param name="b">				Blue color part. </param>
-			/// <param name="a">				Alpha color part. </param>
-			/// <param name="strokeWidth">	  	Width of the stroke. </param>
+			/// <param name="destinationRect">	[in] Destination rectangle. </param>
+			/// <param name="r">				[in] Red color part. </param>
+			/// <param name="g">				[in] Green color part. </param>
+			/// <param name="b">				[in] Blue color part. </param>
+			/// <param name="a">				[in] Alpha color part. </param>
+			/// <param name="strokeWidth">	  	[in] Width of the stroke. </param>
 			void DrawRectangle(const D2D1_RECT_F& destinationRect, float r, float g, float b, float a, float strokeWidth = 3.0f);
 			/// <summary>	Draw rectangle. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="destinationRect">	Destination rectangle. </param>
-			/// <param name="color">		  	The color. </param>
-			/// <param name="strokeWidth">	  	Width of the stroke. </param>
+			/// <param name="destinationRect">	[in] Destination rectangle. </param>
+			/// <param name="color">		  	[in] The color. </param>
+			/// <param name="strokeWidth">	  	[in] Width of the stroke. </param>
 			void DrawRectangle(const D2D1_RECT_F& destinationRect, const D2D1_COLOR_F& color, float strokeWidth = 3.0f);
 
 			/// <summary>	Draw filled rectangle. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="destinationRect">	Destination rectangle. </param>
-			/// <param name="r">				Red color part. </param>
-			/// <param name="g">				Green color part. </param>
-			/// <param name="b">				Blue color part. </param>
-			/// <param name="a">				Alpha color part. </param>
+			/// <param name="destinationRect">	[in] Destination rectangle. </param>
+			/// <param name="r">				[in] Red color part. </param>
+			/// <param name="g">				[in] Green color part. </param>
+			/// <param name="b">				[in] Blue color part. </param>
+			/// <param name="a">				[in] Alpha color part. </param>
 			void DrawFilledRectangle(const D2D1_RECT_F& destinationRect, float r, float g, float b, float a);
 			/// <summary>	Draw filled rectangle. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="destinationRect">	Destination rectangle. </param>
-			/// <param name="color">		  	The color. </param>
+			/// <param name="destinationRect">	[in] Destination rectangle. </param>
+			/// <param name="color">		  	[in] The color. </param>
 			void DrawFilledRectangle(const D2D1_RECT_F& destinationRect, const D2D1_COLOR_F& color);
 #pragma endregion
 
@@ -389,74 +389,74 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="bmp">					[in,out] If non-null, the bitmap. </param>
-			/// <param name="dstX">					Destination x coordinate. </param>
-			/// <param name="dstY">					Destination y coordinate. </param>
-			/// <param name="dstWidth">				Width of the destination. </param>
-			/// <param name="dstHeight">			Height of the destination. </param>
-			/// <param name="opacity">				The opacity. </param>
-			/// <param name="interpolationMode">	The interpolation mode. </param>
+			/// <param name="bmp">					[in] The source bitmap. </param>
+			/// <param name="dstX">					[in] Destination x coordinate. </param>
+			/// <param name="dstY">					[in] Destination y coordinate. </param>
+			/// <param name="dstWidth">				[in] Width of the destination. </param>
+			/// <param name="dstHeight">			[in] Height of the destination. </param>
+			/// <param name="opacity">				[in] The opacity. </param>
+			/// <param name="interpolationMode">	[in] The interpolation mode. </param>
 			void DrawBitmap(ID2D1Bitmap* bmp, float dstX, float dstY, float dstWidth, float dstHeight, float opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
 			/// <summary>	Draws the ID2D1Bitmap. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="bmp">					[in,out] If non-null, the bitmap. </param>
-			/// <param name="destinationRect">  	Destination rectangle. </param>
-			/// <param name="opacity">				The opacity. </param>
-			/// <param name="interpolationMode">	The interpolation mode. </param>
+			/// <param name="bmp">					[in] The source bitmap. </param>
+			/// <param name="destinationRect">  	[in] Destination rectangle. </param>
+			/// <param name="opacity">				[in] The opacity. </param>
+			/// <param name="interpolationMode">	[in] The interpolation mode. </param>
 			void DrawBitmap(ID2D1Bitmap* bmp, const D2D1_RECT_F& destinationRect, float opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
 			/// <summary>	Draws the ID2D1Bitmap. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="bmp">					[in,out] If non-null, the bitmap. </param>
-			/// <param name="dstX">					Destination x coordinate. </param>
-			/// <param name="dstY">					Destination y coordinate. </param>
-			/// <param name="dstWidth">				Width of the destination. </param>
-			/// <param name="dstHeight">			Height of the destination. </param>
-			/// <param name="srcX">					Source x coordinate. </param>
-			/// <param name="srcY">					Source y coordinate. </param>
-			/// <param name="srcWidth">				Width of the source. </param>
-			/// <param name="srcHeight">			Height of the source. </param>
-			/// <param name="opacity">				The opacity. </param>
-			/// <param name="interpolationMode">	The interpolation mode. </param>
+			/// <param name="bmp">					[in] The source bitmap. </param>
+			/// <param name="dstX">					[in] Destination x coordinate. </param>
+			/// <param name="dstY">					[in] Destination y coordinate. </param>
+			/// <param name="dstWidth">				[in] Width of the destination. </param>
+			/// <param name="dstHeight">			[in] Height of the destination. </param>
+			/// <param name="srcX">					[in] Source x coordinate. </param>
+			/// <param name="srcY">					[in] Source y coordinate. </param>
+			/// <param name="srcWidth">				[in] Width of the source. </param>
+			/// <param name="srcHeight">			[in] Height of the source. </param>
+			/// <param name="opacity">				[in] The opacity. </param>
+			/// <param name="interpolationMode">	[in] The interpolation mode. </param>
 			void DrawBitmap(ID2D1Bitmap* bmp, float dstX, float dstY, float dstWidth, float dstHeight, float srcX, float srcY, float srcWidth, float srcHeight, float opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
 			/// <summary>	Draws the ID2D1Bitmap. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="bmp">					[in,out] If non-null, the bitmap. </param>
-			/// <param name="destinationRect">  	Destination rectangle. </param>
-			/// <param name="srcX">					Source x coordinate. </param>
-			/// <param name="srcY">					Source y coordinate. </param>
-			/// <param name="srcWidth">				Width of the source. </param>
-			/// <param name="srcHeight">			Height of the source. </param>
-			/// <param name="opacity">				The opacity. </param>
-			/// <param name="interpolationMode">	The interpolation mode. </param>
+			/// <param name="bmp">					[in] The source bitmap. </param>
+			/// <param name="destinationRect">  	[in] Destination rectangle. </param>
+			/// <param name="srcX">					[in] Source x coordinate. </param>
+			/// <param name="srcY">					[in] Source y coordinate. </param>
+			/// <param name="srcWidth">				[in] Width of the source. </param>
+			/// <param name="srcHeight">			[in] Height of the source. </param>
+			/// <param name="opacity">				[in] The opacity. </param>
+			/// <param name="interpolationMode">	[in] The interpolation mode. </param>
 			void DrawBitmap(ID2D1Bitmap* bmp, const D2D1_RECT_F& destinationRect, float srcX, float srcY, float srcWidth, float srcHeight, const float& opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
 			/// <summary>	Draws the ID2D1Bitmap. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="bmp">					[in,out] If non-null, the bitmap. </param>
-			/// <param name="destinationRect">  	Destination rectangle. </param>
-			/// <param name="sourceRect">			Source rectangle. </param>
-			/// <param name="opacity">				The opacity. </param>
-			/// <param name="interpolationMode">	The interpolation mode. </param>
+			/// <param name="bmp">					[in] The source bitmap. </param>
+			/// <param name="destinationRect">  	[in] Destination rectangle. </param>
+			/// <param name="sourceRect">			[in] Source rectangle. </param>
+			/// <param name="opacity">				[in] The opacity. </param>
+			/// <param name="interpolationMode">	[in] The interpolation mode. </param>
 			void DrawBitmap(ID2D1Bitmap* bmp, const D2D1_RECT_F& destinationRect, const D2D1_RECT_F& sourceRect, const float& opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
 			/// <summary>	Draws the ID2D1Bitmap. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="bmp">					[in,out] If non-null, the bitmap. </param>
-			/// <param name="dstX">					Destination x coordinate. </param>
-			/// <param name="dstY">					Destination y coordinate. </param>
-			/// <param name="dstWidth">				Width of the destination. </param>
-			/// <param name="dstHeight">			Height of the destination. </param>
-			/// <param name="sourceRect">			Source rectangle. </param>
-			/// <param name="opacity">				The opacity. </param>
-			/// <param name="interpolationMode">	The interpolation mode. </param>
+			/// <param name="bmp">					[in] The source bitmap. </param>
+			/// <param name="dstX">					[in] Destination x coordinate. </param>
+			/// <param name="dstY">					[in] Destination y coordinate. </param>
+			/// <param name="dstWidth">				[in] Width of the destination. </param>
+			/// <param name="dstHeight">			[in] Height of the destination. </param>
+			/// <param name="sourceRect">			[in] Source rectangle. </param>
+			/// <param name="opacity">				[in] The opacity. </param>
+			/// <param name="interpolationMode">	[in] The interpolation mode. </param>
 			void DrawBitmap(ID2D1Bitmap* bmp, float dstX, float dstY, float dstWidth, float dstHeight, const D2D1_RECT_F& sourceRect, const float& opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode);
 #pragma endregion
 
@@ -465,20 +465,20 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="effect">				[in,out] If non-null, the effect. </param>
-			/// <param name="destination">			Destination for the. </param>
-			/// <param name="srcRect">				Source rectangle. </param>
-			/// <param name="interpolationMode">	The interpolation mode. </param>
-			/// <param name="compositeMode">		The composite mode. </param>
+			/// <param name="effect">				[in] The source effect. </param>
+			/// <param name="destination">			[in] Destination for the. </param>
+			/// <param name="srcRect">				[in] Source rectangle. </param>
+			/// <param name="interpolationMode">	[in] The interpolation mode. </param>
+			/// <param name="compositeMode">		[in] The composite mode. </param>
 			void DrawEffect(ID2D1Effect* effect, const D2D1_POINT_2F& destination, const D2D1_RECT_F& srcRect, D2D1_INTERPOLATION_MODE interpolationMode = D2D1_INTERPOLATION_MODE_LINEAR, D2D1_COMPOSITE_MODE compositeMode = D2D1_COMPOSITE_MODE_SOURCE_OVER);
 			/// <summary>	Draws the Effect. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
-			/// <param name="effect">				[in,out] If non-null, the effect. </param>
-			/// <param name="destination">			Destination for the. </param>
-			/// <param name="interpolationMode">	The interpolation mode. </param>
-			/// <param name="compositeMode">		The composite mode. </param>
+			/// <param name="effect">				[in] The source effect. </param>
+			/// <param name="destination">			[in] Destination for the. </param>
+			/// <param name="interpolationMode">	[in] The interpolation mode. </param>
+			/// <param name="compositeMode">		[in] The composite mode. </param>
 			void DrawEffect(ID2D1Effect* effect, const D2D1_POINT_2F& destination, D2D1_INTERPOLATION_MODE interpolationMode = D2D1_INTERPOLATION_MODE_LINEAR, D2D1_COMPOSITE_MODE compositeMode = D2D1_COMPOSITE_MODE_SOURCE_OVER);
 #pragma endregion
 		};

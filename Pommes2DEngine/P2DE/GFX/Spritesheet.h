@@ -22,6 +22,17 @@ namespace P2DE
 	{
 		class Graphics;
 
+		enum SPRITE_INTERPOLATION_MODE
+		{
+			NEAREST_NEIGHBOR = D2D1_INTERPOLATION_MODE_DEFINITION_NEAREST_NEIGHBOR,
+			LINEAR = D2D1_INTERPOLATION_MODE_DEFINITION_LINEAR,
+			CUBIC = D2D1_INTERPOLATION_MODE_DEFINITION_CUBIC,
+			MULTI_SAMPLE_LINEAR = D2D1_INTERPOLATION_MODE_DEFINITION_MULTI_SAMPLE_LINEAR,
+			ANISOTROPIC = D2D1_INTERPOLATION_MODE_DEFINITION_ANISOTROPIC,
+			HIGH_QUALITY_CUBIC = D2D1_INTERPOLATION_MODE_DEFINITION_HIGH_QUALITY_CUBIC,
+			FORCE_DWORD = 0xffffffff
+		};
+
 		/// <summary>	Values that represent sprite flip modes. </summary>
 		///
 		/// <remarks>	Tobias, 26.05.2015. </remarks>
@@ -137,7 +148,7 @@ namespace P2DE
 			/// <param name="rotateDegree">	[in] Frame rotation in Degree. </param>
 			/// <param name="rotatePoint">	[in] Point to rotate frame around. </param>
 			/// <param name="interpolationLinear">	[in] If TRUE Linear Interpolation is used, otherwise Nearest Neighbor. </param>
-			void DrawFramePointRotated(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale = { 1, 1 }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), float rotateDegree = 0.0f, D2D1_POINT_2F rotatePoint = { 0, 0 }, SPRITE_FLIP_MODE flipMode = SPRITE_FLIP_MODE::NONE, bool interpolationLinear = true);
+			void DrawFramePointRotated(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale = { 1, 1 }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), float rotateDegree = 0.0f, D2D1_POINT_2F rotatePoint = { 0, 0 }, SPRITE_FLIP_MODE flipMode = SPRITE_FLIP_MODE::NONE, const SPRITE_INTERPOLATION_MODE& interpolationMode = SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 			/// <summary>	Draws a frame of the spritesheet by use of an source Rectangle. Rotates around a certain Point.</summary>
 			///
 			/// <remarks>	Tobias, 18.05.2015. </remarks>
@@ -149,7 +160,7 @@ namespace P2DE
 			/// <param name="rotateDegree">	[in] Frame rotation in Degree. </param>
 			/// <param name="rotatePoint">	[in] Point to rotate frame around. </param>
 			/// <param name="interpolationLinear">	[in] If TRUE Linear Interpolation is used, otherwise Nearest Neighbor. </param>
-			void DrawFramePointRotated(D2D1_POINT_2F dest, D2D1_RECT_F source, D2D1_POINT_2F scale = { 1, 1 }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), float rotateDegree = 0.0f, D2D1_POINT_2F rotatePoint = { 0, 0 }, SPRITE_FLIP_MODE flipMode = SPRITE_FLIP_MODE::NONE, bool interpolationLinear = true);
+			void DrawFramePointRotated(D2D1_POINT_2F dest, D2D1_RECT_F source, D2D1_POINT_2F scale = { 1, 1 }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), float rotateDegree = 0.0f, D2D1_POINT_2F rotatePoint = { 0, 0 }, SPRITE_FLIP_MODE flipMode = SPRITE_FLIP_MODE::NONE, const SPRITE_INTERPOLATION_MODE& interpolationMode = SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 			/// <summary>	Draws a frame of the spritesheet by use of the frameId. Rotates around the center.</summary>
 			///
 			/// <remarks>	Tobias, 18.05.2015. </remarks>
@@ -160,7 +171,7 @@ namespace P2DE
 			/// <param name="color">	[in] Color tint for the frame. </param>
 			/// <param name="rotateDegree">	[in] Frame rotation in Degree. </param>
 			/// <param name="interpolationLinear">	[in] If TRUE Linear Interpolation is used, otherwise Nearest Neighbor. </param>
-			void DrawFrameCenterRotated(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale = { 1, 1 }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), float rotateDegree = 0.0f, SPRITE_FLIP_MODE flipMode = SPRITE_FLIP_MODE::NONE, bool interpolationLinear = true);
+			void DrawFrameCenterRotated(D2D1_POINT_2F dest, unsigned int frameId, D2D1_POINT_2F scale = { 1, 1 }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), float rotateDegree = 0.0f, SPRITE_FLIP_MODE flipMode = SPRITE_FLIP_MODE::NONE, const SPRITE_INTERPOLATION_MODE& interpolationMode = SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 			/// <summary>	Draws a frame of the spritesheet by use of an source Rectangle. Rotates around the center.</summary>
 			///
 			/// <remarks>	Tobias, 18.05.2015. </remarks>
@@ -171,7 +182,7 @@ namespace P2DE
 			/// <param name="color">	[in] Color tint for the frame. </param>
 			/// <param name="rotateDegree">	[in] Frame rotation in Degree. </param>
 			/// <param name="interpolationLinear">	[in] If TRUE Linear Interpolation is used, otherwise Nearest Neighbor. </param>
-			void DrawFrameCenterRotated(D2D1_POINT_2F dest, D2D1_RECT_F source, D2D1_POINT_2F scale = { 1, 1 }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), float rotateDegree = 0.0f, SPRITE_FLIP_MODE flipMode = SPRITE_FLIP_MODE::NONE, bool interpolationLinear = true);
+			void DrawFrameCenterRotated(D2D1_POINT_2F dest, D2D1_RECT_F source, D2D1_POINT_2F scale = { 1, 1 }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), float rotateDegree = 0.0f, SPRITE_FLIP_MODE flipMode = SPRITE_FLIP_MODE::NONE, const SPRITE_INTERPOLATION_MODE& interpolationMode = SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 
 			private:
 			/// <summary>	Reload the spritesheet bitmap. Mostly used after unloading the spritesheet bitmap. </summary>
@@ -223,7 +234,7 @@ namespace P2DE
 			/// <param name="interpolationLinear">	[in] The interpolation linear. </param>
 			///
 			/// <returns>	The destination Offset. </returns>
-			D2D1_POINT_2F SetupDrawFrameCenterRotated(const D2D1_RECT_F& drawRect, const D2D1_POINT_2F& scale, const D2D1::ColorF& color, const float& rotateDegree, const SPRITE_FLIP_MODE& flipMode, const bool& interpolationLinear);
+			D2D1_POINT_2F SetupDrawFrameCenterRotated(const D2D1_RECT_F& drawRect, const D2D1_POINT_2F& scale, const D2D1::ColorF& color, const float& rotateDegree, const SPRITE_FLIP_MODE& flipMode, const SPRITE_INTERPOLATION_MODE& interpolationMode);
 			/// <summary>	Sets up the draw frame point rotated and its effects. </summary>
 			///
 			/// <remarks>	Tobias, 26.05.2015. </remarks>
@@ -237,7 +248,7 @@ namespace P2DE
 			/// <param name="interpolationLinear">	[in] The interpolation linear. </param>
 			///
 			/// <returns>	The destination Offset. </returns>
-			D2D1_POINT_2F SetupDrawFramePointRotated(const D2D1_RECT_F& drawRect, const D2D1_POINT_2F& scale, const D2D1::ColorF& color, const float& rotateDegree, const D2D1_POINT_2F& rotatePoint, const SPRITE_FLIP_MODE& flipMode, const bool& interpolationLinear);
+			D2D1_POINT_2F SetupDrawFramePointRotated(const D2D1_RECT_F& drawRect, const D2D1_POINT_2F& scale, const D2D1::ColorF& color, const float& rotateDegree, const D2D1_POINT_2F& rotatePoint, const SPRITE_FLIP_MODE& flipMode, const SPRITE_INTERPOLATION_MODE& interpolationMode);
 		};
 	}
 }
