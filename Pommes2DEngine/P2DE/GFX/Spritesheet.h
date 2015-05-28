@@ -11,6 +11,8 @@
 //#include "Graphics.h"
 #include <d2d1_1.h>
 #include <string>
+#include <map>
+#include "..\Utilities\ComPtr.h"
 
 struct ID2D1Bitmap;
 struct ID2D1Image;
@@ -91,12 +93,12 @@ namespace P2DE
 			ID2D1Effect* m_ColorMatrixFx;
 			/// <summary>	The scale and Rotate effect used for drawing the frames. </summary>
 			ID2D1Effect* m_ScaleRotateFx;
-			/// <summary>	The intermediate output image. </summary>
-			ID2D1Bitmap* m_IntermediateOutputImage;
 			/// <summary>	Information describing the spritesheet. </summary>
 			SpritesheetInfo m_SpritesheetInfo;
 			/// <summary>	The spritesheet bitmap. </summary>
 			ID2D1Bitmap* m_SpritesheetBitmap;
+			/// <summary>	The shared intermediate image cache. </summary>
+			static std::map<std::pair<UINT32, UINT32>, P2DE::UTILITIES::ComPtr<ID2D1Bitmap>> m_SharedIntermediateImageCache;
 
 			public:
 			/// <summary>	Default constructor. </summary>
@@ -191,6 +193,15 @@ namespace P2DE
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool ReloadSpritesheetBitmap();
+
+			/// <summary>	Gets cached intermediate image with dimensions of the region. And copys pixels into the cached image if it exists or creates a new image and copys the pixels. </summary>
+			///
+			/// <remarks>	Tobias, 28.05.2015. </remarks>
+			///
+			/// <param name="size">	The size. </param>
+			///
+			/// <returns>	null if it fails, else the cached intermediate image. </returns>
+			ID2D1Bitmap* GetCachedIntermediateImage(const D2D1_RECT_U& region);
 
 			/// <summary>	Creates draw rectangle. </summary>
 			///

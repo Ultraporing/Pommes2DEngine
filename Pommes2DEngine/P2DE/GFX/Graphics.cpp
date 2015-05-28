@@ -347,7 +347,6 @@ void Graphics::CreateBitmapFromBitmapRegion(ID2D1Bitmap* bmp, D2D1_RECT_U region
 	bmp->GetDpi(&dpiX, &dpiY);
 
 	m_D2D1DeviceContext->CreateBitmap(D2D1::SizeU(region.right - region.left, region.bottom - region.top), D2D1::BitmapProperties(bmp->GetPixelFormat(), dpiX, dpiY), newBmp);
-	(*newBmp)->CopyFromBitmap(&D2D1::Point2U(0, 0), bmp, &region);
 }
 #pragma endregion
 

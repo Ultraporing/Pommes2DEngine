@@ -13,6 +13,8 @@ namespace P2DE
 {
 	namespace GFX
 	{
+		std::map<std::pair<UINT32, UINT32>, P2DE::UTILITIES::ComPtr<ID2D1Bitmap>> Spritesheet::m_SharedIntermediateImageCache;
+
 		Spritesheet::Spritesheet()
 		{
 			m_SpritesheetBitmap = NULL;
@@ -120,12 +122,6 @@ namespace P2DE
 				m_SpritesheetBitmap = NULL;
 			}
 
-			if (m_IntermediateOutputImage)
-			{
-				m_IntermediateOutputImage->Release();
-				m_IntermediateOutputImage = NULL;
-			}
-
 			if (m_ColorMatrixFx)
 			{
 				m_ColorMatrixFx->Release();
@@ -136,6 +132,11 @@ namespace P2DE
 			{
 				m_ScaleRotateFx->Release();
 				m_ScaleRotateFx = NULL;
+			}
+
+			if (m_SharedIntermediateImageCache.size() > 0)
+			{
+				m_SharedIntermediateImageCache.clear();
 			}
 
 			return true;
@@ -156,6 +157,25 @@ namespace P2DE
 				return false;	
 
 			return true;
+		}
+
+		ID2D1Bitmap* Spritesheet::GetCachedIntermediateImage(const D2D1_RECT_U& region)
+		{
+			std::pair<UINT32, UINT32> size = std::pair<UINT32, UINT32>((UINT32)(region.right - region.left), (UINT32)(region.bottom - region.top));
+			std::pair<std::map<std::pair<UINT32, UINT32>, P2DE::UTILITIES::ComPtr<ID2D1Bitmap>>::iterator, bool> ret;
+
+			ret = m_SharedIntermediateImageCache.insert(std::pair<std::pair<UINT32, UINT32>, P2DE::UTILITIES::ComPtr<ID2D1Bitmap>>(size, P2DE::UTILITIES::ComPtr<ID2D1Bitmap>()));		
+
+			if (!ret.second)
+			{
+				ret.first->second->CopyFromBitmap(&D2D1::Point2U(0, 0), m_SpritesheetBitmap, &region);
+				return ret.first->second;
+			}			
+
+			m_Graphics->CreateBitmapFromBitmapRegion(m_SpritesheetBitmap, region, &ret.first->second);
+			ret.first->second->CopyFromBitmap(&D2D1::Point2U(0, 0), m_SpritesheetBitmap, &region);
+
+			return ret.first->second;
 		}
 
 		D2D1_RECT_F Spritesheet::CreateDrawRect(unsigned int frameId)
@@ -218,20 +238,14 @@ namespace P2DE
 
 		D2D1_POINT_2F Spritesheet::SetupDrawFrameCenterRotated(const D2D1_RECT_F& drawRect, const D2D1_POINT_2F& scale, const D2D1::ColorF& color, const float& rotateDegree, const SPRITE_FLIP_MODE& flipMode, const SPRITE_INTERPOLATION_MODE& interpolationMode)
 		{
-			if (m_IntermediateOutputImage)
-			{
-				m_IntermediateOutputImage->Release();
-				m_IntermediateOutputImage = NULL;
-			}
-
 			D2D1_POINT_2F destOffset = D2D1::Point2F();
 			D2D1_POINT_2F scaleFlip = D2D1::Point2F(1.0f, 1.0f);;
 
 			CheckFlipMode(drawRect, flipMode, scale, nullptr, &destOffset, &scaleFlip, nullptr);
 
-			m_Graphics->CreateBitmapFromBitmapRegion(m_SpritesheetBitmap, D2D1::RectU((UINT32)drawRect.left, (UINT32)drawRect.top, (UINT32)drawRect.right, (UINT32)drawRect.bottom), &m_IntermediateOutputImage);
+			ID2D1Bitmap* itermediate = GetCachedIntermediateImage(D2D1::RectU((UINT32)drawRect.left, (UINT32)drawRect.top, (UINT32)drawRect.right, (UINT32)drawRect.bottom));
 
-			m_ScaleRotateFx->SetInput(0, m_IntermediateOutputImage);
+			m_ScaleRotateFx->SetInput(0, itermediate);
 			m_Graphics->SetBitmapScaleRotate(m_ScaleRotateFx, scale.x * scaleFlip.x, scale.y * scaleFlip.y, rotateDegree, D2D1::Point2F(scaleFlip.x* (m_SpritesheetInfo.m_FrameWidth * scale.x * 0.5f), scaleFlip.y * (m_SpritesheetInfo.m_FrameHeight * scale.y * 0.5f)));
 			m_ScaleRotateFx->SetValue(D2D1_2DAFFINETRANSFORM_PROP_INTERPOLATION_MODE, (D2D1_2DAFFINETRANSFORM_INTERPOLATION_MODE)interpolationMode);
 
@@ -246,20 +260,14 @@ namespace P2DE
 
 		D2D1_POINT_2F Spritesheet::SetupDrawFramePointRotated(const D2D1_RECT_F& drawRect, const D2D1_POINT_2F& scale, const D2D1::ColorF& color, const float& rotateDegree, const D2D1_POINT_2F& rotatePoint, const SPRITE_FLIP_MODE& flipMode, const SPRITE_INTERPOLATION_MODE& interpolationMode)
 		{
-			if (m_IntermediateOutputImage)
-			{
-				m_IntermediateOutputImage->Release();
-				m_IntermediateOutputImage = NULL;
-			}
-
 			D2D1_POINT_2F destOffset = D2D1::Point2F();
 			D2D1_POINT_2F scaleFlip = D2D1::Point2F(1.0f, 1.0f);
 			D2D1_POINT_2F newRotationPoint = D2D1::Point2F();
 			CheckFlipMode(drawRect, flipMode, scale, &rotatePoint, &destOffset, &scaleFlip, &newRotationPoint);
 
-			m_Graphics->CreateBitmapFromBitmapRegion(m_SpritesheetBitmap, D2D1::RectU((UINT32)drawRect.left, (UINT32)drawRect.top, (UINT32)drawRect.right, (UINT32)drawRect.bottom), &m_IntermediateOutputImage);
+			ID2D1Bitmap* itermediate = GetCachedIntermediateImage(D2D1::RectU((UINT32)drawRect.left, (UINT32)drawRect.top, (UINT32)drawRect.right, (UINT32)drawRect.bottom));
 
-			m_ScaleRotateFx->SetInput(0, m_IntermediateOutputImage);
+			m_ScaleRotateFx->SetInput(0, itermediate);
 			m_Graphics->SetBitmapScaleRotate(m_ScaleRotateFx, scale.x * scaleFlip.x, scale.y * scaleFlip.y, rotateDegree, D2D1::Point2F(newRotationPoint.x, newRotationPoint.y));
 			m_ScaleRotateFx->SetValue(D2D1_2DAFFINETRANSFORM_PROP_INTERPOLATION_MODE, (D2D1_2DAFFINETRANSFORM_INTERPOLATION_MODE)interpolationMode);
 
