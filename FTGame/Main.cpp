@@ -8,6 +8,7 @@
 #include "Game\FTGame.h"
 #include "P2DE\GFX\Graphics.h"
 #include "P2DE\Timing\HrTimer.h"
+#include "P2DE\Input\InputManager.h"
 
 FTGame::FTGame* ftGame;
 P2DE::GFX::Graphics* graphics;
@@ -102,6 +103,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			return 0;
+		case WM_MOUSEWHEEL:
+			P2DE::INPUT::InputManager::SetMousewheelState(wParam);
 	}
 
 	return DefWindowProc(hWnd, message, wParam, lParam);

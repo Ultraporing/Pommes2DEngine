@@ -3,6 +3,7 @@
 #include <P2DE\GFX\Graphics.h>
 #include <P2DE\Utilities\ComPtr.h>
 #include "P2DE\GFX\Spritesheet.h"
+#include "P2DE\Input\InputManager.h"
 
 namespace FTGame
 {
@@ -78,27 +79,27 @@ namespace FTGame
 		int cameraSpeed = 50;
 
 		D2D1_POINT_2F camMoveAmount = D2D1::Point2F();
-
-		if (m_InputManager.IsKeyDown(VK_RIGHT))
+		
+		if (P2DE::INPUT::InputManager::IsKeyDown(VK_RIGHT))
 			camMoveAmount.x = cameraSpeed * deltaTime;
-		else if (m_InputManager.IsKeyDown(VK_LEFT))
+		else if (P2DE::INPUT::InputManager::IsKeyDown(VK_LEFT))
 			camMoveAmount.x = -cameraSpeed * deltaTime;
 
-		if (m_InputManager.IsKeyDown(VK_UP))
+		if (P2DE::INPUT::InputManager::IsKeyDown(VK_UP))
 			camMoveAmount.y = -cameraSpeed * deltaTime;
-		else if (m_InputManager.IsKeyDown(VK_DOWN))
+		else if (P2DE::INPUT::InputManager::IsKeyDown(VK_DOWN))
 			camMoveAmount.y = cameraSpeed * deltaTime;
 
 		m_Camera.MoveCamera(camMoveAmount);
 
-		if (m_InputManager.IsKeyPressed(VK_ESCAPE))
+		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_ESCAPE))
 			return true;
 
 		POINT p = POINT();
-		if (m_InputManager.IsKeyPressed(VK_SPACE))
+		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_SPACE))
 		{
 			
-			bool ret = m_InputManager.GetGameMousePos(m_hWndGamewindow, &p, &m_Camera);
+			bool ret = P2DE::INPUT::InputManager::GetGameMousePos(m_hWndGamewindow, &p, &m_Camera);
 			if (ret)
 			{
 				std::wstringstream s;
@@ -109,40 +110,56 @@ namespace FTGame
 				MessageBox(NULL, L"fail", L"merp", MB_OK);
 		}
 
-		if (m_InputManager.IsKeyDown(VK_KEY_A))
+		if (P2DE::INPUT::InputManager::IsKeyDown(VK_KEY_A))
 		{
 			rotation -= 1.0f;
 			if (rotation < 0.0f)
 				rotation = 360.0f;
 		}
 
-		if (m_InputManager.IsKeyDown(VK_KEY_S))
+		if (P2DE::INPUT::InputManager::IsKeyDown(VK_KEY_S))
 		{
 			rotation += 1.0f;
 			if (rotation > 360.0f)
 				rotation = 0;
 		}
 
-		if (m_InputManager.IsKeyPressed(VK_KEY_D))
+		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_D))
 		{
 			m_Graphics->SetGameWindowSize(RECT() = { 0, 0, 1024, 768 });
 			m_Graphics->SetGameWindowPos(POINT() = { 0, 0 });
 		}
 
-		if (m_InputManager.IsKeyPressed(VK_KEY_X))
+		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_X))
 		{
 			flip |= P2DE::GFX::SPRITE_FLIP_MODE::HORIZONTAL;
 		}
 
-		if (m_InputManager.IsKeyPressed(VK_KEY_C))
+		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_C))
 		{
 			flip |= P2DE::GFX::SPRITE_FLIP_MODE::VERTICAL;
 		}
 
-		if (m_InputManager.IsKeyPressed(VK_KEY_V))
+		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_V))
 		{
 			flip = P2DE::GFX::SPRITE_FLIP_MODE::NONE;
 		}
+
+		if (P2DE::INPUT::InputManager::IsMousewheelScrollUp())
+		{
+			std::wstringstream s;
+			s << L"MousewheelState: " << P2DE::INPUT::InputManager::GetMousewheelState();
+			MessageBox(NULL, s.str().c_str(), L"mouseWheelUP", MB_OK);
+		}
+		
+		if (P2DE::INPUT::InputManager::IsMousewheelScrollDown())
+		{
+			std::wstringstream s;
+			s << L"MousewheelState: " << P2DE::INPUT::InputManager::GetMousewheelState();
+			MessageBox(NULL, s.str().c_str(), L"mouseWheelDOWN", MB_OK);
+		}
+
+		P2DE::INPUT::InputManager::ResetMousewheelState();
 
 		return false;
 	}

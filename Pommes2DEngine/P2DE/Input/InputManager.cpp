@@ -3,6 +3,9 @@
 
 using namespace P2DE::INPUT;
 
+std::array<bool, MAXBYTE> InputManager::m_CurrentKeysPressed = std::array<bool, MAXBYTE>();
+int InputManager::m_MousewheelState = 0;
+
 bool InputManager::IsKeyDown(const BYTE& VK_Keycode)
 {
 	SHORT keyState = GetAsyncKeyState(VK_Keycode);
@@ -23,14 +26,14 @@ bool InputManager::IsKeyUp(const BYTE& VK_Keycode)
 
 bool InputManager::IsKeyPressed(const BYTE& VK_Keycode)
 {
-	if (IsKeyDown(VK_Keycode) && (m_CurrentKeysPressed[VK_Keycode] == false))
+	if (IsKeyDown(VK_Keycode) && (InputManager::m_CurrentKeysPressed[VK_Keycode] == false))
 	{
-		m_CurrentKeysPressed.at(VK_Keycode) = true;
+		InputManager::m_CurrentKeysPressed.at(VK_Keycode) = true;
 		return true;
 	}
 	else if (IsKeyUp(VK_Keycode))
 	{
-		m_CurrentKeysPressed.at(VK_Keycode) = false;
+		InputManager::m_CurrentKeysPressed.at(VK_Keycode) = false;
 		return false;
 	}
 	else
@@ -123,4 +126,34 @@ bool InputManager::IsMouseClicked(const BYTE& button)
 	}
 
 	return IsKeyPressed(mouseButton);
+}
+
+void InputManager::SetMousewheelDelta(WPARAM wParam)
+{
+	if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
+		InputManager::m_MousewheelState = 1;
+	else if (GET_WHEEL_DELTA_WPARAM(wParam) < 0)
+		InputManager::m_MousewheelState = -1;
+	else
+		InputManager::m_MousewheelState = 0;
+}
+
+bool InputManager::IsMousewheelScrollUp()
+{
+	return InputManager::m_MousewheelState == 1 ? true : false;
+}
+
+bool InputManager::IsMousewheelScrollDown()
+{
+	return InputManager::m_MousewheelState == -1 ? true : false;
+}
+
+int InputManager::GetMousewheelState()
+{
+	return InputManager::m_MousewheelState;
+}
+
+void InputManager::ResetMousewheelState()
+{
+	InputManager::m_MousewheelState = 0;
 }

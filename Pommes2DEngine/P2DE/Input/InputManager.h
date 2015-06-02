@@ -66,11 +66,12 @@ namespace P2DE
 		/// <summary>	Manager for inputs. Handles Mouse and Keyboard. </summary>
 		///
 		/// <remarks>	Tobias, 22.05.2015. </remarks>
-		class InputManager
+		static class InputManager
 		{
 			private:
 			/// <summary>	The current keys pressed. </summary>
-			std::array<bool, MAXBYTE> m_CurrentKeysPressed;
+			static std::array<bool, MAXBYTE> m_CurrentKeysPressed;
+			static int m_MousewheelState;
 
 			public:
 			/// <summary>	Query if 'VK_Keycode' is key down. </summary>
@@ -80,7 +81,7 @@ namespace P2DE
 			/// <param name="VK_Keycode">	The vk keycode. </param>
 			///
 			/// <returns>	true if key down, false if not. </returns>
-			bool IsKeyDown(const BYTE& VK_Keycode);
+			static bool IsKeyDown(const BYTE& VK_Keycode);
 			/// <summary>	Query if 'VK_Keycode' is key up. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -88,7 +89,7 @@ namespace P2DE
 			/// <param name="VK_Keycode">	The vk keycode. </param>
 			///
 			/// <returns>	true if key up, false if not. </returns>
-			bool IsKeyUp(const BYTE& VK_Keycode);
+			static bool IsKeyUp(const BYTE& VK_Keycode);
 			/// <summary>	Query if 'VK_Keycode' is key pressed once. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -96,7 +97,7 @@ namespace P2DE
 			/// <param name="VK_Keycode">	The vk keycode. </param>
 			///
 			/// <returns>	true if key pressed, false if not. </returns>
-			bool IsKeyPressed(const BYTE& VK_Keycode);
+			static bool IsKeyPressed(const BYTE& VK_Keycode);
 
 			/// <summary>	Gets screen mouse position. </summary>
 			///
@@ -106,7 +107,7 @@ namespace P2DE
 			/// <param name="mousePos">	   	[in,out] If non-null, the mouse position. </param>
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
-			bool GetScreenMousePos(HWND targetWindow, POINT* mousePos);
+			static bool GetScreenMousePos(HWND targetWindow, POINT* mousePos);
 			/// <summary>	Gets game mouse position. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -116,7 +117,36 @@ namespace P2DE
 			/// <param name="cam">		   	[in,out] If non-null, the camera. </param>
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
-			bool GetGameMousePos(HWND targetWindow, POINT* mousePos, P2DE::GFX::Camera* cam);
+			static bool GetGameMousePos(HWND targetWindow, POINT* mousePos, P2DE::GFX::Camera* cam);
+
+			/// <summary>	Sets mousewheel state. Prerequesite for using MousewheelScroll Methods. Use this Method in your 'WindowProc' for the Message 'WM_MOUSEWHEEL'.</summary>
+			///
+			/// <remarks>	Tobias, 02.06.2015. </remarks>
+			///
+			/// <param name="wParam">	The wParam field of the message. </param>
+			static void SetMousewheelState(WPARAM wParam);
+			/// <summary>	Query if the mousewheel was scrolled up. </summary>
+			///
+			/// <remarks>	Tobias, 02.06.2015. </remarks>
+			///
+			/// <returns>	true if mousewheel scroll up, false if not. </returns>
+			static bool IsMousewheelScrollUp();
+			/// <summary>	Query if the mousewheel was scrolled down. </summary>
+			///
+			/// <remarks>	Tobias, 02.06.2015. </remarks>
+			///
+			/// <returns>	true if mousewheel scroll up, false if not. </returns>
+			static bool IsMousewheelScrollDown();
+			/// <summary>	Gets mousewheel state. -1 = mousewheel scrolled down, 0 = mousewheel not scrolled, 1 = mousewheel scrolled up.</summary>
+			///
+			/// <remarks>	Tobias, 02.06.2015. </remarks>
+			///
+			/// <returns>	The mousewheel state. </returns>
+			static int GetMousewheelState();
+			/// <summary>	Resets the mousewheel state. This has to be called before the next Update to reset the Mousewheel scroll state. </summary>
+			///
+			/// <remarks>	Tobias, 02.06.2015. </remarks>
+			static void ResetMousewheelState();
 
 			/// <summary>	Query if 'mouseButton' is mouse down. 0 = left, 1 = middle, 2 = right, else = left</summary>
 			///
@@ -125,7 +155,7 @@ namespace P2DE
 			/// <param name="mouseButton">	The button. </param>
 			///
 			/// <returns>	true if mouse down, false if not. </returns>
-			bool IsMouseDown(const BYTE& mouseButton);
+			static bool IsMouseDown(const BYTE& mouseButton);
 			/// <summary>	Query if 'mouseButton' is mouse up. 0 = left, 1 = middle, 2 = right, else = left</summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -133,7 +163,7 @@ namespace P2DE
 			/// <param name="mouseButton">	The mouse button. </param>
 			///
 			/// <returns>	true if mouse up, false if not. </returns>
-			bool IsMouseUp(const BYTE& mouseButton);
+			static bool IsMouseUp(const BYTE& mouseButton);
 			/// <summary>	Query if 'mouseButton' is mouse clicked. 0 = left, 1 = middle, 2 = right, else = left</summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -141,7 +171,7 @@ namespace P2DE
 			/// <param name="mouseButton">	The mouse button. </param>
 			///
 			/// <returns>	true if mouse clicked, false if not. </returns>
-			bool IsMouseClicked(const BYTE& mouseButton);
+			static bool IsMouseClicked(const BYTE& mouseButton);
 		};
 	}
 }
