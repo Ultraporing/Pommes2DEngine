@@ -4,7 +4,6 @@
 #include <P2DE\Utilities\ComPtr.h>
 #include "P2DE\GFX\Spritesheet.h"
 #include "P2DE\Input\InputManager.h"
-#include "P2DE\Input\XboxController.h"
 
 namespace FTGame
 {
@@ -21,6 +20,7 @@ namespace FTGame
 		m_GameCrashed = false;
 
 		m_GameCrashed = !LoadResources();
+		P2DE::INPUT::InputManager::InitXboxControllers();
 	}
 
 	FTGame::~FTGame()
@@ -74,8 +74,6 @@ namespace FTGame
 
 		m_Graphics->EndDraw();
 	}
-
-	static P2DE::INPUT::XboxController Player1(1);
 
 	bool FTGame::Update(const float& deltaTime)
 	{
@@ -162,26 +160,26 @@ namespace FTGame
 			MessageBox(NULL, s.str().c_str(), L"mouseWheelDOWN", MB_OK);
 		}
 
-		if (Player1.IsConnected())
+		if (P2DE::INPUT::InputManager::IsControllerConnected(1))
 		{
-			if (Player1.GetState().Gamepad.wButtons & XINPUT_GAMEPAD_X)
+			if (P2DE::INPUT::InputManager::IsControllerButtonPressed(1, XINPUT_GAMEPAD_X))
 			{
-				Player1.Vibrate(65535, 0);
+				P2DE::INPUT::InputManager::GetController(1)->Vibrate(65535, 0);
 			}
 
-			if (Player1.GetState().Gamepad.wButtons & XINPUT_GAMEPAD_B)
+			if (P2DE::INPUT::InputManager::IsControllerButtonPressed(1, XINPUT_GAMEPAD_B))
 			{
-				Player1.Vibrate(0, 65535);
+				P2DE::INPUT::InputManager::GetController(1)->Vibrate(0, 65535);
 			}
 
-			if (Player1.GetState().Gamepad.wButtons & XINPUT_GAMEPAD_Y)
+			if (P2DE::INPUT::InputManager::IsControllerButtonPressed(1, XINPUT_GAMEPAD_Y))
 			{
-				Player1.Vibrate(65535, 65535);
+				P2DE::INPUT::InputManager::GetController(1)->Vibrate(65535, 65535);
 			}
 
-			if (Player1.GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A)
+			if (P2DE::INPUT::InputManager::IsControllerButtonPressed(1, XINPUT_GAMEPAD_A))
 			{
-				Player1.Vibrate(0, 0);
+				P2DE::INPUT::InputManager::GetController(1)->Vibrate(0, 0);
 			}
 		}
 

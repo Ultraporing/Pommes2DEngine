@@ -1,7 +1,5 @@
 #pragma once
 
-// Set minimum system version to windows vista
-#define _WIN32_WINNT   0x0600
 #include <Windows.h>
 #include <Xinput.h>
 
@@ -18,6 +16,7 @@ namespace P2DE
 			int m_ControllerNum;
 
 			public:
+			XboxController();
 			XboxController(int playerNumber);
 			XINPUT_STATE GetState();
 			bool IsConnected();

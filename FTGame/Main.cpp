@@ -90,6 +90,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		ftGame->Render();
 	}
 
+	P2DE::INPUT::InputManager::DeinitializeXboxControllers();
+
 	delete ftGame;
 	delete graphics;
 

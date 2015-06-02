@@ -5,6 +5,9 @@ using namespace P2DE::INPUT;
 
 std::array<bool, MAXBYTE> InputManager::m_CurrentKeysPressed = std::array<bool, MAXBYTE>();
 int InputManager::m_MousewheelState = 0;
+std::array<XboxController*, 4> InputManager::m_XboxControllers = std::array<XboxController*, 4>();
+
+
 
 bool InputManager::IsKeyDown(const BYTE& VK_Keycode)
 {
@@ -156,4 +159,39 @@ int InputManager::GetMousewheelState()
 void InputManager::ResetMousewheelState()
 {
 	InputManager::m_MousewheelState = 0;
+}
+
+void InputManager::InitXboxControllers()
+{
+	for (int i = 1; i < 5; i++)
+	{
+		InputManager::m_XboxControllers.at(i-1) = new XboxController(i);
+	}
+}
+
+void InputManager::DeinitializeXboxControllers()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		delete InputManager::m_XboxControllers.at(i);
+		InputManager::m_XboxControllers.at(i) = NULL;
+	}
+}
+
+bool InputManager::IsControllerConnected(const BYTE& player)
+{
+	return InputManager::m_XboxControllers.at(player - 1)->IsConnected();
+}
+
+bool InputManager::IsControllerButtonPressed(const BYTE& player, const WORD& xInputGamepadButton)
+{
+	if (InputManager::IsControllerConnected(player))
+		return InputManager::m_XboxControllers.at(player - 1)->GetState().Gamepad.wButtons & xInputGamepadButton ? true : false;
+	else
+		return false;
+}
+
+XboxController* InputManager::GetController(const BYTE& player)
+{
+	return InputManager::m_XboxControllers.at(player - 1);
 }

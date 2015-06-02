@@ -5,6 +5,7 @@
 #pragma once
 #include <Windows.h>
 #include <array>
+#include "XboxController.h"
 
 // Define missing vk keycodes ====
 #pragma region Define missing vk keycodes
@@ -71,6 +72,7 @@ namespace P2DE
 			private:
 			/// <summary>	The current keys pressed. </summary>
 			static std::array<bool, MAXBYTE> m_CurrentKeysPressed;
+			static std::array<XboxController*, 4> m_XboxControllers;
 			static int m_MousewheelState;
 
 			public:
@@ -172,6 +174,40 @@ namespace P2DE
 			///
 			/// <returns>	true if mouse clicked, false if not. </returns>
 			static bool IsMouseClicked(const BYTE& mouseButton);
+
+			/// <summary>	Initialises the xbox controllers. </summary>
+			///
+			/// <remarks>	Tobias, 03.06.2015. </remarks>
+			static void InitXboxControllers();
+			/// <summary>	Deinitialize xbox controllers. </summary>
+			///
+			/// <remarks>	Tobias, 03.06.2015. </remarks>
+			static void DeinitializeXboxControllers();
+			/// <summary>	Query if 'players' controller is connected. </summary>
+			///
+			/// <remarks>	Tobias, 03.06.2015. </remarks>
+			///
+			/// <param name="player">	The player. 1-4 </param>
+			///
+			/// <returns>	true if controller connected, false if not. </returns>
+			static bool IsControllerConnected(const BYTE& player);
+			/// <summary>	Query if on 'players' controller button pressed. </summary>
+			///
+			/// <remarks>	Tobias, 03.06.2015. </remarks>
+			///
+			/// <param name="player">			  	The player. 1-4 </param>
+			/// <param name="xInputGamepadButton">	The input gamepad button. </param>
+			///
+			/// <returns>	true if controller button pressed, false if not. </returns>
+			static bool IsControllerButtonPressed(const BYTE& player, const WORD& xInputGamepadButton);
+			/// <summary>	Gets 'players' controller. </summary>
+			///
+			/// <remarks>	Tobias, 03.06.2015. </remarks>
+			///
+			/// <param name="player">	The player. 1-4 </param>
+			///
+			/// <returns>	null if it fails, else the controller. </returns>
+			static XboxController* GetController(const BYTE& player);
 		};
 	}
 }
