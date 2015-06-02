@@ -72,7 +72,9 @@ namespace P2DE
 			private:
 			/// <summary>	The current keys pressed. </summary>
 			static std::array<bool, MAXBYTE> m_CurrentKeysPressed;
+			/// <summary>	The xbox controllers. </summary>
 			static std::array<XboxController*, 4> m_XboxControllers;
+			/// <summary>	State of the mousewheel. 1 = mousewheel up, 0 = none, -1 = mousewheel down</summary>
 			static int m_MousewheelState;
 
 			public:
