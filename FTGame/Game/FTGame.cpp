@@ -4,6 +4,7 @@
 #include <P2DE\Utilities\ComPtr.h>
 #include "P2DE\GFX\Spritesheet.h"
 #include "P2DE\Input\InputManager.h"
+#include "P2DE\Input\XboxController.h"
 
 namespace FTGame
 {
@@ -73,6 +74,8 @@ namespace FTGame
 
 		m_Graphics->EndDraw();
 	}
+
+	static P2DE::INPUT::XboxController Player1(1);
 
 	bool FTGame::Update(const float& deltaTime)
 	{
@@ -157,6 +160,29 @@ namespace FTGame
 			std::wstringstream s;
 			s << L"MousewheelState: " << P2DE::INPUT::InputManager::GetMousewheelState();
 			MessageBox(NULL, s.str().c_str(), L"mouseWheelDOWN", MB_OK);
+		}
+
+		if (Player1.IsConnected())
+		{
+			if (Player1.GetState().Gamepad.wButtons & XINPUT_GAMEPAD_X)
+			{
+				Player1.Vibrate(65535, 0);
+			}
+
+			if (Player1.GetState().Gamepad.wButtons & XINPUT_GAMEPAD_B)
+			{
+				Player1.Vibrate(0, 65535);
+			}
+
+			if (Player1.GetState().Gamepad.wButtons & XINPUT_GAMEPAD_Y)
+			{
+				Player1.Vibrate(65535, 65535);
+			}
+
+			if (Player1.GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A)
+			{
+				Player1.Vibrate(0, 0);
+			}
 		}
 
 		P2DE::INPUT::InputManager::ResetMousewheelState();

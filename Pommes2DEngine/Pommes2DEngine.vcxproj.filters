@@ -49,6 +49,9 @@
     <ClInclude Include="P2DE\GFX\Spritesheet.h">
       <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="P2DE\Input\XboxController.h">
+      <Filter>Source Files\Pommes 2D Engine\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P2DE\GFX\Camera.cpp">
@@ -65,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="P2DE\GFX\Spritesheet.cpp">
       <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="P2DE\Input\XboxController.cpp">
+      <Filter>Source Files\Pommes 2D Engine\Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

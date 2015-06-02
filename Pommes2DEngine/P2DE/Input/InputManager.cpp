@@ -128,7 +128,7 @@ bool InputManager::IsMouseClicked(const BYTE& button)
 	return IsKeyPressed(mouseButton);
 }
 
-void InputManager::SetMousewheelDelta(WPARAM wParam)
+void InputManager::SetMousewheelState(WPARAM wParam)
 {
 	if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
 		InputManager::m_MousewheelState = 1;
