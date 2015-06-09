@@ -47,3 +47,8 @@ void SpritesheetAtlas::ShutdownAtlas()
 {
 	m_SpritesheetAtlasMap.clear();
 }
+
+void SpritesheetAtlas::DrawFrame(BaseImageProperties* imageProperties)
+{
+	GetSpritesheet(imageProperties->m_SpritesheetName)->DrawFrame(imageProperties);
+}

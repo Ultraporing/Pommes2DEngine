@@ -90,5 +90,8 @@
     <ClCompile Include="P2DE\GFX\SpritesheetAtlas.cpp">
       <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="P2DE\GFX\ImagePropertiesAndEnums\ImageProperties.cpp">
+      <Filter>Source Files\Pommes 2D Engine\Graphics\ImagePropertiesAndEnums</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

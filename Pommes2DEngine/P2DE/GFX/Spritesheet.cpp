@@ -330,5 +330,23 @@ namespace P2DE
 
 			m_Graphics->DrawEffect(m_ColorMatrixFx, D2D1::Point2F(dest.x + destOffset.x, dest.y + destOffset.y), (D2D1_INTERPOLATION_MODE)interpolationMode);
 		}
+
+		void Spritesheet::DrawFrame(BaseImageProperties* imageProperties)
+		{			
+			if (ImagePropertiesI* prop = dynamic_cast<ImagePropertiesI*>(imageProperties))
+			{
+				if (prop->m_RotateFromCenter)
+					DrawFrameCenterRotated(prop->m_Position, prop->m_SourceFrameIdx, prop->m_Scale, D2D1::ColorF(prop->m_Color.r, prop->m_Color.g, prop->m_Color.b, prop->m_Color.a), prop->m_RotateDegree, prop->m_FlipMode, prop->m_InterpolationMode);
+				else
+					DrawFramePointRotated(prop->m_Position, prop->m_SourceFrameIdx, prop->m_Scale, D2D1::ColorF(prop->m_Color.r, prop->m_Color.g, prop->m_Color.b, prop->m_Color.a), prop->m_RotateDegree, prop->m_RotatePoint, prop->m_FlipMode, prop->m_InterpolationMode);
+			}
+			else if (ImagePropertiesR* prop = dynamic_cast<ImagePropertiesR*>(imageProperties))
+			{
+				if (prop->m_RotateFromCenter)
+					DrawFrameCenterRotated(prop->m_Position, prop->m_SourceImageRect, prop->m_Scale, D2D1::ColorF(prop->m_Color.r, prop->m_Color.g, prop->m_Color.b, prop->m_Color.a), prop->m_RotateDegree, prop->m_FlipMode, prop->m_InterpolationMode);
+				else
+					DrawFramePointRotated(prop->m_Position, prop->m_SourceImageRect, prop->m_Scale, D2D1::ColorF(prop->m_Color.r, prop->m_Color.g, prop->m_Color.b, prop->m_Color.a), prop->m_RotateDegree, prop->m_RotatePoint, prop->m_FlipMode, prop->m_InterpolationMode);
+			}
+		}
 	}
 }

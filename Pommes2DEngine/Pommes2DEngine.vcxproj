@@ -98,6 +98,7 @@
     <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\SpriteInterpolationMode.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="P2DE\GFX\ImagePropertiesAndEnums\ImageProperties.cpp" />
     <ClCompile Include="P2DE\GFX\Camera.cpp" />
     <ClCompile Include="P2DE\GFX\Graphics.cpp" />
     <ClCompile Include="P2DE\GFX\Spritesheet.cpp" />

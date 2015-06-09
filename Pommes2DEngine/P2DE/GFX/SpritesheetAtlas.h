@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <string>
+#include "ImagePropertiesAndEnums\ImageProperties.h"
 
 namespace P2DE
 {
@@ -24,6 +25,8 @@ namespace P2DE
 
 			static Spritesheet* GetSpritesheet(const std::wstring& spritesheetIdentifierName);
 			static void ShutdownAtlas();
+
+			static void DrawFrame(BaseImageProperties* imageProperties);
 		};
 	}
 }
