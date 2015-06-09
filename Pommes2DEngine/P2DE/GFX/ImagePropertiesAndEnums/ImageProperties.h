@@ -15,7 +15,6 @@ namespace P2DE
 		{
 			public:
 			std::wstring m_SpritesheetName;
-			D2D1_POINT_2F m_Position;
 			D2D1_POINT_2F m_Scale;
 			D2D1_COLOR_F m_Color;
 			float m_RotateDegree;
@@ -39,7 +38,6 @@ namespace P2DE
 			ImagePropertiesR();
 			ImagePropertiesR(
 				std::wstring spritesheetName,
-				D2D1_POINT_2F position,
 				D2D1_RECT_F sourceImageRect,
 				D2D1_POINT_2F scale,
 				D2D1::ColorF color,
@@ -61,7 +59,6 @@ namespace P2DE
 			ImagePropertiesI();
 			ImagePropertiesI(
 				std::wstring spritesheetName,
-				D2D1_POINT_2F position,
 				unsigned int sourceFrameIdx,
 				D2D1_POINT_2F scale,
 				D2D1::ColorF color,

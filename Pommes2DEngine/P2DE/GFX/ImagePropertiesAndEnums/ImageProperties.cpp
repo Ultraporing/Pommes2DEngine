@@ -5,7 +5,6 @@ using namespace P2DE::GFX;
 BaseImageProperties::BaseImageProperties()
 {
 	m_SpritesheetName = L"";
-	m_Position = D2D1::Point2F();
 	m_Scale = D2D1::Point2F();
 	m_Color = D2D1::ColorF(D2D1::ColorF::White);
 	m_RotateDegree = 0;
@@ -18,7 +17,6 @@ BaseImageProperties::BaseImageProperties()
 ImagePropertiesI::ImagePropertiesI()
 {
 	m_SpritesheetName = L"";
-	m_Position = D2D1::Point2F();
 	m_SourceFrameIdx = 0;
 	m_Scale = D2D1::Point2F();
 	m_Color = D2D1::ColorF(D2D1::ColorF::White);
@@ -31,7 +29,6 @@ ImagePropertiesI::ImagePropertiesI()
 
 ImagePropertiesI::ImagePropertiesI(
 	std::wstring spritesheetName,
-	D2D1_POINT_2F position,
 	unsigned int sourceFrameIdx,
 	D2D1_POINT_2F scale,
 	D2D1::ColorF color,
@@ -42,7 +39,6 @@ ImagePropertiesI::ImagePropertiesI(
 	SPRITE_INTERPOLATION_MODE interpolationMode)
 {
 	m_SpritesheetName = spritesheetName;
-	m_Position = position;
 	m_SourceFrameIdx = sourceFrameIdx;
 	m_Scale = scale;
 	m_Color = color;
@@ -56,7 +52,6 @@ ImagePropertiesI::ImagePropertiesI(
 ImagePropertiesR::ImagePropertiesR()
 {
 	m_SpritesheetName = L"";
-	m_Position = D2D1::Point2F();
 	m_SourceImageRect = D2D1::RectF();
 	m_Scale = D2D1::Point2F();
 	m_Color = D2D1::ColorF(D2D1::ColorF::White);
@@ -69,7 +64,6 @@ ImagePropertiesR::ImagePropertiesR()
 
 ImagePropertiesR::ImagePropertiesR(
 	std::wstring spritesheetName,
-	D2D1_POINT_2F position,
 	D2D1_RECT_F sourceImageRect,
 	D2D1_POINT_2F scale,
 	D2D1::ColorF color,
@@ -80,7 +74,6 @@ ImagePropertiesR::ImagePropertiesR(
 	SPRITE_INTERPOLATION_MODE interpolationMode)
 {
 	m_SpritesheetName = spritesheetName;
-	m_Position = position;
 	m_SourceImageRect = sourceImageRect;
 	m_Scale = scale;
 	m_Color = color;

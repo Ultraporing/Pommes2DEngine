@@ -135,7 +135,7 @@ namespace P2DE
 			/// <remarks>	Tobias, 09.06.2015. </remarks>
 			///
 			/// <param name="imageProperties">	[in] If non-null, the image properties. </param>
-			void DrawFrame(BaseImageProperties* imageProperties);
+			void DrawFrame(D2D1_POINT_2F position, BaseImageProperties* imageProperties);
 
 			private:
 			/// <summary>	Gets cached intermediate image with dimensions of the region. And copys pixels into the cached image if it exists or creates a new image and copys the pixels. </summary>
