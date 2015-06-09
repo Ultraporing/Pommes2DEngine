@@ -2,13 +2,13 @@
 #include <sstream>
 #include <P2DE\GFX\Graphics.h>
 #include <P2DE\Utilities\ComPtr.h>
+#include "P2DE\GFX\SpritesheetAtlas.h"
 #include "P2DE\GFX\Spritesheet.h"
 #include "P2DE\Input\InputManager.h"
 
 namespace FTGame
 {
 	P2DE::UTILITIES::ComPtr<ID2D1Effect> colorMatrixFx;
-	P2DE::GFX::Spritesheet sheet;
 
 	FTGame::FTGame(P2DE::GFX::Graphics* gfx, HWND hWndGamewindow)
 	{
@@ -25,24 +25,27 @@ namespace FTGame
 
 	FTGame::~FTGame()
 	{
-		UnloadResources();
+		UnloadResources(true);
 		m_Graphics = NULL;
 	}
 
 	bool FTGame::LoadResources()
-	{
-		if (!sheet.LoadSpritesheet(L"Assets\\Graphics\\Spritesheets\\roguelikeSheet_transparent_Info.txt", m_Graphics))
+	{	
+		if (!P2DE::GFX::SpritesheetAtlas::AddLoadSpritesheet(L"Assets\\Graphics\\Spritesheets\\roguelikeSheet_transparent_Info.txt", m_Graphics))
 			return false;
 		
 		return true;
 	}
 
-	bool FTGame::UnloadResources()
+	bool FTGame::UnloadResources(bool isGameEnd)
 	{
 		if (colorMatrixFx)
 			colorMatrixFx.~ComPtr();
 
-		sheet.UnloadSpritesheetBitmap();
+		if (!isGameEnd)
+			P2DE::GFX::SpritesheetAtlas::UnloadSpritesheetBitmaps();
+		else
+			P2DE::GFX::SpritesheetAtlas::ShutdownAtlas();
 
 		return true;
 	}
@@ -66,11 +69,11 @@ namespace FTGame
 		//sheet.DrawFramePointRotated(D2D1::Point2F(200, 100), 2, D2D1::Point2F(2.0f, 2.0f), D2D1::ColorF(color), rotation, D2D1::Point2F(0, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, false);
 
 		//sheet.DrawFramePointRotated(D2D1::Point2F(100, 200), 70, D2D1::Point2F(scale, scale), D2D1::ColorF(1.0f, 1.0f, 1.0f), -90.0f, D2D1::Point2F(0, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, true);
-		sheet.DrawFrameCenterRotated(D2D1::Point2F(200, 200), 70, D2D1::Point2F(2.0f, 2.0f), D2D1::ColorF(color), 90.0f, (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
+		P2DE::GFX::SpritesheetAtlas::GetSpritesheet(L"roguelikeSheet")->DrawFrameCenterRotated(D2D1::Point2F(200, 200), 70, D2D1::Point2F(2.0f, 2.0f), D2D1::ColorF(color), 90.0f, (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 
-		sheet.DrawFramePointRotated(D2D1::Point2F(300, 200), D2D1::RectF(16, 102, 32, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, D2D1::Point2F(8, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
+		P2DE::GFX::SpritesheetAtlas::GetSpritesheet(L"roguelikeSheet")->DrawFramePointRotated(D2D1::Point2F(300, 200), D2D1::RectF(16, 102, 32, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, D2D1::Point2F(8, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 
-		sheet.DrawFramePointRotated(D2D1::Point2F(300, 100), D2D1::RectF(0, 102, 16, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, D2D1::Point2F(8, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
+		P2DE::GFX::SpritesheetAtlas::GetSpritesheet(L"roguelikeSheet")->DrawFramePointRotated(D2D1::Point2F(300, 100), D2D1::RectF(0, 102, 16, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, D2D1::Point2F(8, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 
 		m_Graphics->EndDraw();
 	}

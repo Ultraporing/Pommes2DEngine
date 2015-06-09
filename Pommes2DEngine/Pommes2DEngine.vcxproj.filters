@@ -23,6 +23,9 @@
     <Filter Include="Source Files\Pommes 2D Engine\Game">
       <UniqueIdentifier>{9e442d7a-e719-47af-89bc-0cc136f7eccd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Pommes 2D Engine\Graphics\ImagePropertiesAndEnums">
+      <UniqueIdentifier>{196da819-b2ed-4f8d-b120-e8254cdba60e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="P2DE\GFX\Camera.h">
@@ -52,6 +55,18 @@
     <ClInclude Include="P2DE\Input\XboxController.h">
       <Filter>Source Files\Pommes 2D Engine\Input</Filter>
     </ClInclude>
+    <ClInclude Include="P2DE\GFX\SpritesheetAtlas.h">
+      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\SpriteFlipMode.h">
+      <Filter>Source Files\Pommes 2D Engine\Graphics\ImagePropertiesAndEnums</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\SpriteInterpolationMode.h">
+      <Filter>Source Files\Pommes 2D Engine\Graphics\ImagePropertiesAndEnums</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\ImageProperties.h">
+      <Filter>Source Files\Pommes 2D Engine\Graphics\ImagePropertiesAndEnums</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P2DE\GFX\Camera.cpp">
@@ -71,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="P2DE\Input\XboxController.cpp">
       <Filter>Source Files\Pommes 2D Engine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="P2DE\GFX\SpritesheetAtlas.cpp">
+      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

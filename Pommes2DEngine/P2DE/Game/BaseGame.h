@@ -35,7 +35,7 @@ namespace P2DE
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
-			virtual bool UnloadResources() = 0;
+			virtual bool UnloadResources(bool isGameEnd) = 0;
 
 			/// <summary>	Query if this game crashed. </summary>
 			///

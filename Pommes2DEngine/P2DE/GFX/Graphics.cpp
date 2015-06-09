@@ -150,7 +150,7 @@ bool Graphics::Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx, P2DE::GAME::BaseG
 #pragma region DirectX_Helper
 bool Graphics::ReloadDirectX()
 {
-	m_CurrentGame->UnloadResources();
+	m_CurrentGame->UnloadResources(false);
 
 	if (m_D2D1TargetBitmap)
 		m_D2D1TargetBitmap.~ComPtr();

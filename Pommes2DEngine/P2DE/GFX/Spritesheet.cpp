@@ -29,12 +29,56 @@ namespace P2DE
 			m_SpritesheetInfo.m_FrameHeight = 0;
 			m_SpritesheetInfo.m_NumXframes = 0;
 			m_SpritesheetInfo.m_NumYframes = 0;
+			m_SpritesheetInfo.m_IdentifierName = L"";
 		}
 
 		Spritesheet::~Spritesheet()
 		{
 			UnloadSpritesheetBitmap();
 			m_SpritesheetInfo = SpritesheetInfo();
+		}
+
+		SpritesheetInfo Spritesheet::ReadSpritesheetInfo(const std::wstring& pathToSpritesheetInfoTXT)
+		{
+			std::wifstream infoFile(pathToSpritesheetInfoTXT);
+			std::wstring line;
+			SpritesheetInfo info;
+
+			while (std::getline(infoFile, line))
+			{
+				if (line.find(L"#") == std::wstring::npos)
+					continue;
+
+				if (line.find(L"#FILE=") != std::wstring::npos)
+				{
+					info.m_FileName = line.substr(6);
+					continue;
+				}
+				if (line.find(L"#TILE_SIZE_W=") != std::wstring::npos)
+				{
+					info.m_FrameWidth = _wtoi(line.substr(13).c_str());
+					continue;
+				}
+				if (line.find(L"#TILE_SIZE_H=") != std::wstring::npos)
+				{
+					info.m_FrameHeight = _wtoi(line.substr(13).c_str());
+					continue;
+				}
+				if (line.find(L"#MARGIN=") != std::wstring::npos)
+				{
+					info.m_Margin = _wtoi(line.substr(8).c_str());
+					continue;
+				}
+				if (line.find(L"#NAME=") != std::wstring::npos)
+				{
+					info.m_IdentifierName = line.substr(6).c_str();
+					continue;
+				}
+			}
+
+			info.m_DirPath = pathToSpritesheetInfoTXT.substr(0, pathToSpritesheetInfoTXT.find_last_of(L"/\\"));
+
+			return info;
 		}
 
 		bool Spritesheet::LoadSpritesheet(const std::wstring& pathToSpritesheetInfoTXT, P2DE::GFX::Graphics* graphics)
@@ -54,39 +98,9 @@ namespace P2DE
 				return ret;
 			}
 				
-
-			std::wifstream infoFile(pathToSpritesheetInfoTXT);
-			std::wstring line;
-
-			while (std::getline(infoFile, line))
-			{
-				if (line.find(L"#") == std::wstring::npos)
-					continue;
-
-				if (line.find(L"#NAME=") != std::wstring::npos)
-				{
-					m_SpritesheetInfo.m_FileName = line.substr(6);
-					continue;
-				}
-				if (line.find(L"#TILE_SIZE_W=") != std::wstring::npos)
-				{
-					m_SpritesheetInfo.m_FrameWidth = _wtoi(line.substr(13).c_str());
-					continue;
-				}
-				if (line.find(L"#TILE_SIZE_H=") != std::wstring::npos)
-				{
-					m_SpritesheetInfo.m_FrameHeight = _wtoi(line.substr(13).c_str());
-					continue;
-				}
-				if (line.find(L"#MARGIN=") != std::wstring::npos)
-				{
-					m_SpritesheetInfo.m_Margin = _wtoi(line.substr(8).c_str());
-					continue;
-				}
-			}
+			m_SpritesheetInfo = Spritesheet::ReadSpritesheetInfo(pathToSpritesheetInfoTXT);
 			
-			m_SpritesheetInfo.m_DirPath = pathToSpritesheetInfoTXT.substr(0, pathToSpritesheetInfoTXT.find_last_of(L"/\\"));
-
+			m_SpritesheetBitmap = NULL;
 			if (!m_Graphics->LoadBitmapFromFile(m_SpritesheetInfo.GetFullRelativeBitmapPath().c_str(), &m_SpritesheetBitmap))
 			{
 				MessageBox(NULL, errorString.c_str(), L"(LoadBitmapFromFile) Spritesheet Loading Error", MB_ICONERROR | MB_OK);
@@ -116,12 +130,6 @@ namespace P2DE
 
 		bool Spritesheet::UnloadSpritesheetBitmap()
 		{
-			if (m_SpritesheetBitmap)
-			{
-				m_SpritesheetBitmap->Release();
-				m_SpritesheetBitmap = NULL;
-			}
-
 			if (m_ColorMatrixFx)
 			{
 				m_ColorMatrixFx->Release();
@@ -138,6 +146,13 @@ namespace P2DE
 			{
 				m_SharedIntermediateImageCache.clear();
 			}
+
+			if (m_SpritesheetBitmap)
+			{
+				m_SpritesheetBitmap->Release();
+				m_SpritesheetBitmap = NULL;
+			}
+
 
 			return true;
 		}

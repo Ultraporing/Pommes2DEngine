@@ -9,42 +9,22 @@
 
 #pragma once
 //#include "Graphics.h"
-#include <d2d1_1.h>
+#include <d2d1.h>
 #include <string>
 #include <map>
+#include "ImagePropertiesAndEnums\SpriteFlipMode.h"
+#include "ImagePropertiesAndEnums\SpriteInterpolationMode.h"
 #include "..\Utilities\ComPtr.h"
 
 struct ID2D1Bitmap;
 struct ID2D1Image;
 struct ID2D1Effect;
-
 namespace P2DE
 {
 	namespace GFX
 	{
 		class Graphics;
-
-		enum SPRITE_INTERPOLATION_MODE
-		{
-			NEAREST_NEIGHBOR = D2D1_INTERPOLATION_MODE_DEFINITION_NEAREST_NEIGHBOR,
-			LINEAR = D2D1_INTERPOLATION_MODE_DEFINITION_LINEAR,
-			CUBIC = D2D1_INTERPOLATION_MODE_DEFINITION_CUBIC,
-			MULTI_SAMPLE_LINEAR = D2D1_INTERPOLATION_MODE_DEFINITION_MULTI_SAMPLE_LINEAR,
-			ANISOTROPIC = D2D1_INTERPOLATION_MODE_DEFINITION_ANISOTROPIC,
-			HIGH_QUALITY_CUBIC = D2D1_INTERPOLATION_MODE_DEFINITION_HIGH_QUALITY_CUBIC,
-			FORCE_DWORD = 0xffffffff
-		};
-
-		/// <summary>	Values that represent sprite flip modes. </summary>
-		///
-		/// <remarks>	Tobias, 26.05.2015. </remarks>
-		enum SPRITE_FLIP_MODE
-		{
-			NONE = 0,
-			HORIZONTAL = 1 << 0,
-			VERTICAL = 1 << 1
-		};
-
+		
 		/// <summary>	Information about the spritesheet. </summary>
 		///
 		/// <remarks>	Tobias, 18.05.2015. </remarks>
@@ -79,6 +59,8 @@ namespace P2DE
 			int m_FrameHeight;
 			/// <summary>	The margin between frames. </summary>
 			int m_Margin;
+			/// <summary>	Unique Name of the spritesheet for identification. </summary>
+			std::wstring m_IdentifierName;
 		};
 
 		/// <summary>	A spritesheet. </summary>
@@ -110,6 +92,8 @@ namespace P2DE
 			/// <remarks>	Tobias, 18.05.2015. </remarks>
 			~Spritesheet();
 
+			static SpritesheetInfo ReadSpritesheetInfo(const std::wstring& pathToSpritesheetInfoTXT);
+
 			/// <summary>	Gets spritesheet information. </summary>
 			///
 			/// <remarks>	Tobias, 18.05.2015. </remarks>
@@ -138,6 +122,12 @@ namespace P2DE
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool UnloadSpritesheetBitmap();
+			/// <summary>	Reload the spritesheet bitmap. Mostly used after unloading the spritesheet bitmap. </summary>
+			///
+			/// <remarks>	Tobias, 18.05.2015. </remarks>
+			///
+			/// <returns>	true if it succeeds, false if it fails. </returns>
+			bool ReloadSpritesheetBitmap();
 
 			/// <summary>	Draws a frame of the spritesheet by use of the frameId. Rotates around a certain Point.</summary>
 			///
@@ -187,13 +177,6 @@ namespace P2DE
 			void DrawFrameCenterRotated(D2D1_POINT_2F dest, D2D1_RECT_F source, D2D1_POINT_2F scale = { 1, 1 }, D2D1::ColorF color = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), float rotateDegree = 0.0f, SPRITE_FLIP_MODE flipMode = SPRITE_FLIP_MODE::NONE, const SPRITE_INTERPOLATION_MODE& interpolationMode = SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 
 			private:
-			/// <summary>	Reload the spritesheet bitmap. Mostly used after unloading the spritesheet bitmap. </summary>
-			///
-			/// <remarks>	Tobias, 18.05.2015. </remarks>
-			///
-			/// <returns>	true if it succeeds, false if it fails. </returns>
-			bool ReloadSpritesheetBitmap();
-
 			/// <summary>	Gets cached intermediate image with dimensions of the region. And copys pixels into the cached image if it exists or creates a new image and copys the pixels. </summary>
 			///
 			/// <remarks>	Tobias, 28.05.2015. </remarks>

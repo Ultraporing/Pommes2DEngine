@@ -83,6 +83,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\ImageProperties.h" />
     <ClInclude Include="P2DE\Game\BaseGame.h" />
     <ClInclude Include="P2DE\GFX\Camera.h" />
     <ClInclude Include="P2DE\GFX\Graphics.h" />
@@ -92,6 +93,9 @@
     <ClInclude Include="P2DE\Utilities\ComHelpers.h" />
     <ClInclude Include="P2DE\Utilities\ComPtr.h" />
     <ClInclude Include="P2DE\Input\XboxController.h" />
+    <ClInclude Include="P2DE\GFX\SpritesheetAtlas.h" />
+    <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\SpriteFlipMode.h" />
+    <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\SpriteInterpolationMode.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P2DE\GFX\Camera.cpp" />
@@ -100,6 +104,7 @@
     <ClCompile Include="P2DE\Input\InputManager.cpp" />
     <ClCompile Include="P2DE\Timing\HrTimer.cpp" />
     <ClCompile Include="P2DE\Input\XboxController.cpp" />
+    <ClCompile Include="P2DE\GFX\SpritesheetAtlas.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

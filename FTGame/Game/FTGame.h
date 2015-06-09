@@ -24,12 +24,12 @@ namespace FTGame
 			P2DE::GFX::Graphics* m_Graphics;
 			P2DE::GFX::Camera m_Camera;
 
-			bool LoadResources() override;
-			bool UnloadResources() override;
-
 		public:
 			FTGame(P2DE::GFX::Graphics* gfx, HWND hWndGamewindow);
 			~FTGame();
+
+			bool LoadResources() override;
+			bool UnloadResources(bool isGameEnd) override;
 
 			void Render();
 			// if returns TRUE signal gameloop to stop
