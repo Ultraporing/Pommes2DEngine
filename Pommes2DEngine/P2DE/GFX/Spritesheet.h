@@ -130,6 +130,11 @@ namespace P2DE
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool ReloadSpritesheetBitmap();
 
+			/// <summary>	Draw frame. </summary>
+			///
+			/// <remarks>	Tobias, 09.06.2015. </remarks>
+			///
+			/// <param name="imageProperties">	[in] If non-null, the image properties. </param>
 			void DrawFrame(BaseImageProperties* imageProperties);
 
 			private:

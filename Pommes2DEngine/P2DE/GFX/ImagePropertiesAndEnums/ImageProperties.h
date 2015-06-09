@@ -8,6 +8,9 @@ namespace P2DE
 {
 	namespace GFX
 	{
+		/// <summary>	A base image properties. </summary>
+		///
+		/// <remarks>	Tobias, 09.06.2015. </remarks>
 		class BaseImageProperties
 		{
 			public:
@@ -25,6 +28,9 @@ namespace P2DE
 			virtual ~BaseImageProperties(){};
 		};
 
+		/// <summary>	Image Properties using an SourceImageRect, inheriting from BaseImageProperties. </summary>
+		///
+		/// <remarks>	Tobias, 09.06.2015. </remarks>
 		class ImagePropertiesR : public BaseImageProperties
 		{
 			public:
@@ -44,6 +50,9 @@ namespace P2DE
 				SPRITE_INTERPOLATION_MODE interpolationMode);
 		};
 
+		/// <summary>	Image Properties using an SourceFrameIdx, inheriting from BaseImageProperties. </summary>
+		///
+		/// <remarks>	Tobias, 09.06.2015. </remarks>
 		class ImagePropertiesI : public BaseImageProperties
 		{
 			public:
