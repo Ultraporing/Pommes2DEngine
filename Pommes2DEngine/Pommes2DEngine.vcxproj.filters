@@ -26,6 +26,9 @@
     <Filter Include="Source Files\Pommes 2D Engine\Graphics\ImagePropertiesAndEnums">
       <UniqueIdentifier>{196da819-b2ed-4f8d-b120-e8254cdba60e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Pommes 2D Engine\FileIO">
+      <UniqueIdentifier>{b73ce40f-2d34-4363-99e6-1151b342ff11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="P2DE\GFX\Camera.h">
@@ -66,6 +69,12 @@
     </ClInclude>
     <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\ImageProperties.h">
       <Filter>Source Files\Pommes 2D Engine\Graphics\ImagePropertiesAndEnums</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\FileIO\SerializeableData.h">
+      <Filter>Source Files\Pommes 2D Engine\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\FileIO\DataTypeConverter.h">
+      <Filter>Source Files\Pommes 2D Engine\FileIO</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

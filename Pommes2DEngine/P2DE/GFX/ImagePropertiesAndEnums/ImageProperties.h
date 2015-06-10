@@ -3,6 +3,13 @@
 #include <string>
 #include "SpriteFlipMode.h"
 #include "SpriteInterpolationMode.h"
+#include "../../FileIO/SerializeableData.h"
+
+// Align Data to Byte boundaries, needed because of file reading
+#ifdef WIN32
+#pragma pack(push)
+#endif
+#pragma pack(1)
 
 namespace P2DE
 {
@@ -30,7 +37,7 @@ namespace P2DE
 		/// <summary>	Image Properties using an SourceImageRect, inheriting from BaseImageProperties. </summary>
 		///
 		/// <remarks>	Tobias, 09.06.2015. </remarks>
-		class ImagePropertiesR : public BaseImageProperties
+		class ImagePropertiesR : public BaseImageProperties, public P2DE::FILEIO::SerializeableData
 		{
 			public:
 			D2D1_RECT_F m_SourceImageRect;
@@ -46,12 +53,15 @@ namespace P2DE
 				D2D1_POINT_2F rotatePoint,
 				SPRITE_FLIP_MODE flipMode,
 				SPRITE_INTERPOLATION_MODE interpolationMode);
+
+			void WriteToBinary(std::vector<byte>* outputData) override;
+			static ImagePropertiesR ReadFromBinary(std::vector<byte>* inputData);
 		};
 
 		/// <summary>	Image Properties using an SourceFrameIdx, inheriting from BaseImageProperties. </summary>
 		///
 		/// <remarks>	Tobias, 09.06.2015. </remarks>
-		class ImagePropertiesI : public BaseImageProperties
+		class ImagePropertiesI : public BaseImageProperties, public P2DE::FILEIO::SerializeableData
 		{
 			public:
 			unsigned int m_SourceFrameIdx;
@@ -67,6 +77,16 @@ namespace P2DE
 				D2D1_POINT_2F rotatePoint,
 				SPRITE_FLIP_MODE flipMode,
 				SPRITE_INTERPOLATION_MODE interpolationMode);
+
+			void WriteToBinary(std::vector<byte>* outputData) override;
+			static ImagePropertiesI ReadFromBinary(std::vector<byte>* inputData);
 		};
 	}
 }
+
+#ifdef WIN32
+#pragma pack(pop)
+#endif
+#ifdef LINUX
+#pragma pack()
+#endif
