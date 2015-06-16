@@ -79,6 +79,9 @@
     <ClInclude Include="P2DE\FileIO\FileAndDatastructureIDs.h">
       <Filter>Source Files\Pommes 2D Engine\FileIO</Filter>
     </ClInclude>
+    <ClInclude Include="P2DE\FileIO\FileIO.h">
+      <Filter>Source Files\Pommes 2D Engine\FileIO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P2DE\GFX\Camera.cpp">
@@ -104,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="P2DE\GFX\ImagePropertiesAndEnums\ImageProperties.cpp">
       <Filter>Source Files\Pommes 2D Engine\Graphics\ImagePropertiesAndEnums</Filter>
+    </ClCompile>
+    <ClCompile Include="P2DE\FileIO\FileIO.cpp">
+      <Filter>Source Files\Pommes 2D Engine\FileIO</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

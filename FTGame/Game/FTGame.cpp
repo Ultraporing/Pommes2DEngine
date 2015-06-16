@@ -2,8 +2,9 @@
 #include <sstream>
 #include <P2DE\GFX\Graphics.h>
 #include <P2DE\Utilities\ComPtr.h>
-#include "P2DE\GFX\SpritesheetAtlas.h"
-#include "P2DE\Input\InputManager.h"
+#include <P2DE\GFX\SpritesheetAtlas.h>
+#include <P2DE\Input\InputManager.h>
+#include <P2DE\FileIO\FileIO.h>
 
 namespace FTGame
 {
@@ -54,9 +55,9 @@ namespace FTGame
 	static float rotation = 0.0f;
 	static int flip = P2DE::GFX::SPRITE_FLIP_MODE::NONE;
 
-	static P2DE::GFX::ImagePropertiesI test1 = P2DE::GFX::ImagePropertiesI();
-	static P2DE::GFX::ImagePropertiesR test2 = P2DE::GFX::ImagePropertiesR();
-	static P2DE::GFX::ImagePropertiesR test3 = P2DE::GFX::ImagePropertiesR();
+	static P2DE::GFX::ImagePropertiesI test1 = P2DE::GFX::ImagePropertiesI(L"roguelikeSheet", 70, D2D1::Point2F(2.0f, 2.0f), D2D1::ColorF(color), 90.0f, true, D2D1::Point2F(), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
+	static P2DE::GFX::ImagePropertiesR test2 = P2DE::GFX::ImagePropertiesR(L"roguelikeSheet", D2D1::RectF(16, 102, 32, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, false, D2D1::Point2F(8, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
+	static P2DE::GFX::ImagePropertiesR test3 = P2DE::GFX::ImagePropertiesR(L"roguelikeSheet", D2D1::RectF(0, 102, 16, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, false, D2D1::Point2F(8, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 
 	static P2DE::GFX::ImagePropertiesI testRead = P2DE::GFX::ImagePropertiesI();
 
@@ -72,15 +73,8 @@ namespace FTGame
 
 		m_Graphics->DrawFilledCircle(0, 0, 100, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, 1.0f);
 
-		test1 = P2DE::GFX::ImagePropertiesI(L"roguelikeSheet", 70, D2D1::Point2F(2.0f, 2.0f), D2D1::ColorF(color), 90.0f, true, D2D1::Point2F(), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
-		test1.WriteToBinary(&testData);
-		P2DE::GFX::ImagePropertiesI::ReadFromBinary(&testData, testRead);
 		P2DE::GFX::SpritesheetAtlas::DrawFrame(D2D1::Point2F(200, 200), &test1);
-
-		test2 = P2DE::GFX::ImagePropertiesR(L"roguelikeSheet", D2D1::RectF(16, 102, 32, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, false, D2D1::Point2F(8, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 		P2DE::GFX::SpritesheetAtlas::DrawFrame(D2D1::Point2F(300, 200), &test2);
-
-		test3 = P2DE::GFX::ImagePropertiesR(L"roguelikeSheet", D2D1::RectF(0, 102, 16, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, false, D2D1::Point2F(8, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 		P2DE::GFX::SpritesheetAtlas::DrawFrame(D2D1::Point2F(300, 100), &test3);
 		
 		//sheet.DrawFrameCenterRotated(D2D1::Point2F(100, 100), 2, D2D1::Point2F(scale, scale), D2D1::ColorF(1.0f, 1.0f, 1.0f), rotation, (P2DE::GFX::SPRITE_FLIP_MODE)flip, false);
@@ -137,6 +131,10 @@ namespace FTGame
 			rotation -= 1.0f;
 			if (rotation < 0.0f)
 				rotation = 360.0f;
+
+			test1.m_RotateDegree = rotation;
+			test2.m_RotateDegree = rotation;
+			test3.m_RotateDegree = rotation;
 		}
 
 		if (P2DE::INPUT::InputManager::IsKeyDown(VK_KEY_S))
@@ -144,6 +142,10 @@ namespace FTGame
 			rotation += 1.0f;
 			if (rotation > 360.0f)
 				rotation = 0;
+
+			test1.m_RotateDegree = rotation;
+			test2.m_RotateDegree = rotation;
+			test3.m_RotateDegree = rotation;
 		}
 
 		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_D))
@@ -155,16 +157,28 @@ namespace FTGame
 		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_X))
 		{
 			flip |= P2DE::GFX::SPRITE_FLIP_MODE::HORIZONTAL;
+
+			test1.m_FlipMode = (P2DE::GFX::SPRITE_FLIP_MODE)flip;
+			test2.m_FlipMode = (P2DE::GFX::SPRITE_FLIP_MODE)flip;
+			test3.m_FlipMode = (P2DE::GFX::SPRITE_FLIP_MODE)flip;
 		}
 
 		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_C))
 		{
 			flip |= P2DE::GFX::SPRITE_FLIP_MODE::VERTICAL;
+
+			test1.m_FlipMode = (P2DE::GFX::SPRITE_FLIP_MODE)flip;
+			test2.m_FlipMode = (P2DE::GFX::SPRITE_FLIP_MODE)flip;
+			test3.m_FlipMode = (P2DE::GFX::SPRITE_FLIP_MODE)flip;
 		}
 
 		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_V))
 		{
 			flip = P2DE::GFX::SPRITE_FLIP_MODE::NONE;
+
+			test1.m_FlipMode = (P2DE::GFX::SPRITE_FLIP_MODE)flip;
+			test2.m_FlipMode = (P2DE::GFX::SPRITE_FLIP_MODE)flip;
+			test3.m_FlipMode = (P2DE::GFX::SPRITE_FLIP_MODE)flip;
 		}
 
 		if (P2DE::INPUT::InputManager::IsMousewheelScrollUp())
@@ -202,6 +216,21 @@ namespace FTGame
 			{
 				P2DE::INPUT::InputManager::GetController(1)->Vibrate(0, 0);
 			}
+		}
+
+		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_6))
+		{
+			P2DE::GFX::ImagePropertiesI blerg2 = test1;
+			blerg2.m_Color = D2D1::ColorF(D2D1::ColorF::BlueViolet);
+			blerg2.WriteToBinary(&testData);
+			P2DE::FILEIO::FileIO::SaveBinaryFile(L"testData.bin", &testData);
+			testData.clear();
+		}
+
+		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_7))
+		{
+			P2DE::FILEIO::FileIO::ReadBinaryFile(L"testData.bin", &testData);
+			P2DE::GFX::ImagePropertiesI::ReadFromBinary(&testData, test1);
 		}
 
 		P2DE::INPUT::InputManager::ResetMousewheelState();
