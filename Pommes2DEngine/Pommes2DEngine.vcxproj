@@ -83,6 +83,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="P2DE\FileIO\FileAndDatastructureIDs.h" />
     <ClInclude Include="P2DE\FileIO\DataTypeConverter.h" />
     <ClInclude Include="P2DE\FileIO\SerializeableData.h" />
     <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\ImageProperties.h" />

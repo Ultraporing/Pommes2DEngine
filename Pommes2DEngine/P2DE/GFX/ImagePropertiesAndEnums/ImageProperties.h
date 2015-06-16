@@ -37,7 +37,7 @@ namespace P2DE
 		/// <summary>	Image Properties using an SourceImageRect, inheriting from BaseImageProperties. </summary>
 		///
 		/// <remarks>	Tobias, 09.06.2015. </remarks>
-		class ImagePropertiesR : public BaseImageProperties, public P2DE::FILEIO::SerializeableData
+		class ImagePropertiesR : public BaseImageProperties, public P2DE::FILEIO::SerializeableDataStructure
 		{
 			public:
 			D2D1_RECT_F m_SourceImageRect;
@@ -55,13 +55,14 @@ namespace P2DE
 				SPRITE_INTERPOLATION_MODE interpolationMode);
 
 			void WriteToBinary(std::vector<byte>* outputData) override;
-			static ImagePropertiesR ReadFromBinary(std::vector<byte>* inputData);
+			void InitDatastructureIDs() override;
+			static bool ReadFromBinary(std::vector<byte>* inputData, ImagePropertiesR& readImageProperties);
 		};
 
 		/// <summary>	Image Properties using an SourceFrameIdx, inheriting from BaseImageProperties. </summary>
 		///
 		/// <remarks>	Tobias, 09.06.2015. </remarks>
-		class ImagePropertiesI : public BaseImageProperties, public P2DE::FILEIO::SerializeableData
+		class ImagePropertiesI : public BaseImageProperties, public P2DE::FILEIO::SerializeableDataStructure
 		{
 			public:
 			unsigned int m_SourceFrameIdx;
@@ -79,7 +80,8 @@ namespace P2DE
 				SPRITE_INTERPOLATION_MODE interpolationMode);
 
 			void WriteToBinary(std::vector<byte>* outputData) override;
-			static ImagePropertiesI ReadFromBinary(std::vector<byte>* inputData);
+			void InitDatastructureIDs() override;
+			static bool ReadFromBinary(std::vector<byte>* inputData, ImagePropertiesI& readImageProperties);
 		};
 	}
 }

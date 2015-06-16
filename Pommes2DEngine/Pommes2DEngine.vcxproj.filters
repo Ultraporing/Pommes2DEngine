@@ -76,6 +76,9 @@
     <ClInclude Include="P2DE\FileIO\DataTypeConverter.h">
       <Filter>Source Files\Pommes 2D Engine\FileIO</Filter>
     </ClInclude>
+    <ClInclude Include="P2DE\FileIO\FileAndDatastructureIDs.h">
+      <Filter>Source Files\Pommes 2D Engine\FileIO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P2DE\GFX\Camera.cpp">

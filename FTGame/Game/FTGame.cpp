@@ -58,6 +58,8 @@ namespace FTGame
 	static P2DE::GFX::ImagePropertiesR test2 = P2DE::GFX::ImagePropertiesR();
 	static P2DE::GFX::ImagePropertiesR test3 = P2DE::GFX::ImagePropertiesR();
 
+	static P2DE::GFX::ImagePropertiesI testRead = P2DE::GFX::ImagePropertiesI();
+
 	static std::vector<byte> testData;
 
 	void FTGame::Render()
@@ -72,7 +74,7 @@ namespace FTGame
 
 		test1 = P2DE::GFX::ImagePropertiesI(L"roguelikeSheet", 70, D2D1::Point2F(2.0f, 2.0f), D2D1::ColorF(color), 90.0f, true, D2D1::Point2F(), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 		test1.WriteToBinary(&testData);
-		P2DE::GFX::ImagePropertiesI::ReadFromBinary(&testData);
+		P2DE::GFX::ImagePropertiesI::ReadFromBinary(&testData, testRead);
 		P2DE::GFX::SpritesheetAtlas::DrawFrame(D2D1::Point2F(200, 200), &test1);
 
 		test2 = P2DE::GFX::ImagePropertiesR(L"roguelikeSheet", D2D1::RectF(16, 102, 32, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, false, D2D1::Point2F(8, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);

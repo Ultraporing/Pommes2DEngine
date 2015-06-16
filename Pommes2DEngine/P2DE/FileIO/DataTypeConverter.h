@@ -60,6 +60,30 @@ namespace P2DE
 				return bufferOut;
 			}
 
+			static std::vector<unsigned char> ConvertToByteVector(D2D1_RECT_F rect)
+			{
+				std::vector<unsigned char> bufferOut;
+				std::vector<unsigned char> buffer;
+
+				// convert left
+				buffer = P2DE::FILEIO::DataTypeConverter::ConvertToByteVector<float>(rect.left);
+				bufferOut.insert(bufferOut.end(), buffer.begin(), buffer.end());
+
+				// convert bottom
+				buffer = P2DE::FILEIO::DataTypeConverter::ConvertToByteVector<float>(rect.bottom);
+				bufferOut.insert(bufferOut.end(), buffer.begin(), buffer.end());
+
+				// convert right
+				buffer = P2DE::FILEIO::DataTypeConverter::ConvertToByteVector<float>(rect.right);
+				bufferOut.insert(bufferOut.end(), buffer.begin(), buffer.end());
+
+				// convert top
+				buffer = P2DE::FILEIO::DataTypeConverter::ConvertToByteVector<float>(rect.top);
+				bufferOut.insert(bufferOut.end(), buffer.begin(), buffer.end());
+
+				return bufferOut;
+			}
+
 			static std::vector<unsigned char> ConvertToByteVector(std::wstring wString)
 			{
 				std::vector<unsigned char> bufferOut;
@@ -97,6 +121,51 @@ namespace P2DE
 				return std::wstring(reinterpret_cast<wchar_t*>(buffer.data()), buffer.size() / sizeof(wchar_t));
 			}
 
+			template<>
+			static D2D1_POINT_2F ConvertByteVectorToType<D2D1_POINT_2F>(std::vector<unsigned char> data, std::vector<byte>::const_iterator* dataBegin)
+			{
+				D2D1_POINT_2F val;
+				val.x = ConvertByteVectorToType<float>(data, dataBegin);
+				val.y = ConvertByteVectorToType<float>(data, dataBegin);
+
+				return val;
+			}
+
+			template<>
+			static D2D1_COLOR_F ConvertByteVectorToType<D2D1_COLOR_F>(std::vector<unsigned char> data, std::vector<byte>::const_iterator* dataBegin)
+			{
+				D2D1_COLOR_F col;
+				col.r = ConvertByteVectorToType<float>(data, dataBegin);
+				col.g = ConvertByteVectorToType<float>(data, dataBegin);
+				col.b = ConvertByteVectorToType<float>(data, dataBegin);
+				col.a = ConvertByteVectorToType<float>(data, dataBegin);
+
+				return col;
+			}
+
+			template<>
+			static P2DE::GFX::SPRITE_FLIP_MODE ConvertByteVectorToType<P2DE::GFX::SPRITE_FLIP_MODE>(std::vector<unsigned char> data, std::vector<byte>::const_iterator* dataBegin)
+			{
+				return (P2DE::GFX::SPRITE_FLIP_MODE)ConvertByteVectorToType<int>(data, dataBegin);
+			}
+
+			template<>
+			static P2DE::GFX::SPRITE_INTERPOLATION_MODE ConvertByteVectorToType<P2DE::GFX::SPRITE_INTERPOLATION_MODE>(std::vector<unsigned char> data, std::vector<byte>::const_iterator* dataBegin)
+			{
+				return (P2DE::GFX::SPRITE_INTERPOLATION_MODE)ConvertByteVectorToType<int>(data, dataBegin);
+			}
+
+			template<>
+			static D2D1_RECT_F ConvertByteVectorToType<D2D1_RECT_F>(std::vector<unsigned char> data, std::vector<byte>::const_iterator* dataBegin)
+			{
+				D2D1_RECT_F rec;
+				rec.left = ConvertByteVectorToType<float>(data, dataBegin);
+				rec.bottom = ConvertByteVectorToType<float>(data, dataBegin);
+				rec.right = ConvertByteVectorToType<float>(data, dataBegin);
+				rec.top = ConvertByteVectorToType<float>(data, dataBegin);
+
+				return rec;
+			}
 		};
 	}
 }
