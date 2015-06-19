@@ -55,11 +55,11 @@ namespace FTGame
 	static float rotation = 0.0f;
 	static int flip = P2DE::GFX::SPRITE_FLIP_MODE::NONE;
 
-	static P2DE::GFX::ImagePropertiesI test1 = P2DE::GFX::ImagePropertiesI(L"roguelikeSheet", 70, D2D1::Point2F(2.0f, 2.0f), D2D1::ColorF(color), 90.0f, true, D2D1::Point2F(), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
-	static P2DE::GFX::ImagePropertiesR test2 = P2DE::GFX::ImagePropertiesR(L"roguelikeSheet", D2D1::RectF(16, 102, 32, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, false, D2D1::Point2F(8, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
-	static P2DE::GFX::ImagePropertiesR test3 = P2DE::GFX::ImagePropertiesR(L"roguelikeSheet", D2D1::RectF(0, 102, 16, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, false, D2D1::Point2F(8, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
+	static P2DE::GFX::ImageProperties test1 = P2DE::GFX::ImageProperties(L"roguelikeSheet", 70, D2D1::RectF(0, 0, 0,0), D2D1::Point2F(2.0f, 2.0f), D2D1::ColorF(color), 90.0f, true, D2D1::Point2F(), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
+	static P2DE::GFX::ImageProperties test2 = P2DE::GFX::ImageProperties(L"roguelikeSheet", 0, D2D1::RectF(16, 102, 32, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, false, D2D1::Point2F(8, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
+	static P2DE::GFX::ImageProperties test3 = P2DE::GFX::ImageProperties(L"roguelikeSheet", 0, D2D1::RectF(0, 102, 16, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, false, D2D1::Point2F(8, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 
-	static P2DE::GFX::ImagePropertiesI testRead = P2DE::GFX::ImagePropertiesI();
+	static P2DE::GFX::ImageProperties testRead = P2DE::GFX::ImageProperties();
 
 	static std::vector<byte> testData;
 
@@ -220,7 +220,7 @@ namespace FTGame
 
 		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_6))
 		{
-			P2DE::GFX::ImagePropertiesI blerg2 = test1;
+			P2DE::GFX::ImageProperties blerg2 = test1;
 			blerg2.m_Color = D2D1::ColorF(D2D1::ColorF::BlueViolet);
 			blerg2.WriteToBinary(&testData);
 			P2DE::FILEIO::FileIO::SaveBinaryFile(L"testData.bin", &testData);
@@ -230,7 +230,41 @@ namespace FTGame
 		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_7))
 		{
 			P2DE::FILEIO::FileIO::ReadBinaryFile(L"testData.bin", &testData);
-			P2DE::GFX::ImagePropertiesI::ReadFromBinary(&testData, test1);
+			P2DE::GFX::ImageProperties::ReadFromBinary(&testData, &testData.begin(), NULL, test1);
+		}
+
+		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_4))
+		{
+			std::vector<P2DE::GFX::ImageProperties> vec;
+
+			P2DE::GFX::ImageProperties blerg2 = test1;
+			blerg2.m_Color = D2D1::ColorF(D2D1::ColorF::Crimson);
+			vec.push_back(blerg2);
+
+			blerg2 = test2;
+			blerg2.m_Color = D2D1::ColorF(D2D1::ColorF::MediumBlue);
+			vec.push_back(blerg2);
+
+			blerg2 = test3;
+			blerg2.m_Color = D2D1::ColorF(D2D1::ColorF::Crimson);
+			vec.push_back(blerg2);
+			
+
+			P2DE::GFX::ImageProperties::WriteMultipleToBinary(&testData, &vec);
+
+			//blerg2.WriteToBinary(&testData);
+			P2DE::FILEIO::FileIO::SaveBinaryFile(L"testData.bin", &testData);
+			testData.clear();
+		}
+
+		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_5))
+		{
+			std::vector<P2DE::GFX::ImageProperties> vec;
+			P2DE::FILEIO::FileIO::ReadBinaryFile(L"testData.bin", &testData);
+			P2DE::GFX::ImageProperties::ReadMultipleFromBinary(&testData, vec);
+			test1 = vec[0];
+			test2 = vec[1];
+			test3 = vec[2];
 		}
 
 		P2DE::INPUT::InputManager::ResetMousewheelState();

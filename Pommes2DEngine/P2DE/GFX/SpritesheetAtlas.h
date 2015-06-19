@@ -26,7 +26,7 @@ namespace P2DE
 			static Spritesheet* GetSpritesheet(const std::wstring& spritesheetIdentifierName);
 			static void ShutdownAtlas();
 
-			static void DrawFrame(D2D1_POINT_2F position, BaseImageProperties* imageProperties);
+			static void DrawFrame(D2D1_POINT_2F position, ImageProperties* imageProperties);
 		};
 	}
 }

@@ -48,7 +48,7 @@ void SpritesheetAtlas::ShutdownAtlas()
 	m_SpritesheetAtlasMap.clear();
 }
 
-void SpritesheetAtlas::DrawFrame(D2D1_POINT_2F position, BaseImageProperties* imageProperties)
+void SpritesheetAtlas::DrawFrame(D2D1_POINT_2F position, ImageProperties* imageProperties)
 {
 	GetSpritesheet(imageProperties->m_SpritesheetName)->DrawFrame(position, imageProperties);
 }
