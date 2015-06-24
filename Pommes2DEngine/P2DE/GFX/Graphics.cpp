@@ -1,7 +1,9 @@
 #include "Graphics.h"
 #include <memory>
 #include <d3d11.h>
-#include <DXGI1_2.h>
+#include <dxgi1_2.h>
+#include <comdef.h>
+#include <sstream>
 #include "..\Utilities\ComHelpers.h"
 
 using namespace P2DE::GFX;
@@ -56,24 +58,53 @@ bool Graphics::Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx)
 
 	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &m_Factory);
 	if (hr != S_OK)
+	{
+		std::wstringstream wss;
+		wss << L"Failed to Init Graphics, D2D1CreateFactory. Error: " << _com_error(hr).ErrorMessage();
+		MessageBox(NULL, wss.str().c_str(), L"Graphics Init Failed!", MB_OK);
 		return false;
+	}
+		
 
 	hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, creationFlags, featureLevels, ARRAYSIZE(featureLevels), D3D11_SDK_VERSION, &m_D3D11Device, &m_FeatureLevel, &m_D3D11DeviceContext);
 	if (hr != S_OK)
+	{
+		std::wstringstream wss;
+		wss << L"Failed to Init Graphics, D3D11CreateDevice. Error: " << _com_error(hr).ErrorMessage();
+		MessageBox(NULL, wss.str().c_str(), L"Graphics Init Failed!", MB_OK);
 		return false;
+	}
+		
 
 	P2DE::UTILITIES::ComPtr<IDXGIDevice> dxgiDevice;
 	hr = m_D3D11Device.QueryInterface<IDXGIDevice>(&dxgiDevice);
 	if (hr != S_OK)
+	{
+		std::wstringstream wss;
+		wss << L"Failed to Init Graphics, m_D3D11Device.QueryInterface. Error: " << _com_error(hr).ErrorMessage();
+		MessageBox(NULL, wss.str().c_str(), L"Graphics Init Failed!", MB_OK);
 		return false;
-
+	}
+		
 	hr = m_Factory->CreateDevice(dxgiDevice, &m_D2D1Device);
 	if (hr != S_OK)
+	{
+		std::wstringstream wss;
+		wss << L"Failed to Init Graphics, CreateDevice. Error: " << _com_error(hr).ErrorMessage();
+		MessageBox(NULL, wss.str().c_str(), L"Graphics Init Failed!", MB_OK);
 		return false;
+	}
+		
 
 	hr = m_D2D1Device->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_ENABLE_MULTITHREADED_OPTIMIZATIONS, &m_D2D1DeviceContext);
 	if (hr != S_OK)
+	{
+		std::wstringstream wss;
+		wss << L"Failed to Init Graphics, CreateDevice. Error: " << _com_error(hr).ErrorMessage();
+		MessageBox(NULL, wss.str().c_str(), L"Graphics Init Failed!", MB_OK);
 		return false;
+	}
+		
 
 	// Allocate a descriptor.
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc = { 0 };
@@ -85,32 +116,56 @@ bool Graphics::Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx)
 	swapChainDesc.SampleDesc.Quality = 0;
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	swapChainDesc.BufferCount = 2;                     // use double buffering to enable flip
-	swapChainDesc.Scaling = DXGI_SCALING_NONE;
-	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL; // all apps must use this SwapEffect
+	swapChainDesc.Scaling = DXGI_SCALING_STRETCH;
+	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD; // all apps must use this SwapEffect
 	swapChainDesc.Flags = 0;
 
 	// Identify the physical adapter (GPU or card) this device is runs on.
 	P2DE::UTILITIES::ComPtr<IDXGIAdapter> dxgiAdapter;
 	hr = dxgiDevice->GetAdapter(&dxgiAdapter);
 	if (hr != S_OK)
+	{
+		std::wstringstream wss;
+		wss << L"Failed to Init Graphics, dxgiDevice->GetAdapter. Error: " << _com_error(hr).ErrorMessage();
+		MessageBox(NULL, wss.str().c_str(), L"Graphics Init Failed!", MB_OK);
 		return false;
+	}
+		
 
 	// Get the factory object that created the DXGI device.
 	P2DE::UTILITIES::ComPtr<IDXGIFactory2> dxgiFactory;
 	hr = dxgiAdapter->GetParent(IID_PPV_ARGS(&dxgiFactory));
 	if (hr != S_OK)
+	{
+		std::wstringstream wss;
+		wss << L"Failed to Init Graphics, dxgiAdapter->GetParent. Error: " << _com_error(hr).ErrorMessage();
+		MessageBox(NULL, wss.str().c_str(), L"Graphics Init Failed!", MB_OK);
 		return false;
+	}
+		
 
 	// Get the final swap chain for this window from the DXGI factory.
 	hr = dxgiFactory->CreateSwapChainForHwnd(m_D3D11Device, hWnd, &swapChainDesc, nullptr, nullptr, &m_SwapChain);
 	if (hr != S_OK)
+	{
+		std::wstringstream wss;
+		wss << L"Failed to Init Graphics, CreateSwapChainForHwnd. Error: " << _com_error(hr).ErrorMessage();
+		MessageBox(NULL, wss.str().c_str(), L"Graphics Init Failed!", MB_OK);
 		return false;
+	}
+		
 
 	// Get the backbuffer for this window which is be the final 3D render target.
 	P2DE::UTILITIES::ComPtr<ID3D11Texture2D> backBuffer;
 	hr = m_SwapChain->GetBuffer(0, IID_PPV_ARGS(&backBuffer));
 	if (hr != S_OK)
+	{
+		std::wstringstream wss;
+		wss << L"Failed to Init Graphics, m_SwapChain->GetBuffer backBuffer. Error: " << _com_error(hr).ErrorMessage();
+		MessageBox(NULL, wss.str().c_str(), L"Graphics Init Failed!", MB_OK);
 		return false;
+	}
+		
 
 	// Now we set up the Direct2D render target bitmap linked to the swapchain. 
 	// Whenever we render to this bitmap, it is directly rendered to the 
@@ -124,12 +179,24 @@ bool Graphics::Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx)
 	P2DE::UTILITIES::ComPtr<IDXGISurface> dxgiBackBuffer;
 	hr = m_SwapChain->GetBuffer(0, IID_PPV_ARGS(&dxgiBackBuffer));
 	if (hr != S_OK)
+	{
+		std::wstringstream wss;
+		wss << L"Failed to Init Graphics, m_SwapChain->GetBuffer dxgiBackBuffer. Error: " << _com_error(hr).ErrorMessage();
+		MessageBox(NULL, wss.str().c_str(), L"Graphics Init Failed!", MB_OK);
 		return false;
+	}
+		
 
 	// Get a D2D surface from the DXGI back buffer to use as the D2D render target.
 	hr = m_D2D1DeviceContext->CreateBitmapFromDxgiSurface(dxgiBackBuffer, &bitmapProperties, &m_D2D1TargetBitmap);
 	if (hr != S_OK)
+	{
+		std::wstringstream wss;
+		wss << L"Failed to Init Graphics, CreateBitmapFromDxgiSurface. Error: " << _com_error(hr).ErrorMessage();
+		MessageBox(NULL, wss.str().c_str(), L"Graphics Init Failed!", MB_OK);
 		return false;
+	}
+		
 
 	// Now we can set the Direct2D render target.
 	m_D2D1DeviceContext->SetTarget(m_D2D1TargetBitmap);

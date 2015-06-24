@@ -1,4 +1,5 @@
 #include "FileIO.h"
+#include <iterator>
 #include <fstream>
 
 using namespace P2DE::FILEIO;
@@ -15,11 +16,10 @@ bool FileIO::ReadBinaryFile(std::wstring filePath, std::vector<unsigned char>* o
 
 	// get file length
 	file.seekg(0, file.end);
-	std::size_t fileLength = file.tellg();
+	std::streampos fileLength = file.tellg();
 	file.seekg(0, file.beg);
 
-	std::vector<unsigned char> buffer = std::vector<unsigned char>(fileLength);
-
+	std::vector<unsigned char> buffer = std::vector<unsigned char>((unsigned int)fileLength);
 	buffer.insert(buffer.begin(),
 		std::istream_iterator<unsigned char>(file),
 		std::istream_iterator<unsigned char>());

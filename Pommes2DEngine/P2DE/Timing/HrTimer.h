@@ -35,7 +35,7 @@ namespace P2DE
 			/// <summary>	Defines an alias representing the time point. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
-			typedef std::chrono::system_clock::time_point timePoint;
+			typedef std::chrono::steady_clock::time_point timePoint;
 
 			private:
 			/// <summary>	The last time point. </summary>

@@ -247,7 +247,7 @@ void ImageProperties::WriteMultipleToBinary(std::vector<byte>* outputData, std::
 	// write rest of the image properties if vector got more than 1
 	if (imagePropertiesVector->size() > 1)
 	{
-		for (int i = 1; i < imagePropertiesVector->size(); i++)
+		for (unsigned int i = 1; i < imagePropertiesVector->size(); i++)
 		{
 			imagePropertiesVector->at(i).WriteToBinary(outputData, &imagePropertiesVector->at(i - 1));
 		}

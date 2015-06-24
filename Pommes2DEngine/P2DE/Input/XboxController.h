@@ -3,7 +3,7 @@
 #include <Windows.h>
 #include <Xinput.h>
 
-#pragma comment(lib, "XInput.lib")
+#pragma comment(lib, "Xinput9_1_0.lib")
 
 namespace P2DE
 {
