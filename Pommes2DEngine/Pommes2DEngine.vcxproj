@@ -157,6 +157,7 @@
     <ClInclude Include="P2DE\FileIO\FileAndDatastructureIDs.h" />
     <ClInclude Include="P2DE\FileIO\DataTypeConverter.h" />
     <ClInclude Include="P2DE\FileIO\SerializeableData.h" />
+    <ClInclude Include="P2DE\Game\Minidump.h" />
     <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\ImageProperties.h" />
     <ClInclude Include="P2DE\Game\BaseGame.h" />
     <ClInclude Include="P2DE\GFX\Camera.h" />

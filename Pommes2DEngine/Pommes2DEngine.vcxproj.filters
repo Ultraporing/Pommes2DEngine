@@ -82,6 +82,7 @@
     <ClInclude Include="P2DE\FileIO\FileIO.h">
       <Filter>Source Files\Pommes 2D Engine\FileIO</Filter>
     </ClInclude>
+    <ClInclude Include="P2DE\Game\Minidump.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P2DE\GFX\Camera.cpp">

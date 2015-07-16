@@ -3,68 +3,20 @@
 //=================================================================================== 
 
 #include <Windows.h>
-#include <DbgHelp.h>
-#include <windowsx.h>
 
-#include "Game\FTGame.h"
+#include "Game\Demo.h"
 #include "P2DE\GFX\Graphics.h"
 #include "P2DE\Timing\HrTimer.h"
 #include "P2DE\Input\InputManager.h"
+#include "P2DE\Game\Minidump.h"
 
-FTGame::FTGame* ftGame;
+Demo::Demo* demo;
 P2DE::GFX::Graphics* graphics;
 
-#define WINDOW_TITLE L"Farm Time"
+#define WINDOW_TITLE L"Engine Demo"
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-void make_minidump(EXCEPTION_POINTERS* e)
-{
-	auto hDbgHelp = LoadLibraryA("dbghelp");
-	if (hDbgHelp == nullptr)
-		return;
-	auto pMiniDumpWriteDump = (decltype(&MiniDumpWriteDump))GetProcAddress(hDbgHelp, "MiniDumpWriteDump");
-	if (pMiniDumpWriteDump == nullptr)
-		return;
-
-	char name[MAX_PATH];
-	{
-		auto nameEnd = name + GetModuleFileNameA(GetModuleHandleA(0), name, MAX_PATH);
-		SYSTEMTIME t;
-		GetSystemTime(&t);
-		wsprintfA(nameEnd - strlen(".exe"),
-			"_%4d%02d%02d_%02d%02d%02d.dmp",
-			t.wYear, t.wMonth, t.wDay, t.wHour, t.wMinute, t.wSecond);
-	}
-
-	auto hFile = CreateFileA(name, GENERIC_WRITE, FILE_SHARE_READ, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
-	if (hFile == INVALID_HANDLE_VALUE)
-		return;
-
-	MINIDUMP_EXCEPTION_INFORMATION exceptionInfo;
-	exceptionInfo.ThreadId = GetCurrentThreadId();
-	exceptionInfo.ExceptionPointers = e;
-	exceptionInfo.ClientPointers = FALSE;
-
-	auto dumped = pMiniDumpWriteDump(
-		GetCurrentProcess(),
-		GetCurrentProcessId(),
-		hFile,
-		MINIDUMP_TYPE(MiniDumpWithIndirectlyReferencedMemory | MiniDumpScanMemory),
-		e ? &exceptionInfo : nullptr,
-		nullptr,
-		nullptr);
-
-	CloseHandle(hFile);
-
-	return;
-}
-
-LONG CALLBACK unhandled_handler(EXCEPTION_POINTERS* e)
-{
-	make_minidump(e);
-	return EXCEPTION_CONTINUE_SEARCH;
-}
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -113,8 +65,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return -1;
 	}
 
-	ftGame = NULL;
-	ftGame = new FTGame::FTGame(graphics, hWnd);
+	demo = NULL;
+	demo = new Demo::Demo(graphics, hWnd);
 
 	ShowWindow(hWnd, nCmdShow);
 
@@ -122,7 +74,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	P2DE::TIMING::HrTimer hrTimer;
 
-	while (TRUE && !ftGame->IsGameCrashed())
+	while (TRUE && !demo->IsGameCrashed())
 	{
 		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
@@ -135,15 +87,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		hrTimer.Update();
 
-		if (ftGame->Update(hrTimer.GetDeltaTime())) // Shutdown game if TRUE is returned
+		if (demo->Update(hrTimer.GetDeltaTime())) // Shutdown game if TRUE is returned
 			PostQuitMessage(0);
 
-		ftGame->Render();
+		demo->Render();
 	}
 
 	P2DE::INPUT::InputManager::DeinitializeXboxControllers();
 
-	delete ftGame;
+	delete demo;
 	delete graphics;
 
 	return 0;

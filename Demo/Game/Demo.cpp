@@ -1,4 +1,4 @@
-#include "FTGame.h"
+#include "Demo.h"
 #include <sstream>
 #include <P2DE\GFX\Graphics.h>
 #include <P2DE\Utilities\ComPtr.h>
@@ -6,11 +6,11 @@
 #include <P2DE\Input\InputManager.h>
 #include <P2DE\FileIO\FileIO.h>
 
-namespace FTGame
+namespace Demo
 {
 	P2DE::UTILITIES::ComPtr<ID2D1Effect> colorMatrixFx;
 
-	FTGame::FTGame(P2DE::GFX::Graphics* gfx, HWND hWndGamewindow)
+	Demo::Demo(P2DE::GFX::Graphics* gfx, HWND hWndGamewindow)
 	{
 		m_Graphics = NULL;
 		m_Graphics = gfx;
@@ -23,13 +23,13 @@ namespace FTGame
 		P2DE::INPUT::InputManager::InitXboxControllers();
 	}
 
-	FTGame::~FTGame()
+	Demo::~Demo()
 	{
 		UnloadResources(true);
 		m_Graphics = NULL;
 	}
 
-	bool FTGame::LoadResources()
+	bool Demo::LoadResources()
 	{	
 		if (!P2DE::GFX::SpritesheetAtlas::AddLoadSpritesheet(L"Assets\\Graphics\\Spritesheets\\roguelikeSheet_transparent_Info.txt", m_Graphics))
 			return false;
@@ -37,7 +37,7 @@ namespace FTGame
 		return true;
 	}
 
-	bool FTGame::UnloadResources(bool isGameEnd)
+	bool Demo::UnloadResources(bool isGameEnd)
 	{
 		if (colorMatrixFx)
 			colorMatrixFx.~ComPtr();
@@ -63,7 +63,7 @@ namespace FTGame
 
 	static std::vector<byte> testData;
 
-	void FTGame::Render()
+	void Demo::Render()
 	{
 		if (!m_Graphics->CanDraw())
 			return;
@@ -90,7 +90,7 @@ namespace FTGame
 		m_Graphics->EndDraw();
 	}
 
-	bool FTGame::Update(const float& deltaTime)
+	bool Demo::Update(const float& deltaTime)
 	{
 		int cameraSpeed = 50;
 

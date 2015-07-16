@@ -13,12 +13,12 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\FTGame.cpp">
+    <ClCompile Include="Game\Demo.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game\FTGame.h">
+    <ClInclude Include="Game\Demo.h">
       <Filter>Source Files\Game</Filter>
     </ClInclude>
   </ItemGroup>

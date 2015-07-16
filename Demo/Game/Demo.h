@@ -14,9 +14,9 @@ namespace P2DE
 	}
 }
 
-namespace FTGame
+namespace Demo
 {
-	class FTGame : public P2DE::GAME::BaseGame
+	class Demo : public P2DE::GAME::BaseGame
 	{
 		private:
 			HWND m_hWndGamewindow;
@@ -25,8 +25,8 @@ namespace FTGame
 			P2DE::GFX::Camera m_Camera;
 
 		public:
-			FTGame(P2DE::GFX::Graphics* gfx, HWND hWndGamewindow);
-			~FTGame();
+			Demo(P2DE::GFX::Graphics* gfx, HWND hWndGamewindow);
+			~Demo();
 
 			bool LoadResources() override;
 			bool UnloadResources(bool isGameEnd) override;
