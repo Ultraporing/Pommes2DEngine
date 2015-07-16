@@ -5,6 +5,7 @@
 #include <P2DE\GFX\SpritesheetAtlas.h>
 #include <P2DE\Input\InputManager.h>
 #include <P2DE\FileIO\FileIO.h>
+#include <SFML\Audio.hpp>
 
 namespace Demo
 {
@@ -23,6 +24,10 @@ namespace Demo
 		P2DE::INPUT::InputManager::InitXboxControllers();
 	}
 
+	sf::SoundBuffer buffer;
+	sf::Sound sound;
+	sf::Music music;
+
 	Demo::~Demo()
 	{
 		UnloadResources(true);
@@ -32,6 +37,14 @@ namespace Demo
 	bool Demo::LoadResources()
 	{	
 		if (!P2DE::GFX::SpritesheetAtlas::AddLoadSpritesheet(L"Assets\\Graphics\\Spritesheets\\roguelikeSheet_transparent_Info.txt", m_Graphics))
+			return false;
+
+		if (!buffer.loadFromFile("Assets\\Sound\\Fx\\pew.wav"))
+			return false;
+		else
+			sound.setBuffer(buffer);
+
+		if (!music.openFromFile("Assets\\Sound\\Music\\Dragonforce-Through the Fire and Flames Full Version.ogg"))
 			return false;
 		
 		return true;
@@ -265,6 +278,22 @@ namespace Demo
 			test1 = vec[0];
 			test2 = vec[1];
 			test3 = vec[2];
+		}
+
+		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_U))
+		{
+			if (sound.getStatus() != sf::SoundSource::Status::Playing)
+				sound.play();
+			else
+				sound.stop();
+		}
+		
+		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_I))
+		{
+			if (music.getStatus() != sf::SoundSource::Status::Playing)
+				music.play();
+			else
+				music.stop();
 		}
 
 		P2DE::INPUT::InputManager::ResetMousewheelState();

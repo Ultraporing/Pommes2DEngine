@@ -71,7 +71,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <SourcePath>$(SourcePath)</SourcePath>
-    <IncludePath>..\Pommes2DEngine;$(IncludePath)</IncludePath>
+    <IncludePath>..\Pommes2DEngine;..\Pommes2DEngine\External\SFML\include\;$(IncludePath)</IncludePath>
+    <LibraryPath>..\Pommes2DEngine\External\SFML\lib\;$(VC_LibraryPath_x86);$(UniversalCRT_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -81,7 +82,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <SourcePath>$(SourcePath)</SourcePath>
-    <IncludePath>..\Pommes2DEngine;$(IncludePath)</IncludePath>
+    <IncludePath>..\Pommes2DEngine;..\Pommes2DEngine\External\SFML\include\;$(IncludePath)</IncludePath>
+    <LibraryPath>..\Pommes2DEngine\External\SFML\lib\;$(VC_LibraryPath_x86);$(UniversalCRT_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -100,7 +102,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /i /e /s /y /f "$(ProjectDir)\Assets" "$(OutputPath)\Assets"</Command>
@@ -140,7 +142,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-system.lib;sfml-audio.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /i /e /s /y /f "$(ProjectDir)\Assets" "$(OutputPath)\Assets"</Command>

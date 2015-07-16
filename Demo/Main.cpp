@@ -8,7 +8,7 @@
 #include "P2DE\GFX\Graphics.h"
 #include "P2DE\Timing\HrTimer.h"
 #include "P2DE\Input\InputManager.h"
-#include "P2DE\Game\Minidump.h"
+#include "P2DE\Utilities\Minidump.h"
 
 Demo::Demo* demo;
 P2DE::GFX::Graphics* graphics;
