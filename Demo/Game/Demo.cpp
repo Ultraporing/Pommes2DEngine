@@ -9,7 +9,7 @@
 
 namespace Demo
 {
-	P2DE::UTILITIES::ComPtr<ID2D1Effect> colorMatrixFx;
+	//P2DE::UTILITIES::ComPtr<ID2D1Effect> colorMatrixFx;
 
 	Demo::Demo(P2DE::GFX::Graphics* gfx, HWND hWndGamewindow)
 	{
@@ -36,8 +36,8 @@ namespace Demo
 
 	bool Demo::LoadResources()
 	{	
-		if (!P2DE::GFX::SpritesheetAtlas::AddLoadSpritesheet(L"Assets\\Graphics\\Spritesheets\\roguelikeSheet_transparent_Info.txt", m_Graphics))
-			return false;
+		//if (!P2DE::GFX::SpritesheetAtlas::AddLoadSpritesheet(L"Assets\\Graphics\\Spritesheets\\roguelikeSheet_transparent_Info.txt", m_Graphics))
+		//	return false;
 
 		if (!buffer.loadFromFile("Assets\\Sound\\Fx\\pew.wav"))
 			return false;
@@ -52,28 +52,28 @@ namespace Demo
 
 	bool Demo::UnloadResources(bool isGameEnd)
 	{
-		if (colorMatrixFx)
-			colorMatrixFx.~ComPtr();
-
+		//if (colorMatrixFx)
+		//	colorMatrixFx.~ComPtr();
+/*
 		if (!isGameEnd)
 			P2DE::GFX::SpritesheetAtlas::UnloadSpritesheetBitmaps();
 		else
 			P2DE::GFX::SpritesheetAtlas::ShutdownAtlas();
-
+			*/
 		return true;
 	}
 
 	static float scale = 1.0f;
 	static D2D1::ColorF color = { 1.0f, 1.0f, 1.0f };
 	static float rotation = 0.0f;
-	static int flip = P2DE::GFX::SPRITE_FLIP_MODE::NONE;
-
+	//static int flip = P2DE::GFX::SPRITE_FLIP_MODE::NONE;
+	/*
 	static P2DE::GFX::ImageProperties test1 = P2DE::GFX::ImageProperties(L"roguelikeSheet", 70, D2D1::RectF(0, 0, 0,0), D2D1::Point2F(2.0f, 2.0f), D2D1::ColorF(color), 90.0f, true, D2D1::Point2F(), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 	static P2DE::GFX::ImageProperties test2 = P2DE::GFX::ImageProperties(L"roguelikeSheet", 0, D2D1::RectF(16, 102, 32, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, false, D2D1::Point2F(8, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 	static P2DE::GFX::ImageProperties test3 = P2DE::GFX::ImageProperties(L"roguelikeSheet", 0, D2D1::RectF(0, 102, 16, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, false, D2D1::Point2F(8, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 
 	static P2DE::GFX::ImageProperties testRead = P2DE::GFX::ImageProperties();
-
+	*/
 	static std::vector<byte> testData;
 
 	void Demo::Render()
@@ -82,14 +82,14 @@ namespace Demo
 			return;
 
 		m_Graphics->BeginDraw();
-		m_Graphics->ClearScreen(0.0f, 0.0f, 0.5f);
+		m_Graphics->ClearScreen(1.0f, 0.0f, 0.5f);
 
 		m_Graphics->DrawFilledCircle(0, 0, 100, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, 1.0f);
-
+		/*
 		P2DE::GFX::SpritesheetAtlas::DrawFrame(D2D1::Point2F(200, 200), &test1);
 		P2DE::GFX::SpritesheetAtlas::DrawFrame(D2D1::Point2F(300, 200), &test2);
 		P2DE::GFX::SpritesheetAtlas::DrawFrame(D2D1::Point2F(300, 100), &test3);
-		
+		*/
 		//sheet.DrawFrameCenterRotated(D2D1::Point2F(100, 100), 2, D2D1::Point2F(scale, scale), D2D1::ColorF(1.0f, 1.0f, 1.0f), rotation, (P2DE::GFX::SPRITE_FLIP_MODE)flip, false);
 		//sheet.DrawFramePointRotated(D2D1::Point2F(200, 100), 2, D2D1::Point2F(2.0f, 2.0f), D2D1::ColorF(color), rotation, D2D1::Point2F(0, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, false);
 
@@ -138,7 +138,7 @@ namespace Demo
 			else
 				MessageBox(NULL, L"fail", L"merp", MB_OK);
 		}
-
+		/*
 		if (P2DE::INPUT::InputManager::IsKeyDown(VK_KEY_A))
 		{
 			rotation -= 1.0f;
@@ -160,13 +160,13 @@ namespace Demo
 			test2.m_RotateDegree = rotation;
 			test3.m_RotateDegree = rotation;
 		}
-
+		*/
 		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_D))
 		{
 			m_Graphics->SetGameWindowSize(RECT() = { 0, 0, 1024, 768 });
 			m_Graphics->SetGameWindowPos(POINT() = { 0, 0 });
 		}
-
+		/*
 		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_X))
 		{
 			flip |= P2DE::GFX::SPRITE_FLIP_MODE::HORIZONTAL;
@@ -193,7 +193,7 @@ namespace Demo
 			test2.m_FlipMode = (P2DE::GFX::SPRITE_FLIP_MODE)flip;
 			test3.m_FlipMode = (P2DE::GFX::SPRITE_FLIP_MODE)flip;
 		}
-
+		*/
 		if (P2DE::INPUT::InputManager::IsMousewheelScrollUp())
 		{
 			std::wstringstream s;
@@ -230,7 +230,7 @@ namespace Demo
 				P2DE::INPUT::InputManager::GetController(1)->Vibrate(0, 0);
 			}
 		}
-
+		/*
 		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_6))
 		{
 			P2DE::GFX::ImageProperties blerg2 = test1;
@@ -279,7 +279,7 @@ namespace Demo
 			test2 = vec[1];
 			test3 = vec[2];
 		}
-
+		*/
 		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_U))
 		{
 			if (sound.getStatus() != sf::SoundSource::Status::Playing)

@@ -1,3 +1,4 @@
+/*
 #ifndef SPRITESHEET_ATLAS_H
 #define SPRITESHEET_ATLAS_H
 	#include "ImagePropertiesAndEnums\ImageProperties.h"
@@ -45,3 +46,4 @@
 		}
 	}
 #endif
+*/

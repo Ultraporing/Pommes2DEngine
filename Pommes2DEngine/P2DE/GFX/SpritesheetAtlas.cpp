@@ -1,6 +1,6 @@
 #include "SpritesheetAtlas.h"
 #include "Spritesheet.h"
-
+/*
 using namespace P2DE::GFX;
 
 #ifdef _WIN32
@@ -55,4 +55,4 @@ using namespace P2DE::GFX;
 	}
 #elif __APPLE__
 	// TODO: Mac Code
-#endif
+#endif*/

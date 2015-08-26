@@ -85,6 +85,9 @@
     <ClInclude Include="P2DE\Utilities\Minidump.h">
       <Filter>Source Files\Pommes 2D Engine\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="P2DE\GFX\WICTextureLoader.h">
+      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P2DE\GFX\Camera.cpp">
@@ -113,6 +116,9 @@
     </ClCompile>
     <ClCompile Include="P2DE\FileIO\FileIO.cpp">
       <Filter>Source Files\Pommes 2D Engine\FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="P2DE\GFX\WICTextureLoader.cpp">
+      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

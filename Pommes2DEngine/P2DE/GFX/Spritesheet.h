@@ -6,7 +6,7 @@
 //
 // summary:	Declares the spritesheet class
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
+/*
 #ifndef SPRITESHEET_H
 	#define SPRITESHEET_H
 	#ifdef _WIN32
@@ -263,4 +263,4 @@ namespace P2DE
 		};
 	}
 }
-#endif
+#endif*/

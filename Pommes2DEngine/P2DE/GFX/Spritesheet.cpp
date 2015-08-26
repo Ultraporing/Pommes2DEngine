@@ -3,7 +3,7 @@
 //
 // summary:	Implements the spritesheet class
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
+/*
 #include "Spritesheet.h"
 #include "Graphics.h"
 #ifdef _WIN32
@@ -17,6 +17,7 @@ namespace P2DE
 {
 	namespace GFX
 	{
+		
 		#ifdef _WIN32
 			std::map<std::pair<UINT32, UINT32>, P2DE::UTILITIES::ComPtr<ID2D1Bitmap>> Spritesheet::m_SharedIntermediateImageCache;
 
@@ -357,4 +358,4 @@ namespace P2DE
 			// Mac Code
 		#endif
 	}
-}
+}*/

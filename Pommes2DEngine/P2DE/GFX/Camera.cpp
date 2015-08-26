@@ -25,7 +25,6 @@ using namespace P2DE::GFX;
 	void Camera::SetCameraPos(D2D1_POINT_2F newPos)
 	{
 		m_CameraPos = newPos;
-		m_Graphics->SetViewportTransform(D2D1::Matrix3x2F::Translation(-m_CameraPos.x, -m_CameraPos.y));
 	}
 
 	void Camera::MoveCamera(D2D1_POINT_2F delta)
@@ -33,7 +32,6 @@ using namespace P2DE::GFX;
 		m_CameraPos.x += delta.x;
 		m_CameraPos.y += delta.y;
 
-		m_Graphics->SetViewportTransform(D2D1::Matrix3x2F::Translation(-m_CameraPos.x, -m_CameraPos.y));
 	}
 #elif __APPLE__
 	// TODO: Mac Code

@@ -6,64 +6,66 @@
 // LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND                           
 // FITNESS FOR A PARTICULAR PURPOSE.                                                  
 //=================================================================================== 
+#ifndef COMHLP_H
+	#define COMHLP_H
+	#ifdef _WIN32
+		#pragma once 
+		#include "ComPtr.h" 
+		#include <wincodec.h>
 
-#ifdef _WIN32
-	#pragma once 
-	#include "ComPtr.h" 
-	#include <wincodec.h>
-
-	namespace P2DE
-	{
-		namespace UTILITIES
+		namespace P2DE
 		{
+			namespace UTILITIES
+			{
 		
-			template<class T>
-			/// <summary>	Assign to output pointer. </summary>
-			///
-			/// <remarks>	Tobias, 22.05.2015. </remarks>
-			///
-			/// <param name="pp">	[in,out] If non-null, the pp. </param>
-			/// <param name="p"> 	The const ComPtr&lt;T&gt; &amp; to process. </param>
-			///
-			/// <returns>	A hResult. </returns>
-			HRESULT AssignToOutputPointer(T** pp, const ComPtr<T> &p)
-			{
-				assert(pp);
-				*pp = p;
-				if (nullptr != (*pp))
+				template<class T>
+				/// <summary>	Assign to output pointer. </summary>
+				///
+				/// <remarks>	Tobias, 22.05.2015. </remarks>
+				///
+				/// <param name="pp">	[in,out] If non-null, the pp. </param>
+				/// <param name="p"> 	The const ComPtr&lt;T&gt; &amp; to process. </param>
+				///
+				/// <returns>	A hResult. </returns>
+				HRESULT AssignToOutputPointer(T** pp, const ComPtr<T> &p)
 				{
-					(*pp)->AddRef();
+					assert(pp);
+					*pp = p;
+					if (nullptr != (*pp))
+					{
+						(*pp)->AddRef();
+					}
+
+					return S_OK;
 				}
 
-				return S_OK;
-			}
-
-			/// <summary>	Gets wic factory. </summary>
-			///
-			/// <remarks>	Tobias, 22.05.2015. </remarks>
-			///
-			/// <param name="factory">	[in,out] If non-null, the factory. </param>
-			///
-			/// <returns>	The wic factory. </returns>
-			HRESULT GetWICFactory(IWICImagingFactory** factory)
-			{
-				static ComPtr<IWICImagingFactory> m_pWICFactory;
-				HRESULT hr = S_OK;
-
-				if (nullptr == m_pWICFactory)
+				/// <summary>	Gets wic factory. </summary>
+				///
+				/// <remarks>	Tobias, 22.05.2015. </remarks>
+				///
+				/// <param name="factory">	[in,out] If non-null, the factory. </param>
+				///
+				/// <returns>	The wic factory. </returns>
+				HRESULT GetWICFactory(IWICImagingFactory** factory)
 				{
-					hr = CoCreateInstance(
-						CLSID_WICImagingFactory, nullptr,
-						CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&m_pWICFactory));
-				}
+					static ComPtr<IWICImagingFactory> m_pWICFactory;
+					HRESULT hr = S_OK;
 
-				if (SUCCEEDED(hr))
-				{
-					hr = AssignToOutputPointer(factory, m_pWICFactory);
-				}
+					if (nullptr == m_pWICFactory)
+					{
+						hr = CoCreateInstance(
+							CLSID_WICImagingFactory, nullptr,
+							CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&m_pWICFactory));
+					}
 
-				return hr;
+					if (SUCCEEDED(hr))
+					{
+						hr = AssignToOutputPointer(factory, m_pWICFactory);
+					}
+
+					return hr;
+				}
 			}
 		}
-	}
+	#endif
 #endif

@@ -178,6 +178,7 @@
     <ClInclude Include="P2DE\GFX\SpritesheetAtlas.h" />
     <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\SpriteFlipMode.h" />
     <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\SpriteInterpolationMode.h" />
+    <ClInclude Include="P2DE\GFX\WICTextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P2DE\FileIO\FileIO.cpp" />
@@ -185,6 +186,7 @@
     <ClCompile Include="P2DE\GFX\Camera.cpp" />
     <ClCompile Include="P2DE\GFX\Graphics.cpp" />
     <ClCompile Include="P2DE\GFX\Spritesheet.cpp" />
+    <ClCompile Include="P2DE\GFX\WICTextureLoader.cpp" />
     <ClCompile Include="P2DE\Input\InputManager.cpp" />
     <ClCompile Include="P2DE\Timing\HrTimer.cpp" />
     <ClCompile Include="P2DE\Input\XboxController.cpp" />
