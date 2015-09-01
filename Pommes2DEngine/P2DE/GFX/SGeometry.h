@@ -4,5 +4,5 @@
 
 struct SGeometry
 {
-	std::vector<
+	
 };
