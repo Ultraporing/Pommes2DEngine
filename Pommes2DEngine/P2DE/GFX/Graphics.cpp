@@ -224,5 +224,5 @@ bool Graphics::LoadBitmapFromFile(LPCWSTR file, ID3D11Resource** texture, ID3D11
 
 void Graphics::RenderDrawable(IDrawable drawable)
 {
-	
+	// stub
 }
