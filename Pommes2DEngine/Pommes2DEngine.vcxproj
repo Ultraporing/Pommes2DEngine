@@ -160,6 +160,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="P2DE\GFX\D3D11Common.h" />
+    <ClInclude Include="P2DE\GFX\IDrawable.h" />
     <ClInclude Include="P2DE\FileIO\FileIO.h" />
     <ClInclude Include="P2DE\FileIO\FileAndDatastructureIDs.h" />
     <ClInclude Include="P2DE\FileIO\DataTypeConverter.h" />
@@ -179,8 +181,11 @@
     <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\SpriteFlipMode.h" />
     <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\SpriteInterpolationMode.h" />
     <ClInclude Include="P2DE\GFX\WICTextureLoader.h" />
+    <ClInclude Include="P2DE\GFX\SGeometry.h" />
+    <ClInclude Include="P2DE\GFX\P2DE_Shader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="P2DE\GFX\IDrawable.cpp" />
     <ClCompile Include="P2DE\FileIO\FileIO.cpp" />
     <ClCompile Include="P2DE\GFX\ImagePropertiesAndEnums\ImageProperties.cpp" />
     <ClCompile Include="P2DE\GFX\Camera.cpp" />
@@ -191,6 +196,7 @@
     <ClCompile Include="P2DE\Timing\HrTimer.cpp" />
     <ClCompile Include="P2DE\Input\XboxController.cpp" />
     <ClCompile Include="P2DE\GFX\SpritesheetAtlas.cpp" />
+    <ClCompile Include="P2DE\GFX\P2DE_Shader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

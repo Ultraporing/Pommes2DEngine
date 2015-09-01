@@ -88,6 +88,18 @@
     <ClInclude Include="P2DE\GFX\WICTextureLoader.h">
       <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="P2DE\GFX\IDrawable.h">
+      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\GFX\SGeometry.h">
+      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\GFX\D3D11Common.h">
+      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\GFX\P2DE_Shader.h">
+      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P2DE\GFX\Camera.cpp">
@@ -118,6 +130,12 @@
       <Filter>Source Files\Pommes 2D Engine\FileIO</Filter>
     </ClCompile>
     <ClCompile Include="P2DE\GFX\WICTextureLoader.cpp">
+      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="P2DE\GFX\IDrawable.cpp">
+      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="P2DE\GFX\P2DE_Shader.cpp">
       <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
