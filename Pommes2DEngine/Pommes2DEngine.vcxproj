@@ -198,20 +198,6 @@
     <ClCompile Include="P2DE\GFX\SpritesheetAtlas.cpp" />
     <ClCompile Include="P2DE\GFX\P2DE_Shader.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="External\SFML\bin\libFLAC_dynamic.dll" />
-    <None Include="External\SFML\bin\openal32.dll" />
-    <None Include="External\SFML\bin\sfml-audio-2.dll" />
-    <None Include="External\SFML\bin\sfml-audio-d-2.dll" />
-    <None Include="External\SFML\bin\sfml-graphics-2.dll" />
-    <None Include="External\SFML\bin\sfml-graphics-d-2.dll" />
-    <None Include="External\SFML\bin\sfml-network-2.dll" />
-    <None Include="External\SFML\bin\sfml-network-d-2.dll" />
-    <None Include="External\SFML\bin\sfml-system-2.dll" />
-    <None Include="External\SFML\bin\sfml-system-d-2.dll" />
-    <None Include="External\SFML\bin\sfml-window-2.dll" />
-    <None Include="External\SFML\bin\sfml-window-d-2.dll" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
