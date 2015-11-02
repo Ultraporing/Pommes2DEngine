@@ -71,13 +71,29 @@ namespace P2DE
 		{
 			private:
 			/// <summary>	The current keys pressed. </summary>
-			static std::array<bool, MAXBYTE> m_CurrentKeysPressed;
+			std::array<bool, MAXBYTE> m_CurrentKeysPressed;
 			/// <summary>	The xbox controllers. </summary>
-			static std::array<XboxController*, 4> m_XboxControllers;
+			std::array<XboxController*, 4> m_XboxControllers;
 			/// <summary>	State of the mousewheel. 1 = mousewheel up, 0 = none, -1 = mousewheel down</summary>
-			static int m_MousewheelState;
+			int m_MousewheelState;
+
+			InputManager(InputManager const&) = delete;
+			void operator=(InputManager const&) = delete;
+			InputManager() 
+			{
+				m_CurrentKeysPressed = std::array<bool, MAXBYTE>();
+				m_MousewheelState = 0;
+				m_XboxControllers = std::array<XboxController*, 4>();
+			};
 
 			public:
+			static InputManager& getInstance()
+			{
+				static InputManager    instance; // Guaranteed to be destroyed.
+											 // Instantiated on first use.
+				return instance;
+			}
+
 			/// <summary>	Query if 'VK_Keycode' is key down. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -85,7 +101,7 @@ namespace P2DE
 			/// <param name="VK_Keycode">	The vk keycode. </param>
 			///
 			/// <returns>	true if key down, false if not. </returns>
-			static bool IsKeyDown(const BYTE& VK_Keycode);
+			bool IsKeyDown(const BYTE& VK_Keycode);
 			/// <summary>	Query if 'VK_Keycode' is key up. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -93,7 +109,7 @@ namespace P2DE
 			/// <param name="VK_Keycode">	The vk keycode. </param>
 			///
 			/// <returns>	true if key up, false if not. </returns>
-			static bool IsKeyUp(const BYTE& VK_Keycode);
+			bool IsKeyUp(const BYTE& VK_Keycode);
 			/// <summary>	Query if 'VK_Keycode' is key pressed once. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -101,7 +117,7 @@ namespace P2DE
 			/// <param name="VK_Keycode">	The vk keycode. </param>
 			///
 			/// <returns>	true if key pressed, false if not. </returns>
-			static bool IsKeyPressed(const BYTE& VK_Keycode);
+			bool IsKeyPressed(const BYTE& VK_Keycode);
 
 			/// <summary>	Gets screen mouse position. </summary>
 			///
@@ -111,7 +127,7 @@ namespace P2DE
 			/// <param name="mousePos">	   	[in,out] If non-null, the mouse position. </param>
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
-			static bool GetScreenMousePos(HWND targetWindow, POINT* mousePos);
+			bool GetScreenMousePos(HWND targetWindow, POINT* mousePos);
 			/// <summary>	Gets game mouse position. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -121,36 +137,36 @@ namespace P2DE
 			/// <param name="cam">		   	[in,out] If non-null, the camera. </param>
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
-			static bool GetGameMousePos(HWND targetWindow, POINT* mousePos, P2DE::GFX::Camera* cam);
+			bool GetGameMousePos(HWND targetWindow, POINT* mousePos, P2DE::GFX::Camera* cam);
 
 			/// <summary>	Sets mousewheel state. Prerequesite for using MousewheelScroll Methods. Use this Method in your 'WindowProc' for the Message 'WM_MOUSEWHEEL'.</summary>
 			///
 			/// <remarks>	Tobias, 02.06.2015. </remarks>
 			///
 			/// <param name="wParam">	The wParam field of the message. </param>
-			static void SetMousewheelState(WPARAM wParam);
+			void SetMousewheelState(WPARAM wParam);
 			/// <summary>	Query if the mousewheel was scrolled up. </summary>
 			///
 			/// <remarks>	Tobias, 02.06.2015. </remarks>
 			///
 			/// <returns>	true if mousewheel scroll up, false if not. </returns>
-			static bool IsMousewheelScrollUp();
+			bool IsMousewheelScrollUp();
 			/// <summary>	Query if the mousewheel was scrolled down. </summary>
 			///
 			/// <remarks>	Tobias, 02.06.2015. </remarks>
 			///
 			/// <returns>	true if mousewheel scroll up, false if not. </returns>
-			static bool IsMousewheelScrollDown();
+			bool IsMousewheelScrollDown();
 			/// <summary>	Gets mousewheel state. -1 = mousewheel scrolled down, 0 = mousewheel not scrolled, 1 = mousewheel scrolled up.</summary>
 			///
 			/// <remarks>	Tobias, 02.06.2015. </remarks>
 			///
 			/// <returns>	The mousewheel state. </returns>
-			static int GetMousewheelState();
+			int GetMousewheelState();
 			/// <summary>	Resets the mousewheel state. This has to be called before the next Update to reset the Mousewheel scroll state. </summary>
 			///
 			/// <remarks>	Tobias, 02.06.2015. </remarks>
-			static void ResetMousewheelState();
+			void ResetMousewheelState();
 
 			/// <summary>	Query if 'mouseButton' is mouse down. 0 = left, 1 = middle, 2 = right, else = left</summary>
 			///
@@ -159,7 +175,7 @@ namespace P2DE
 			/// <param name="mouseButton">	The button. </param>
 			///
 			/// <returns>	true if mouse down, false if not. </returns>
-			static bool IsMouseDown(const BYTE& mouseButton);
+			bool IsMouseDown(const BYTE& mouseButton);
 			/// <summary>	Query if 'mouseButton' is mouse up. 0 = left, 1 = middle, 2 = right, else = left</summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -167,7 +183,7 @@ namespace P2DE
 			/// <param name="mouseButton">	The mouse button. </param>
 			///
 			/// <returns>	true if mouse up, false if not. </returns>
-			static bool IsMouseUp(const BYTE& mouseButton);
+			bool IsMouseUp(const BYTE& mouseButton);
 			/// <summary>	Query if 'mouseButton' is mouse clicked. 0 = left, 1 = middle, 2 = right, else = left</summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -175,16 +191,16 @@ namespace P2DE
 			/// <param name="mouseButton">	The mouse button. </param>
 			///
 			/// <returns>	true if mouse clicked, false if not. </returns>
-			static bool IsMouseClicked(const BYTE& mouseButton);
+			bool IsMouseClicked(const BYTE& mouseButton);
 
 			/// <summary>	Initialises the xbox controllers. </summary>
 			///
 			/// <remarks>	Tobias, 03.06.2015. </remarks>
-			static void InitXboxControllers();
+			void InitXboxControllers();
 			/// <summary>	Deinitialize xbox controllers. </summary>
 			///
 			/// <remarks>	Tobias, 03.06.2015. </remarks>
-			static void DeinitializeXboxControllers();
+			void DeinitializeXboxControllers();
 			/// <summary>	Query if 'players' controller is connected. </summary>
 			///
 			/// <remarks>	Tobias, 03.06.2015. </remarks>
@@ -192,7 +208,7 @@ namespace P2DE
 			/// <param name="player">	The player. 1-4 </param>
 			///
 			/// <returns>	true if controller connected, false if not. </returns>
-			static bool IsControllerConnected(const BYTE& player);
+			bool IsControllerConnected(const BYTE& player);
 			/// <summary>	Query if on 'players' controller button pressed. </summary>
 			///
 			/// <remarks>	Tobias, 03.06.2015. </remarks>
@@ -201,7 +217,7 @@ namespace P2DE
 			/// <param name="xInputGamepadButton">	The input gamepad button. </param>
 			///
 			/// <returns>	true if controller button pressed, false if not. </returns>
-			static bool IsControllerButtonPressed(const BYTE& player, const WORD& xInputGamepadButton);
+			bool IsControllerButtonPressed(const BYTE& player, const WORD& xInputGamepadButton);
 			/// <summary>	Gets 'players' controller. </summary>
 			///
 			/// <remarks>	Tobias, 03.06.2015. </remarks>
@@ -209,7 +225,8 @@ namespace P2DE
 			/// <param name="player">	The player. 1-4 </param>
 			///
 			/// <returns>	null if it fails, else the controller. </returns>
-			static XboxController* GetController(const BYTE& player);
+			XboxController* GetController(const BYTE& player);
 		};
 	}
 }
+#define P2DE_INPUT P2DE::INPUT::InputManager::getInstance()

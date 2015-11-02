@@ -7,10 +7,11 @@
 using namespace Microsoft::WRL;
 #include "..\Game\BaseGame.h"
 #include "D3D11Common.h"
-#include "IDrawable.h"
+#include <d3d11.h>
 
 #pragma comment (lib, "D3D11.lib")
 #pragma comment (lib, "dxguid.lib")
+#pragma comment (lib, "d3dcompiler.lib")
 
 struct ID3D11DeviceContext;
 struct ID3D11Device;
@@ -19,6 +20,13 @@ struct ID3D11ShaderResourceView;
 struct ID3D11Resource;
 struct ID3D11Texture2D;
 struct ID3D11RenderTargetView;
+struct ID3D11DepthStencilView;
+struct ID3D11RasterizerState;
+struct ID3D11PixelShader;
+struct ID3D11VertexShader;
+struct ID3D11Buffer;
+struct ID3D11InputLayout;
+struct ID3D10Blob;
 
 /// <summary>	Pommes2D Engine Root Namespace. </summary>
 ///
@@ -54,15 +62,21 @@ namespace P2DE
 			/// <summary>	The swap chain. </summary>
 			ComPtr<IDXGISwapChain1> m_SwapChain;
 				
-			ComPtr<ID3D11Texture2D> m_BackBuffer;
-
+			
+			ComPtr<ID3D11DepthStencilView> m_DepthBuffer;
 			ComPtr<ID3D11RenderTargetView> m_RenderTargetView;
+			ComPtr<ID3D11RasterizerState> m_RasterizerState;
 
 			/// <summary>	The current game. </summary>
 			P2DE::GAME::BaseGame* m_CurrentGame;
 			#pragma endregion
 
 			private:
+			ComPtr<ID3D11PixelShader> m_Ps;
+			ComPtr<ID3D11VertexShader> m_Vs;
+			ComPtr<ID3D11Buffer> m_VertexBuffer;
+			ComPtr<ID3D11Buffer> m_IndexBuffer;
+			ComPtr<ID3D11InputLayout> m_InputLayout;
 			#pragma region DirectX_Helper
 			/// <summary>	Reloads DirectX, for changing Window Size ect. </summary>
 			///
@@ -72,11 +86,21 @@ namespace P2DE
 			bool ReloadDirectX();
 			#pragma endregion
 
+			Graphics(Graphics const&) = delete;
+			void operator=(Graphics const&) = delete;
+			Graphics();
+
 			public:		
 			/// <summary>	Default constructor. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
-			Graphics();
+			static Graphics& getInstance()
+			{
+				static Graphics    instance; // Guaranteed to be destroyed.
+									  // Instantiated on first use.
+				return instance;
+			}
+			
 			/// <summary>	Destructor. </summary>
 			///
 			/// <remarks>	Tobias, 22.05.2015. </remarks>
@@ -145,8 +169,11 @@ namespace P2DE
 			bool CanDraw() { return m_SwapChain ? true : false; }
 			#pragma endregion
 
-			void RenderDrawable(IDrawable drawable);
-
+			void RenderDrawable();
+			void LoadShaders();
+			void UnloadShaders();
+			HRESULT enumInputLayout(ID3DBlob * VSBlob);
+			HRESULT initializeConstantBuffers(ID3DBlob * blob, bool isVS);
 			#pragma region Begin/EndDraw/Clear
 			/// <summary>	Begins a draw. </summary>
 			///
@@ -181,3 +208,4 @@ namespace P2DE
 		};
 	}
 }
+#define P2DE_GFX P2DE::GFX::Graphics::getInstance()

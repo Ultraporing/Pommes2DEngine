@@ -3,10 +3,13 @@
 #include <dxgi1_2.h>
 #include <comdef.h>
 #include <sstream>
-
+#include "../FileIO/FileIO.h"
+#include "d3dcompiler.h"
 #include "WICTextureLoader.h"
+#include "Drawables\BaseDrawable.h"
 
 using namespace P2DE::GFX;
+typedef unsigned int uint;
 
 // This flag adds support for surfaces with a different color channel ordering than the API default.
 // You need it for compatibility with Direct2D.
@@ -117,7 +120,29 @@ bool Graphics::Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx)
 		MessageBox(NULL, wss.str().c_str(), L"Graphics Init Failed!", MB_OK);
 		return false;
 	}
-		
+
+	//Create depth buffer
+	D3D11_TEXTURE2D_DESC zBufferDescr;
+	ZeroMemory(&zBufferDescr, sizeof(D3D11_TEXTURE2D_DESC));
+	zBufferDescr.Width = rect.right;
+	zBufferDescr.Height = rect.bottom;
+	zBufferDescr.ArraySize = 1;
+	zBufferDescr.MipLevels = 1;
+	zBufferDescr.SampleDesc.Count = 1;
+	zBufferDescr.Format = DXGI_FORMAT_D32_FLOAT;
+	zBufferDescr.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	ID3D11Texture2D *zBufferTexture;
+	m_D3D11Device->CreateTexture2D(&zBufferDescr, 0, &zBufferTexture);
+
+	D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
+	ZeroMemory(&dsvd, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
+	dsvd.Format = DXGI_FORMAT_D32_FLOAT;
+	dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
+	m_D3D11Device->CreateDepthStencilView(zBufferTexture, &dsvd, m_DepthBuffer.GetAddressOf());
+	zBufferTexture->Release();
+
+	ComPtr<ID3D11Texture2D> m_BackBuffer;
+
 	// Get the backbuffer for this window which is be the final 3D render target.	
 	hr = m_SwapChain->GetBuffer(0, IID_PPV_ARGS(&m_BackBuffer));
 	if (hr != S_OK)
@@ -137,6 +162,20 @@ bool Graphics::Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx)
 		return false;
 	}
 
+	m_D3D11DeviceContext->OMSetRenderTargets(1, m_RenderTargetView.GetAddressOf(), m_DepthBuffer.Get());
+
+	// Set the viewport
+	D3D11_VIEWPORT viewport;
+	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+
+	viewport.TopLeftX = 0;
+	viewport.TopLeftY = 0;
+	viewport.Width = float(m_GameWindowSize.right);
+	viewport.Height = float(m_GameWindowSize.bottom);
+	viewport.MinDepth = 0;
+	viewport.MaxDepth = 1;
+	m_D3D11DeviceContext->RSSetViewports(1, &viewport);
+
 	return true;
 }
 
@@ -153,8 +192,11 @@ bool Graphics::ReloadDirectX()
 {
 	m_CurrentGame->UnloadResources(false);
 
-	if (m_BackBuffer)
-		m_BackBuffer.~ComPtr();
+	if (m_RasterizerState)
+		m_RasterizerState.~ComPtr();
+
+	if (m_DepthBuffer)
+		m_DepthBuffer.~ComPtr();
 
 	if (m_RenderTargetView)
 		m_RenderTargetView.~ComPtr();
@@ -196,18 +238,19 @@ void Graphics::SetGameWindowPos(const POINT& newWindowPos)
 #pragma region Begin/EndDraw/Clear
 void Graphics::BeginDraw()
 { 
-	m_D3D11DeviceContext->OMSetRenderTargets(1, m_RenderTargetView.GetAddressOf(), nullptr);
+	m_D3D11DeviceContext->OMSetRenderTargets(1, m_RenderTargetView.GetAddressOf(), m_DepthBuffer.Get());
 }
 
 void Graphics::EndDraw() 
 { 
-	m_SwapChain->Present(1, 0); 
+	m_SwapChain->Present(0, 0); 
 }
 	
 void Graphics::ClearScreen(float r, float g, float b)
 {
 	float color[4]{ r, g, b, 1.0f };
 	m_D3D11DeviceContext->ClearRenderTargetView(m_RenderTargetView.Get(), color);
+	m_D3D11DeviceContext->ClearDepthStencilView(m_DepthBuffer.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 #pragma endregion
 
@@ -222,7 +265,309 @@ bool Graphics::LoadBitmapFromFile(LPCWSTR file, ID3D11Resource** texture, ID3D11
 }
 #pragma endregion
 
-void Graphics::RenderDrawable(IDrawable drawable)
+void Graphics::RenderDrawable()
 {
-	// stub
+	UINT stride = sizeof(VERTEX);
+	UINT offset = 0;
+	m_D3D11DeviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), &stride, &offset);
+	m_D3D11DeviceContext->IASetIndexBuffer(m_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+	//m_D3D11DeviceContext->VSSetShader(m_Vs.Get(), nullptr, 0);
+	//m_D3D11DeviceContext->PSSetShader(m_Ps.Get(), nullptr, 0);
+	//m_D3D11DeviceContext->RSSetState(m_RasterizerState.Get());
+
+	// select which primtive type we are using
+	m_D3D11DeviceContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	
+
+	// draw the vertex buffer to the back buffer
+	m_D3D11DeviceContext->DrawIndexed(3, 0, 0);
+}
+/*
+void Graphics::RenderDrawable(BaseDrawable * drawable)
+{
+}*/
+
+HRESULT Graphics::enumInputLayout(ID3DBlob * VSBlob)
+{
+	HRESULT hr = S_OK;
+
+	// Get description from precompiled shader
+	ID3D11ShaderReflection* vertReflect;
+	D3DReflect(
+		VSBlob->GetBufferPointer(),
+		VSBlob->GetBufferSize(),
+		IID_ID3D11ShaderReflection,
+		(void**)&vertReflect
+		);
+
+	D3D11_SHADER_DESC descVertex;
+	vertReflect->GetDesc(&descVertex);
+	
+	// save description of input parameters (attributes of vertex shader)
+	std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayoutArray;
+	std::uint32_t byteOffset = 0;
+	D3D11_SIGNATURE_PARAMETER_DESC input_desc;
+	for (unsigned int i = 0; i < descVertex.InputParameters; i++)
+	{
+		// get description of input parameter
+		vertReflect->GetInputParameterDesc(i, &input_desc);
+
+		// fill element description to create input layout later
+		D3D11_INPUT_ELEMENT_DESC ie;
+		ie.SemanticName = input_desc.SemanticName;
+		ie.SemanticIndex = input_desc.SemanticIndex;
+		ie.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		ie.InputSlot = i;
+		ie.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		ie.InstanceDataStepRate = 0;
+		ie.AlignedByteOffset = byteOffset;
+
+		// determine correct format of input parameter and offset
+		if (input_desc.Mask == 1)
+		{
+			if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_UINT32)
+			{
+				ie.Format = DXGI_FORMAT_R32_UINT;
+			}
+			else if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_SINT32)
+			{
+				ie.Format = DXGI_FORMAT_R32_SINT;
+			}
+			else if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32)
+			{
+				ie.Format = DXGI_FORMAT_R32_FLOAT;
+			}
+			byteOffset += 4;
+		}
+		else if (input_desc.Mask <= 3)
+		{
+			if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_UINT32)
+			{
+				ie.Format = DXGI_FORMAT_R32G32_UINT;
+			}
+			else if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_SINT32)
+			{
+				ie.Format = DXGI_FORMAT_R32G32_SINT;
+			}
+			else if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32)
+			{
+				ie.Format = DXGI_FORMAT_R32G32_FLOAT;
+			}
+			byteOffset += 8;
+		}
+		else if (input_desc.Mask <= 7)
+		{
+			if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_UINT32)
+			{
+				ie.Format = DXGI_FORMAT_R32G32B32_UINT;
+			}
+			else if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_SINT32)
+			{
+				ie.Format = DXGI_FORMAT_R32G32B32_SINT;
+			}
+			else if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32)
+			{
+				ie.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+			}
+			byteOffset += 12;
+		}
+		else if (input_desc.Mask <= 15)
+		{
+			if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_UINT32)
+			{
+				ie.Format = DXGI_FORMAT_R32G32B32A32_UINT;
+			}
+			else if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_SINT32)
+			{
+				ie.Format = DXGI_FORMAT_R32G32B32A32_SINT;
+			}
+			else if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32)
+			{
+				ie.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			}
+			byteOffset += 16;
+		}
+
+		inputLayoutArray.push_back(ie);
+
+		// you can save input_desc here (if needed)
+	}
+
+		// create input layout from previosly created description
+	unsigned int numElements = inputLayoutArray.size();
+	hr = m_D3D11Device->CreateInputLayout(
+		inputLayoutArray.data(),
+		numElements,
+		VSBlob->GetBufferPointer(),
+		VSBlob->GetBufferSize(),
+		m_InputLayout.GetAddressOf()
+		);
+
+	if (FAILED(hr))
+	{
+		// impossible to create input layout
+		return hr;
+	}
+
+	return S_OK;
+}
+
+HRESULT Graphics::initializeConstantBuffers(ID3DBlob * blob, bool isVS)
+{
+	// get description of precompiled shader
+	ID3D11ShaderReflection* pReflector = NULL;
+	D3DReflect(
+		blob->GetBufferPointer(),
+		blob->GetBufferSize(),
+		IID_ID3D11ShaderReflection,
+		(void**)&pReflector
+		);
+
+	D3D11_SHADER_DESC desc;
+	pReflector->GetDesc(&desc);
+
+	// get description of each constant buffer in the shader
+	for (uint i = 0; i < desc.ConstantBuffers; i++)
+	{
+		// get description of constant buffer
+		D3D11_SHADER_BUFFER_DESC shaderBuffer;
+		ID3D11ShaderReflectionConstantBuffer * pConstBuffer =
+			pReflector->GetConstantBufferByIndex(i);
+		pConstBuffer->GetDesc(&shaderBuffer);
+
+		// you can save shaderBuffer here (if needed)
+
+		// get description of each variable in constant buffer
+		for (uint j = 0; j < shaderBuffer.Variables; j++)
+		{
+			// description of variable
+			ID3D11ShaderReflectionVariable * pVariable =
+				pConstBuffer->GetVariableByIndex(j);
+			D3D11_SHADER_VARIABLE_DESC varDesc;
+			pVariable->GetDesc(&varDesc);
+
+			// type of variable
+			D3D11_SHADER_TYPE_DESC varType;
+			ID3D11ShaderReflectionType * pType = pVariable->GetType();
+			pType->GetDesc(&varType);
+
+			// you can save varType and varDesc here (if needed)
+		}
+
+		// get binding description for constant buffer
+		D3D11_SHADER_INPUT_BIND_DESC bindingDesc;
+		pReflector->GetResourceBindingDescByName(shaderBuffer.Name, &bindingDesc);
+
+		// PS. You can save descriptions of constant buffers in following struct
+		//struct ConstantBufferDescription
+		//{
+		//	std::pair variables;
+		//	D3D11_SHADER_INPUT_BIND_DESC bindingDescription;
+		//}
+	}
+
+	///////////////////////////////////////////////////
+	/*
+	// Save description of textures and samplers
+	for (uint i = 0; i{
+		
+		D3D11_SHADER_INPUT_BIND_DESC inputBindDesc;
+		pReflector->GetResourceBindingDesc(i, &inputBindDesc);
+
+		// save description of textures and samplers here
+	}*/
+
+	return S_OK;
+}
+
+void Graphics::LoadShaders()
+{
+	
+	//ID3D11PixelShader* ps;
+	//ID3D11VertexShader* vs;
+	//ID3D11InputLayout* inp;
+	//ID3D11Buffer* buf;
+	ComPtr<ID3DBlob> psBlob, vsBlob;
+
+	D3DReadFileToBlob(L"PixelShader.cso", &psBlob);
+	//std::vector<char> binary = FILEIO::FileIO::ReadToByteArray("PixelShader.cso");
+	m_D3D11Device->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &m_Ps);
+
+	//binary = FILEIO::FileIO::ReadToByteArray("VertexShader.cso");
+	D3DReadFileToBlob(L"VertexShader.cso", &vsBlob);
+	m_D3D11Device->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &m_Vs);
+		
+	m_D3D11DeviceContext->VSSetShader(m_Vs.Get(), NULL, NULL);
+	m_D3D11DeviceContext->PSSetShader(m_Ps.Get(), NULL, NULL);
+
+	D3D11_INPUT_ELEMENT_DESC positionLayout[] =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
+
+	HRESULT hr = m_D3D11Device->CreateInputLayout(positionLayout, 2, vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), m_InputLayout.GetAddressOf());
+	m_D3D11DeviceContext->IASetInputLayout(m_InputLayout.Get());
+
+	VERTEX OurVertices[] =
+	{
+		{ 0.0f, 0.5f, 0.0f, P2DE_COLOR4(1.0f, 0.0f, 0.0f, 1.0f) },
+		{ 0.45f, -0.5, 0.0f, P2DE_COLOR4(0.0f, 1.0f, 0.0f, 1.0f) },
+		{ -0.45f, -0.5f, 0.0f, P2DE_COLOR4(0.0f, 0.0f, 1.0f, 1.0f) }
+	};
+
+	D3D11_BUFFER_DESC bd;
+	ZeroMemory(&bd, sizeof(bd));
+	bd.Usage = D3D11_USAGE_DYNAMIC;
+	bd.ByteWidth = sizeof(VERTEX) * 3;
+	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	m_D3D11Device->CreateBuffer(&bd, NULL, m_VertexBuffer.GetAddressOf());
+
+	D3D11_MAPPED_SUBRESOURCE ms;
+	m_D3D11DeviceContext->Map(m_VertexBuffer.Get(), NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);   // map the buffer
+	memcpy(ms.pData, OurVertices, sizeof(OurVertices));                // copy the data
+	m_D3D11DeviceContext->Unmap(m_VertexBuffer.Get(), NULL);                                     // unmap the buffer
+
+	DWORD OurIndices[] =
+	{
+		0, 1, 2
+	};
+
+	bd.Usage = D3D11_USAGE_DYNAMIC;
+	bd.ByteWidth = sizeof(DWORD) * 3;
+	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	bd.MiscFlags = 0;
+	m_D3D11Device->CreateBuffer(&bd, NULL, m_IndexBuffer.GetAddressOf());
+
+	m_D3D11DeviceContext->Map(m_IndexBuffer.Get(), NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+	memcpy(ms.pData, OurIndices, sizeof(OurIndices));
+	m_D3D11DeviceContext->Unmap(m_IndexBuffer.Get(), NULL);
+	
+	D3D11_RASTERIZER_DESC rasterizerDesc;
+	ZeroMemory(&rasterizerDesc, sizeof(D3D11_RASTERIZER_DESC));
+    rasterizerDesc.FillMode = D3D11_FILL_SOLID;
+    rasterizerDesc.CullMode = D3D11_CULL_BACK;
+    rasterizerDesc.FrontCounterClockwise = false;
+    rasterizerDesc.DepthClipEnable = true;
+
+	
+	m_D3D11Device->CreateRasterizerState(&rasterizerDesc, m_RasterizerState.GetAddressOf());
+	m_D3D11DeviceContext->RSSetState(m_RasterizerState.Get());
+
+	//enumInputLayout(vsBlob.Get());
+	
+	//initializeConstantBuffers(vsBlob.Get(), true);
+	//initializeConstantBuffers(psBlob.Get(), false);
+}
+
+void Graphics::UnloadShaders()
+{
+	m_InputLayout.Reset();
+	m_IndexBuffer.Reset();
+	m_VertexBuffer.Reset();
+	m_Ps.Reset();
+	m_Vs.Reset();
 }

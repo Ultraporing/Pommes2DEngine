@@ -29,6 +29,12 @@
     <Filter Include="Source Files\Pommes 2D Engine\FileIO">
       <UniqueIdentifier>{b73ce40f-2d34-4363-99e6-1151b342ff11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Pommes 2D Engine\Graphics\Shader">
+      <UniqueIdentifier>{0dfc6d97-cec2-486f-a46f-1c3a4f22342e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Pommes 2D Engine\Graphics\Drawables">
+      <UniqueIdentifier>{ad5a75bb-44f2-4f1e-9b86-c625fb0ad4d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="P2DE\GFX\Camera.h">
@@ -88,17 +94,20 @@
     <ClInclude Include="P2DE\GFX\WICTextureLoader.h">
       <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="P2DE\GFX\IDrawable.h">
-      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="P2DE\GFX\SGeometry.h">
-      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="P2DE\GFX\D3D11Common.h">
       <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="P2DE\GFX\P2DE_Shader.h">
       <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\GFX\Drawables\SGeometry.h">
+      <Filter>Source Files\Pommes 2D Engine\Graphics\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\GFX\Drawables\BaseDrawable.h">
+      <Filter>Source Files\Pommes 2D Engine\Graphics\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\GFX\Drawables\Triangle.h">
+      <Filter>Source Files\Pommes 2D Engine\Graphics\Drawables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -132,11 +141,19 @@
     <ClCompile Include="P2DE\GFX\WICTextureLoader.cpp">
       <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="P2DE\GFX\IDrawable.cpp">
-      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="P2DE\GFX\P2DE_Shader.cpp">
       <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="P2DE\GFX\Drawables\Triangle.cpp">
+      <Filter>Source Files\Pommes 2D Engine\Graphics\Drawables</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="P2DE\GFX\Shader\PixelShader.hlsl">
+      <Filter>Source Files\Pommes 2D Engine\Graphics\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="P2DE\GFX\Shader\VertexShader.hlsl">
+      <Filter>Source Files\Pommes 2D Engine\Graphics\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -3,12 +3,6 @@
 
 using namespace P2DE::INPUT;
 
-std::array<bool, MAXBYTE> InputManager::m_CurrentKeysPressed = std::array<bool, MAXBYTE>();
-int InputManager::m_MousewheelState = 0;
-std::array<XboxController*, 4> InputManager::m_XboxControllers = std::array<XboxController*, 4>();
-
-
-
 bool InputManager::IsKeyDown(const BYTE& VK_Keycode)
 {
 	SHORT keyState = GetAsyncKeyState(VK_Keycode);

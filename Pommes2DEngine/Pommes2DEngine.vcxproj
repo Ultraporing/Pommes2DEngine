@@ -161,7 +161,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="P2DE\GFX\D3D11Common.h" />
-    <ClInclude Include="P2DE\GFX\IDrawable.h" />
+    <ClInclude Include="P2DE\GFX\Drawables\BaseDrawable.h" />
     <ClInclude Include="P2DE\FileIO\FileIO.h" />
     <ClInclude Include="P2DE\FileIO\FileAndDatastructureIDs.h" />
     <ClInclude Include="P2DE\FileIO\DataTypeConverter.h" />
@@ -181,11 +181,11 @@
     <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\SpriteFlipMode.h" />
     <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\SpriteInterpolationMode.h" />
     <ClInclude Include="P2DE\GFX\WICTextureLoader.h" />
-    <ClInclude Include="P2DE\GFX\SGeometry.h" />
+    <ClInclude Include="P2DE\GFX\Drawables\SGeometry.h" />
     <ClInclude Include="P2DE\GFX\P2DE_Shader.h" />
+    <ClInclude Include="P2DE\GFX\Drawables\Triangle.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="P2DE\GFX\IDrawable.cpp" />
     <ClCompile Include="P2DE\FileIO\FileIO.cpp" />
     <ClCompile Include="P2DE\GFX\ImagePropertiesAndEnums\ImageProperties.cpp" />
     <ClCompile Include="P2DE\GFX\Camera.cpp" />
@@ -197,6 +197,23 @@
     <ClCompile Include="P2DE\Input\XboxController.cpp" />
     <ClCompile Include="P2DE\GFX\SpritesheetAtlas.cpp" />
     <ClCompile Include="P2DE\GFX\P2DE_Shader.cpp" />
+    <ClCompile Include="P2DE\GFX\Drawables\Triangle.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="P2DE\GFX\Shader\PixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0_level_9_1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="P2DE\GFX\Shader\VertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0_level_9_1</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -11,7 +11,6 @@
 #include "P2DE\Utilities\Minidump.h"
 
 Demo::Demo* demo;
-P2DE::GFX::Graphics* graphics;
 
 #define WINDOW_TITLE L"Engine Demo"
 
@@ -56,17 +55,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		NULL,
 		hInstance,
 		NULL);
-
-	graphics = NULL;
-	graphics = new P2DE::GFX::Graphics();
-	if (!graphics->Init(hWnd, dwStyle, dwExStyle))
+	
+	if (!P2DE_GFX.Init(hWnd, dwStyle, dwExStyle))
 	{
-		delete graphics;
 		return -1;
 	}
 
 	demo = NULL;
-	demo = new Demo::Demo(graphics, hWnd);
+	demo = new Demo::Demo(hWnd);
 
 	ShowWindow(hWnd, nCmdShow);
 
@@ -93,10 +89,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		demo->Render();
 	}
 
-	P2DE::INPUT::InputManager::DeinitializeXboxControllers();
+	P2DE_INPUT.DeinitializeXboxControllers();
 
 	delete demo;
-	delete graphics;
 
 	return 0;
 }
@@ -109,7 +104,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 			PostQuitMessage(0);
 			return 0;
 		case WM_MOUSEWHEEL:
-			P2DE::INPUT::InputManager::SetMousewheelState(wParam);
+			P2DE_INPUT.SetMousewheelState(wParam);
 	}
 
 	return DefWindowProc(hWnd, message, wParam, lParam);

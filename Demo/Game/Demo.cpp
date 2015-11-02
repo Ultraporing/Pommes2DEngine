@@ -11,17 +11,15 @@ namespace Demo
 {
 	//P2DE::UTILITIES::ComPtr<ID2D1Effect> colorMatrixFx;
 
-	Demo::Demo(P2DE::GFX::Graphics* gfx, HWND hWndGamewindow)
+	Demo::Demo(HWND hWndGamewindow)
 	{
-		m_Graphics = NULL;
-		m_Graphics = gfx;
-		m_Camera = P2DE::GFX::Camera(gfx);
+		m_Camera = P2DE::GFX::Camera();
 		m_hWndGamewindow = hWndGamewindow;
-		m_Graphics->SetCurrentGame(this);
+		P2DE_GFX.SetCurrentGame(this);
 		m_GameCrashed = false;
 
 		m_GameCrashed = !LoadResources();
-		P2DE::INPUT::InputManager::InitXboxControllers();
+		P2DE_INPUT.InitXboxControllers();
 	}
 
 	sf::SoundBuffer buffer;
@@ -31,7 +29,6 @@ namespace Demo
 	Demo::~Demo()
 	{
 		UnloadResources(true);
-		m_Graphics = NULL;
 	}
 
 	bool Demo::LoadResources()
@@ -47,6 +44,8 @@ namespace Demo
 		if (!music.openFromFile("Assets\\Sound\\Music\\Dragonforce-Through the Fire and Flames Full Version.ogg"))
 			return false;
 		
+		P2DE_GFX.LoadShaders();
+
 		return true;
 	}
 
@@ -60,6 +59,9 @@ namespace Demo
 		else
 			P2DE::GFX::SpritesheetAtlas::ShutdownAtlas();
 			*/
+
+		P2DE_GFX.UnloadShaders();
+
 		return true;
 	}
 
@@ -78,13 +80,14 @@ namespace Demo
 
 	void Demo::Render()
 	{
-		if (!m_Graphics->CanDraw())
+		if (!P2DE_GFX.CanDraw())
 			return;
 
-		m_Graphics->BeginDraw();
-		m_Graphics->ClearScreen(1.0f, 0.0f, 0.5f);
+		P2DE_GFX.BeginDraw();
+		P2DE_GFX.ClearScreen(0.0f, 0.2f, 0.4f);
+		P2DE_GFX.RenderDrawable();
 
-		m_Graphics->DrawFilledCircle(0, 0, 100, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, 1.0f);
+		//m_Graphics->DrawFilledCircle(0, 0, 100, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, 1.0f);
 		/*
 		P2DE::GFX::SpritesheetAtlas::DrawFrame(D2D1::Point2F(200, 200), &test1);
 		P2DE::GFX::SpritesheetAtlas::DrawFrame(D2D1::Point2F(300, 200), &test2);
@@ -100,7 +103,7 @@ namespace Demo
 
 //		P2DE::GFX::SpritesheetAtlas::GetSpritesheet(L"roguelikeSheet")->DrawFramePointRotated(D2D1::Point2F(300, 100), D2D1::RectF(0, 102, 16, 16), D2D1::Point2F(5.0f, 5.0f), D2D1::ColorF::White, rotation, D2D1::Point2F(8, 0), (P2DE::GFX::SPRITE_FLIP_MODE)flip, P2DE::GFX::SPRITE_INTERPOLATION_MODE::NEAREST_NEIGHBOR);
 
-		m_Graphics->EndDraw();
+		P2DE_GFX.EndDraw();
 	}
 
 	bool Demo::Update(const float& deltaTime)
@@ -109,26 +112,26 @@ namespace Demo
 
 		D2D1_POINT_2F camMoveAmount = D2D1::Point2F();
 		
-		if (P2DE::INPUT::InputManager::IsKeyDown(VK_RIGHT))
+		if (P2DE_INPUT.IsKeyDown(VK_RIGHT))
 			camMoveAmount.x = cameraSpeed * deltaTime;
-		else if (P2DE::INPUT::InputManager::IsKeyDown(VK_LEFT))
+		else if (P2DE_INPUT.IsKeyDown(VK_LEFT))
 			camMoveAmount.x = -cameraSpeed * deltaTime;
 
-		if (P2DE::INPUT::InputManager::IsKeyDown(VK_UP))
+		if (P2DE_INPUT.IsKeyDown(VK_UP))
 			camMoveAmount.y = -cameraSpeed * deltaTime;
-		else if (P2DE::INPUT::InputManager::IsKeyDown(VK_DOWN))
+		else if (P2DE_INPUT.IsKeyDown(VK_DOWN))
 			camMoveAmount.y = cameraSpeed * deltaTime;
 
 		m_Camera.MoveCamera(camMoveAmount);
 
-		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_ESCAPE))
+		if (P2DE_INPUT.IsKeyPressed(VK_ESCAPE))
 			return true;
 
 		POINT p = POINT();
-		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_SPACE))
+		if (P2DE_INPUT.IsKeyPressed(VK_SPACE))
 		{
 			
-			bool ret = P2DE::INPUT::InputManager::GetGameMousePos(m_hWndGamewindow, &p, &m_Camera);
+			bool ret = P2DE_INPUT.GetGameMousePos(m_hWndGamewindow, &p, &m_Camera);
 			if (ret)
 			{
 				std::wstringstream s;
@@ -139,7 +142,7 @@ namespace Demo
 				MessageBox(NULL, L"fail", L"merp", MB_OK);
 		}
 		/*
-		if (P2DE::INPUT::InputManager::IsKeyDown(VK_KEY_A))
+		if (P2DE_INPUT.IsKeyDown(VK_KEY_A))
 		{
 			rotation -= 1.0f;
 			if (rotation < 0.0f)
@@ -150,7 +153,7 @@ namespace Demo
 			test3.m_RotateDegree = rotation;
 		}
 
-		if (P2DE::INPUT::InputManager::IsKeyDown(VK_KEY_S))
+		if (P2DE_INPUT.IsKeyDown(VK_KEY_S))
 		{
 			rotation += 1.0f;
 			if (rotation > 360.0f)
@@ -161,13 +164,13 @@ namespace Demo
 			test3.m_RotateDegree = rotation;
 		}
 		*/
-		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_D))
+		if (P2DE_INPUT.IsKeyPressed(VK_KEY_D))
 		{
-			m_Graphics->SetGameWindowSize(RECT() = { 0, 0, 1024, 768 });
-			m_Graphics->SetGameWindowPos(POINT() = { 0, 0 });
+			P2DE_GFX.SetGameWindowSize(RECT() = { 0, 0, 1024, 768 });
+			P2DE_GFX.SetGameWindowPos(POINT() = { 0, 0 });
 		}
 		/*
-		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_X))
+		if (P2DE_INPUT.IsKeyPressed(VK_KEY_X))
 		{
 			flip |= P2DE::GFX::SPRITE_FLIP_MODE::HORIZONTAL;
 
@@ -176,7 +179,7 @@ namespace Demo
 			test3.m_FlipMode = (P2DE::GFX::SPRITE_FLIP_MODE)flip;
 		}
 
-		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_C))
+		if (P2DE_INPUT.IsKeyPressed(VK_KEY_C))
 		{
 			flip |= P2DE::GFX::SPRITE_FLIP_MODE::VERTICAL;
 
@@ -185,7 +188,7 @@ namespace Demo
 			test3.m_FlipMode = (P2DE::GFX::SPRITE_FLIP_MODE)flip;
 		}
 
-		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_V))
+		if (P2DE_INPUT.IsKeyPressed(VK_KEY_V))
 		{
 			flip = P2DE::GFX::SPRITE_FLIP_MODE::NONE;
 
@@ -194,44 +197,44 @@ namespace Demo
 			test3.m_FlipMode = (P2DE::GFX::SPRITE_FLIP_MODE)flip;
 		}
 		*/
-		if (P2DE::INPUT::InputManager::IsMousewheelScrollUp())
+		if (P2DE_INPUT.IsMousewheelScrollUp())
 		{
 			std::wstringstream s;
-			s << L"MousewheelState: " << P2DE::INPUT::InputManager::GetMousewheelState();
+			s << L"MousewheelState: " << P2DE_INPUT.GetMousewheelState();
 			MessageBox(NULL, s.str().c_str(), L"mouseWheelUP", MB_OK);
 		}
 		
-		if (P2DE::INPUT::InputManager::IsMousewheelScrollDown())
+		if (P2DE_INPUT.IsMousewheelScrollDown())
 		{
 			std::wstringstream s;
-			s << L"MousewheelState: " << P2DE::INPUT::InputManager::GetMousewheelState();
+			s << L"MousewheelState: " << P2DE_INPUT.GetMousewheelState();
 			MessageBox(NULL, s.str().c_str(), L"mouseWheelDOWN", MB_OK);
 		}
 
-		if (P2DE::INPUT::InputManager::IsControllerConnected(1))
+		if (P2DE_INPUT.IsControllerConnected(1))
 		{
-			if (P2DE::INPUT::InputManager::IsControllerButtonPressed(1, XINPUT_GAMEPAD_X))
+			if (P2DE_INPUT.IsControllerButtonPressed(1, XINPUT_GAMEPAD_X))
 			{
-				P2DE::INPUT::InputManager::GetController(1)->Vibrate(65535, 0);
+				P2DE_INPUT.GetController(1)->Vibrate(65535, 0);
 			}
 
-			if (P2DE::INPUT::InputManager::IsControllerButtonPressed(1, XINPUT_GAMEPAD_B))
+			if (P2DE_INPUT.IsControllerButtonPressed(1, XINPUT_GAMEPAD_B))
 			{
-				P2DE::INPUT::InputManager::GetController(1)->Vibrate(0, 65535);
+				P2DE_INPUT.GetController(1)->Vibrate(0, 65535);
 			}
 
-			if (P2DE::INPUT::InputManager::IsControllerButtonPressed(1, XINPUT_GAMEPAD_Y))
+			if (P2DE_INPUT.IsControllerButtonPressed(1, XINPUT_GAMEPAD_Y))
 			{
-				P2DE::INPUT::InputManager::GetController(1)->Vibrate(65535, 65535);
+				P2DE_INPUT.GetController(1)->Vibrate(65535, 65535);
 			}
 
-			if (P2DE::INPUT::InputManager::IsControllerButtonPressed(1, XINPUT_GAMEPAD_A))
+			if (P2DE_INPUT.IsControllerButtonPressed(1, XINPUT_GAMEPAD_A))
 			{
-				P2DE::INPUT::InputManager::GetController(1)->Vibrate(0, 0);
+				P2DE_INPUT.GetController(1)->Vibrate(0, 0);
 			}
 		}
 		/*
-		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_6))
+		if (P2DE_INPUT.IsKeyPressed(VK_KEY_6))
 		{
 			P2DE::GFX::ImageProperties blerg2 = test1;
 			blerg2.m_Color = D2D1::ColorF(D2D1::ColorF::BlueViolet);
@@ -240,13 +243,13 @@ namespace Demo
 			testData.clear();
 		}
 
-		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_7))
+		if (P2DE_INPUT.IsKeyPressed(VK_KEY_7))
 		{
 			P2DE::FILEIO::FileIO::ReadBinaryFile(L"testData.bin", &testData);
 			P2DE::GFX::ImageProperties::ReadFromBinary(&testData, &testData.begin(), NULL, test1);
 		}
 
-		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_4))
+		if (P2DE_INPUT.IsKeyPressed(VK_KEY_4))
 		{
 			std::vector<P2DE::GFX::ImageProperties> vec;
 
@@ -270,7 +273,7 @@ namespace Demo
 			testData.clear();
 		}
 
-		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_5))
+		if (P2DE_INPUT.IsKeyPressed(VK_KEY_5))
 		{
 			std::vector<P2DE::GFX::ImageProperties> vec;
 			P2DE::FILEIO::FileIO::ReadBinaryFile(L"testData.bin", &testData);
@@ -280,7 +283,7 @@ namespace Demo
 			test3 = vec[2];
 		}
 		*/
-		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_U))
+		if (P2DE_INPUT.IsKeyPressed(VK_KEY_U))
 		{
 			if (sound.getStatus() != sf::SoundSource::Status::Playing)
 				sound.play();
@@ -288,7 +291,7 @@ namespace Demo
 				sound.stop();
 		}
 		
-		if (P2DE::INPUT::InputManager::IsKeyPressed(VK_KEY_I))
+		if (P2DE_INPUT.IsKeyPressed(VK_KEY_I))
 		{
 			if (music.getStatus() != sf::SoundSource::Status::Playing)
 				music.play();
@@ -296,7 +299,7 @@ namespace Demo
 				music.stop();
 		}
 
-		P2DE::INPUT::InputManager::ResetMousewheelState();
+		P2DE_INPUT.ResetMousewheelState();
 
 		return false;
 	}

@@ -20,12 +20,10 @@ namespace Demo
 	{
 		private:
 			HWND m_hWndGamewindow;
-
-			P2DE::GFX::Graphics* m_Graphics;
 			P2DE::GFX::Camera m_Camera;
 
 		public:
-			Demo(P2DE::GFX::Graphics* gfx, HWND hWndGamewindow);
+			Demo(HWND hWndGamewindow);
 			~Demo();
 
 			bool LoadResources() override;
