@@ -9,8 +9,6 @@
 
 namespace Demo
 {
-	//P2DE::UTILITIES::ComPtr<ID2D1Effect> colorMatrixFx;
-
 	Demo::Demo(HWND hWndGamewindow)
 	{
 		m_Camera = P2DE::GFX::Camera();
