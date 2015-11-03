@@ -87,6 +87,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//TODO: SOMEWHERE IN ENGINE RENDERING IS AN MEMORY LEAK!
 		demo.Render();
 	}
+
+
+
 	return 0;
 }
 

@@ -59,6 +59,11 @@ namespace P2DE
 			/// <summary>	The Direct3D11 device. </summary>
 			ComPtr<ID3D11Device> m_D3D11Device;
 
+			#if defined(_DEBUG)
+			ComPtr<ID3D11Debug> m_D3D11Debug;
+			ComPtr<ID3D11InfoQueue> m_D3D11InfoQueue;
+			#endif
+
 			/// <summary>	The swap chain. </summary>
 			ComPtr<IDXGISwapChain1> m_SwapChain;
 				
@@ -84,6 +89,7 @@ namespace P2DE
 			///
 			/// <returns>	true if it succeeds, false if it fails. </returns>
 			bool ReloadDirectX();
+			
 			#pragma endregion
 
 			Graphics(Graphics const&) = delete;
@@ -167,11 +173,14 @@ namespace P2DE
 			///
 			/// <returns>	true if we can draw, false if not. </returns>
 			bool CanDraw() { return m_SwapChain ? true : false; }
+
+			void UnloadDirectX(bool isGameEnd);
 			#pragma endregion
 
 			void RenderDrawable();
 			void LoadShaders();
 			void UnloadShaders();
+			void DisplayDx11DebugInfo();
 			HRESULT enumInputLayout(ID3DBlob * VSBlob);
 			HRESULT initializeConstantBuffers(ID3DBlob * blob, bool isVS);
 			#pragma region Begin/EndDraw/Clear

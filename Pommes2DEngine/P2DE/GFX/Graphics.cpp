@@ -14,7 +14,13 @@ typedef unsigned int uint;
 
 // This flag adds support for surfaces with a different color channel ordering than the API default.
 // You need it for compatibility with Direct2D.
+
+#if defined(_DEBUG)
+// If the project is in a debug build, enable the debug layer.
+UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT | D3D11_CREATE_DEVICE_DEBUG;
+#else
 UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+#endif
 
 // This array defines the set of DirectX hardware feature levels this app  supports.
 // The ordering is important and you should  preserve it.
@@ -177,6 +183,28 @@ bool Graphics::Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx)
 	viewport.MaxDepth = 1;
 	m_D3D11DeviceContext->RSSetViewports(1, &viewport);
 
+	#if defined(_DEBUG)
+	if (SUCCEEDED(m_D3D11Device.As(&m_D3D11Debug)))
+	{
+		if (SUCCEEDED(m_D3D11Device.As(&m_D3D11InfoQueue)))
+		{
+			m_D3D11InfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_CORRUPTION, true);
+			m_D3D11InfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_ERROR, true);
+
+			D3D11_MESSAGE_ID hide[] =
+			{
+				D3D11_MESSAGE_ID_SETPRIVATEDATA_CHANGINGPARAMS,
+				// Add more message IDs here as needed 
+			};
+			D3D11_INFO_QUEUE_FILTER filter;
+			memset(&filter, 0, sizeof(filter));
+			filter.DenyList.NumIDs = _countof(hide);
+			filter.DenyList.pIDList = hide;
+			m_D3D11InfoQueue->AddStorageFilterEntries(&filter);
+		}
+	}
+	#endif
+
 	return true;
 }
 
@@ -191,7 +219,17 @@ bool Graphics::Init(HWND hWnd, DWORD dwStyle, DWORD dwStyleEx, P2DE::GAME::BaseG
 #pragma region DirectX_Helper
 bool Graphics::ReloadDirectX()
 {
-	m_CurrentGame->UnloadResources(false);
+	UnloadDirectX(false);
+
+	if (Init(m_GameWindowHandle, m_GameWindowStyle, m_GameWindowStyleEx) && m_CurrentGame->LoadResources())
+		return true;
+
+	return false;
+}
+
+void Graphics::UnloadDirectX(bool isGameEnd)
+{
+	m_CurrentGame->UnloadResources(isGameEnd);
 
 	if (m_RasterizerState)
 		m_RasterizerState.~ComPtr();
@@ -211,10 +249,16 @@ bool Graphics::ReloadDirectX()
 	if (m_D3D11Device)
 		m_D3D11Device.~ComPtr();
 
-	if (Init(m_GameWindowHandle, m_GameWindowStyle, m_GameWindowStyleEx) && m_CurrentGame->LoadResources())
-		return true;
+	#if defined(_DEBUG)
+	if (isGameEnd)
+		DisplayDx11DebugInfo();
 
-	return false;
+	if (m_D3D11InfoQueue)
+		m_D3D11InfoQueue.~ComPtr();
+
+	if (m_D3D11Debug)
+		m_D3D11Debug.~ComPtr();
+	#endif
 }
 #pragma endregion
 
@@ -240,6 +284,7 @@ void Graphics::SetGameWindowPos(const POINT& newWindowPos)
 void Graphics::BeginDraw()
 { 
 	m_D3D11DeviceContext->OMSetRenderTargets(1, m_RenderTargetView.GetAddressOf(), m_DepthBuffer.Get());
+	
 }
 
 void Graphics::EndDraw() 
@@ -558,6 +603,7 @@ void Graphics::LoadShaders()
 	m_D3D11Device->CreateRasterizerState(&rasterizerDesc, m_RasterizerState.GetAddressOf());
 	m_D3D11DeviceContext->RSSetState(m_RasterizerState.Get());
 
+	
 	//enumInputLayout(vsBlob.Get());
 	
 	//initializeConstantBuffers(vsBlob.Get(), true);
@@ -567,8 +613,24 @@ void Graphics::LoadShaders()
 void Graphics::UnloadShaders()
 {
 	m_InputLayout.Reset();
+	m_InputLayout = nullptr;
+
 	m_IndexBuffer.Reset();
+	m_IndexBuffer = nullptr;
+
 	m_VertexBuffer.Reset();
+	m_VertexBuffer = nullptr;
+
 	m_Ps.Reset();
+	m_Ps = nullptr;
+
 	m_Vs.Reset();
+	m_Vs = nullptr;
+}
+
+void Graphics::DisplayDx11DebugInfo()
+{
+#if defined(_DEBUG)
+	m_D3D11Debug->ReportLiveDeviceObjects(D3D11_RLDO_SUMMARY | D3D11_RLDO_DETAIL);
+#endif
 }

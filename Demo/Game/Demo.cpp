@@ -2,7 +2,7 @@
 #include <sstream>
 #include <P2DE\GFX\Graphics.h>
 #include <P2DE\Utilities\ComPtr.h>
-#include <P2DE\GFX\SpritesheetAtlas.h>
+//#include <P2DE\GFX\SpritesheetAtlas.h>
 #include <P2DE\Input\InputManager.h>
 #include <P2DE\FileIO\FileIO.h>
 #include <P2DE\SFX\P2DE_Sound.h>
@@ -24,7 +24,7 @@ namespace Demo
 
 	Demo::~Demo()
 	{
-		UnloadResources(true);
+		P2DE_GFX.UnloadDirectX(true);
 	}
 
 	bool Demo::LoadResources()
