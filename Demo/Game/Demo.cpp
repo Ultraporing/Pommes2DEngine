@@ -5,13 +5,13 @@
 #include <P2DE\GFX\SpritesheetAtlas.h>
 #include <P2DE\Input\InputManager.h>
 #include <P2DE\FileIO\FileIO.h>
-#include <SFML\Audio.hpp>
+#include <P2DE\SFX\P2DE_Sound.h>
 
 namespace Demo
 {
 	Demo::Demo(HWND hWndGamewindow)
 	{
-		m_Camera = P2DE::GFX::Camera();
+		//m_Camera = P2DE::GFX::Camera();
 		m_hWndGamewindow = hWndGamewindow;
 		P2DE_GFX.SetCurrentGame(this);
 		m_GameCrashed = false;
@@ -20,9 +20,7 @@ namespace Demo
 		P2DE_INPUT.InitXboxControllers();
 	}
 
-	sf::SoundBuffer buffer;
-	sf::Sound sound;
-	sf::Music music;
+	P2DE::SFX::P2DE_Sound sound;
 
 	Demo::~Demo()
 	{
@@ -34,13 +32,13 @@ namespace Demo
 		//if (!P2DE::GFX::SpritesheetAtlas::AddLoadSpritesheet(L"Assets\\Graphics\\Spritesheets\\roguelikeSheet_transparent_Info.txt", m_Graphics))
 		//	return false;
 
-		if (!buffer.loadFromFile("Assets\\Sound\\Fx\\pew.wav"))
+		if (!sound.LoadSoundfile("Assets\\Sound\\Fx\\pew.wav"))
 			return false;
-		else
-			sound.setBuffer(buffer);
+	//	else
+		//	sound.setBuffer(buffer);
 
-		if (!music.openFromFile("Assets\\Sound\\Music\\Dragonforce-Through the Fire and Flames Full Version.ogg"))
-			return false;
+		//if (!music.openFromFile("Assets\\Sound\\Music\\Dragonforce-Through the Fire and Flames Full Version.ogg"))
+			//return false;
 		
 		P2DE_GFX.LoadShaders();
 
@@ -120,12 +118,13 @@ namespace Demo
 		else if (P2DE_INPUT.IsKeyDown(VK_DOWN))
 			camMoveAmount.y = cameraSpeed * deltaTime;
 
-		m_Camera.MoveCamera(camMoveAmount);
+		//m_Camera.MoveCamera(camMoveAmount);
 
 		if (P2DE_INPUT.IsKeyPressed(VK_ESCAPE))
 			return true;
 
 		POINT p = POINT();
+		/*
 		if (P2DE_INPUT.IsKeyPressed(VK_SPACE))
 		{
 			
@@ -138,7 +137,7 @@ namespace Demo
 			}
 			else
 				MessageBox(NULL, L"fail", L"merp", MB_OK);
-		}
+		}*/
 		/*
 		if (P2DE_INPUT.IsKeyDown(VK_KEY_A))
 		{
@@ -283,18 +282,18 @@ namespace Demo
 		*/
 		if (P2DE_INPUT.IsKeyPressed(VK_KEY_U))
 		{
-			if (sound.getStatus() != sf::SoundSource::Status::Playing)
-				sound.play();
+			if (sound.GetPlaybackStatus() != P2DE::SFX::Status::Playing)
+				sound.Play();
 			else
-				sound.stop();
+				sound.Stop();
 		}
 		
 		if (P2DE_INPUT.IsKeyPressed(VK_KEY_I))
 		{
-			if (music.getStatus() != sf::SoundSource::Status::Playing)
-				music.play();
-			else
-				music.stop();
+			//if (music.getStatus() != P2DE::SFX::Status::Playing)
+				//music.play();
+			//else
+				//music.stop();
 		}
 
 		P2DE_INPUT.ResetMousewheelState();

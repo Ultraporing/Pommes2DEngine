@@ -159,33 +159,24 @@ void InputManager::InitXboxControllers()
 {
 	for (int i = 1; i < 5; i++)
 	{
-		InputManager::m_XboxControllers.at(i-1) = new XboxController(i);
-	}
-}
-
-void InputManager::DeinitializeXboxControllers()
-{
-	for (int i = 0; i < 4; i++)
-	{
-		delete InputManager::m_XboxControllers.at(i);
-		InputManager::m_XboxControllers.at(i) = NULL;
+		InputManager::m_XboxControllers.at(i-1) = XboxController(i);
 	}
 }
 
 bool InputManager::IsControllerConnected(const BYTE& player)
 {
-	return InputManager::m_XboxControllers.at(player - 1)->IsConnected();
+	return InputManager::m_XboxControllers.at(player - 1).IsConnected();
 }
 
 bool InputManager::IsControllerButtonPressed(const BYTE& player, const WORD& xInputGamepadButton)
 {
 	if (InputManager::IsControllerConnected(player))
-		return InputManager::m_XboxControllers.at(player - 1)->GetState().Gamepad.wButtons & xInputGamepadButton ? true : false;
+		return InputManager::m_XboxControllers.at(player - 1).GetState().Gamepad.wButtons & xInputGamepadButton ? true : false;
 	else
 		return false;
 }
 
 XboxController* InputManager::GetController(const BYTE& player)
 {
-	return InputManager::m_XboxControllers.at(player - 1);
+	return &InputManager::m_XboxControllers.at(player - 1);
 }

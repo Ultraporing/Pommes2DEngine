@@ -35,6 +35,12 @@
     <Filter Include="Source Files\Pommes 2D Engine\Graphics\Drawables">
       <UniqueIdentifier>{ad5a75bb-44f2-4f1e-9b86-c625fb0ad4d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Pommes 2D Engine\SFX">
+      <UniqueIdentifier>{5f9d88e9-7ce3-4a11-b1e4-bb79727867a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Pommes 2D Engine\Graphics\Drawables\Primitives">
+      <UniqueIdentifier>{b2a8569e-a0d2-4c87-99b3-d386e2014f6c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="P2DE\GFX\Camera.h">
@@ -106,8 +112,17 @@
     <ClInclude Include="P2DE\GFX\Drawables\BaseDrawable.h">
       <Filter>Source Files\Pommes 2D Engine\Graphics\Drawables</Filter>
     </ClInclude>
-    <ClInclude Include="P2DE\GFX\Drawables\Triangle.h">
-      <Filter>Source Files\Pommes 2D Engine\Graphics\Drawables</Filter>
+    <ClInclude Include="P2DE\SFX\SoundManager.h">
+      <Filter>Source Files\Pommes 2D Engine\SFX</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\SFX\P2DE_Music.h">
+      <Filter>Source Files\Pommes 2D Engine\SFX</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\SFX\P2DE_Sound.h">
+      <Filter>Source Files\Pommes 2D Engine\SFX</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\GFX\Drawables\Primitives\Triangle.h">
+      <Filter>Source Files\Pommes 2D Engine\Graphics\Drawables\Primitives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -144,8 +159,17 @@
     <ClCompile Include="P2DE\GFX\P2DE_Shader.cpp">
       <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="P2DE\GFX\Drawables\Triangle.cpp">
-      <Filter>Source Files\Pommes 2D Engine\Graphics\Drawables</Filter>
+    <ClCompile Include="P2DE\SFX\SoundManager.cpp">
+      <Filter>Source Files\Pommes 2D Engine\SFX</Filter>
+    </ClCompile>
+    <ClCompile Include="P2DE\SFX\P2DE_Music.cpp">
+      <Filter>Source Files\Pommes 2D Engine\SFX</Filter>
+    </ClCompile>
+    <ClCompile Include="P2DE\SFX\P2DE_Sound.cpp">
+      <Filter>Source Files\Pommes 2D Engine\SFX</Filter>
+    </ClCompile>
+    <ClCompile Include="P2DE\GFX\Drawables\Primitives\Triangle.cpp">
+      <Filter>Source Files\Pommes 2D Engine\Graphics\Drawables\Primitives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

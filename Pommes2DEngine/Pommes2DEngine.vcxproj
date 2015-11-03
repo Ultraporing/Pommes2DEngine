@@ -68,11 +68,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>$(ProjectDir)External\SFML\lib\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)External\SFML\lib\x86;$(LibraryPath)</LibraryPath>
     <IncludePath>$(ProjectDir)External\SFML\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LibraryPath>$(ProjectDir)External\SFML\lib\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)External\SFML\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)External\SFML\include\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)External\SFML\include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)External\SFML\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LibraryPath>$(ProjectDir)External\SFML\lib\x64;$(LibraryPath)</LibraryPath>
     <IncludePath>$(ProjectDir)External\SFML\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -84,15 +92,21 @@
       <SDLCheck>true</SDLCheck>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <XMLDocumentationFileName>$(ProjectDir)Documentation\</XMLDocumentationFileName>
+      <DisableSpecificWarnings>4091;</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
+      <AdditionalDependencies>sfml-audio-s-d.lib</AdditionalDependencies>
     </Lib>
+    <PostBuildEvent>
+      <Command>xcopy /i /e /s /y /f "$(WindowsSdkDir)redist\D3D\$(PlatformTargetAsMSBuildArchitecture)\d3dcompiler_47.dll" "$(OutputPath)"
+xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-audio-d-2.dll" "$(OutputPath)"
+xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-system-d-2.dll" "$(OutputPath)"
+xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\openal32.dll" "$(OutputPath)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -103,15 +117,21 @@
       <SDLCheck>true</SDLCheck>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <XMLDocumentationFileName>$(ProjectDir)Documentation\</XMLDocumentationFileName>
+      <DisableSpecificWarnings>4091;</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
+      <AdditionalDependencies>sfml-audio-s-d.lib</AdditionalDependencies>
     </Lib>
+    <PostBuildEvent>
+      <Command>xcopy /i /e /s /y /f "$(WindowsSdkDir)redist\D3D\$(PlatformTargetAsMSBuildArchitecture)\d3dcompiler_47.dll" "$(OutputPath)"
+xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-audio-d-2.dll" "$(OutputPath)"
+xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-system-d-2.dll" "$(OutputPath)"
+xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\openal32.dll" "$(OutputPath)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -124,6 +144,7 @@
       <SDLCheck>true</SDLCheck>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <XMLDocumentationFileName>$(ProjectDir)Documentation\</XMLDocumentationFileName>
+      <DisableSpecificWarnings>4091;</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -132,9 +153,14 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
+      <AdditionalDependencies>sfml-audio-s.lib</AdditionalDependencies>
     </Lib>
+    <PostBuildEvent>
+      <Command>xcopy /i /e /s /y /f "$(WindowsSdkDir)redist\D3D\$(PlatformTargetAsMSBuildArchitecture)\d3dcompiler_47.dll" "$(OutputPath)"
+xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-audio-2.dll" "$(OutputPath)"
+xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-system-2.dll" "$(OutputPath)"
+xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\openal32.dll" "$(OutputPath)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -147,6 +173,7 @@
       <SDLCheck>true</SDLCheck>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <XMLDocumentationFileName>$(ProjectDir)Documentation\</XMLDocumentationFileName>
+      <DisableSpecificWarnings>4091;</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -155,9 +182,14 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
+      <AdditionalDependencies>sfml-audio-s.lib</AdditionalDependencies>
     </Lib>
+    <PostBuildEvent>
+      <Command>xcopy /i /e /s /y /f "$(WindowsSdkDir)redist\D3D\$(PlatformTargetAsMSBuildArchitecture)\d3dcompiler_47.dll" "$(OutputPath)"
+xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-audio-2.dll" "$(OutputPath)"
+xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-system-2.dll" "$(OutputPath)"
+xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\openal32.dll" "$(OutputPath)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="P2DE\GFX\D3D11Common.h" />
@@ -183,7 +215,10 @@
     <ClInclude Include="P2DE\GFX\WICTextureLoader.h" />
     <ClInclude Include="P2DE\GFX\Drawables\SGeometry.h" />
     <ClInclude Include="P2DE\GFX\P2DE_Shader.h" />
-    <ClInclude Include="P2DE\GFX\Drawables\Triangle.h" />
+    <ClInclude Include="P2DE\GFX\Drawables\Primitives\Triangle.h" />
+    <ClInclude Include="P2DE\SFX\SoundManager.h" />
+    <ClInclude Include="P2DE\SFX\P2DE_Music.h" />
+    <ClInclude Include="P2DE\SFX\P2DE_Sound.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P2DE\FileIO\FileIO.cpp" />
@@ -197,7 +232,10 @@
     <ClCompile Include="P2DE\Input\XboxController.cpp" />
     <ClCompile Include="P2DE\GFX\SpritesheetAtlas.cpp" />
     <ClCompile Include="P2DE\GFX\P2DE_Shader.cpp" />
-    <ClCompile Include="P2DE\GFX\Drawables\Triangle.cpp" />
+    <ClCompile Include="P2DE\GFX\Drawables\Primitives\Triangle.cpp" />
+    <ClCompile Include="P2DE\SFX\SoundManager.cpp" />
+    <ClCompile Include="P2DE\SFX\P2DE_Music.cpp" />
+    <ClCompile Include="P2DE\SFX\P2DE_Sound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="P2DE\GFX\Shader\PixelShader.hlsl">
@@ -206,6 +244,10 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0_level_9_1</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)Assets\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)Assets\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)Assets\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)Assets\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="P2DE\GFX\Shader\VertexShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
@@ -213,6 +255,10 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0_level_9_1</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)Assets\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)Assets\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)Assets\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)Assets\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

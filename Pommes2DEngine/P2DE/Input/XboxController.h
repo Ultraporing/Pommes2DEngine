@@ -24,7 +24,7 @@ namespace P2DE
 			/// <summary>	Default constructor. </summary>
 			///
 			/// <remarks>	Tobias, 03.06.2015. </remarks>
-			XboxController();
+			XboxController() {};
 			/// <summary>	Constructor. </summary>
 			///
 			/// <remarks>	Tobias, 03.06.2015. </remarks>

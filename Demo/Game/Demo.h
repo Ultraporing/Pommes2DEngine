@@ -20,9 +20,10 @@ namespace Demo
 	{
 		private:
 			HWND m_hWndGamewindow;
-			P2DE::GFX::Camera m_Camera;
+			//P2DE::GFX::Camera m_Camera;
 
 		public:
+		Demo() {};
 			Demo(HWND hWndGamewindow);
 			~Demo();
 

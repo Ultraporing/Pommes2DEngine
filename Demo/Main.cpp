@@ -10,7 +10,6 @@
 #include "P2DE\Input\InputManager.h"
 #include "P2DE\Utilities\Minidump.h"
 
-Demo::Demo* demo;
 
 #define WINDOW_TITLE L"Engine Demo"
 
@@ -61,8 +60,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return -1;
 	}
 
-	demo = NULL;
-	demo = new Demo::Demo(hWnd);
+	Demo::Demo demo = Demo::Demo(hWnd);
 
 	ShowWindow(hWnd, nCmdShow);
 
@@ -70,7 +68,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	P2DE::TIMING::HrTimer hrTimer;
 
-	while (TRUE && !demo->IsGameCrashed())
+	while (TRUE && !demo.IsGameCrashed())
 	{
 		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
@@ -83,16 +81,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		hrTimer.Update();
 
-		if (demo->Update(hrTimer.GetDeltaTime())) // Shutdown game if TRUE is returned
+		if (demo.Update(hrTimer.GetDeltaTime())) // Shutdown game if TRUE is returned
 			PostQuitMessage(0);
 
-		demo->Render();
+		//TODO: SOMEWHERE IN ENGINE RENDERING IS AN MEMORY LEAK!
+		demo.Render();
 	}
-
-	P2DE_INPUT.DeinitializeXboxControllers();
-
-	delete demo;
-
 	return 0;
 }
 

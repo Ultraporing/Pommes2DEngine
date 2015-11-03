@@ -3,7 +3,6 @@
 //=================================================================================== 
 
 #pragma once
-#include <Windows.h>
 #include <array>
 #include "XboxController.h"
 
@@ -73,7 +72,7 @@ namespace P2DE
 			/// <summary>	The current keys pressed. </summary>
 			std::array<bool, MAXBYTE> m_CurrentKeysPressed;
 			/// <summary>	The xbox controllers. </summary>
-			std::array<XboxController*, 4> m_XboxControllers;
+			std::array<XboxController, 4> m_XboxControllers;
 			/// <summary>	State of the mousewheel. 1 = mousewheel up, 0 = none, -1 = mousewheel down</summary>
 			int m_MousewheelState;
 
@@ -83,7 +82,7 @@ namespace P2DE
 			{
 				m_CurrentKeysPressed = std::array<bool, MAXBYTE>();
 				m_MousewheelState = 0;
-				m_XboxControllers = std::array<XboxController*, 4>();
+				m_XboxControllers = std::array<XboxController, 4>();
 			};
 
 			public:
@@ -197,10 +196,7 @@ namespace P2DE
 			///
 			/// <remarks>	Tobias, 03.06.2015. </remarks>
 			void InitXboxControllers();
-			/// <summary>	Deinitialize xbox controllers. </summary>
-			///
-			/// <remarks>	Tobias, 03.06.2015. </remarks>
-			void DeinitializeXboxControllers();
+		
 			/// <summary>	Query if 'players' controller is connected. </summary>
 			///
 			/// <remarks>	Tobias, 03.06.2015. </remarks>

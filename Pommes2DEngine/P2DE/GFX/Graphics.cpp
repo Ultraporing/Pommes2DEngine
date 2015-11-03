@@ -9,6 +9,7 @@
 #include "Drawables\BaseDrawable.h"
 
 using namespace P2DE::GFX;
+using namespace P2DE::GFX::DRAWABLES;
 typedef unsigned int uint;
 
 // This flag adds support for surfaces with a different color channel ordering than the API default.
@@ -243,7 +244,7 @@ void Graphics::BeginDraw()
 
 void Graphics::EndDraw() 
 { 
-	m_SwapChain->Present(0, 0); 
+	m_SwapChain->Present(1, 0); 
 }
 	
 void Graphics::ClearScreen(float r, float g, float b)
@@ -395,7 +396,7 @@ HRESULT Graphics::enumInputLayout(ID3DBlob * VSBlob)
 	}
 
 		// create input layout from previosly created description
-	unsigned int numElements = inputLayoutArray.size();
+	unsigned int numElements = (unsigned int)inputLayoutArray.size();
 	hr = m_D3D11Device->CreateInputLayout(
 		inputLayoutArray.data(),
 		numElements,
@@ -490,12 +491,12 @@ void Graphics::LoadShaders()
 	//ID3D11Buffer* buf;
 	ComPtr<ID3DBlob> psBlob, vsBlob;
 
-	D3DReadFileToBlob(L"PixelShader.cso", &psBlob);
+	D3DReadFileToBlob(L"Assets\\Shaders\\PixelShader.cso", &psBlob);
 	//std::vector<char> binary = FILEIO::FileIO::ReadToByteArray("PixelShader.cso");
 	m_D3D11Device->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &m_Ps);
 
 	//binary = FILEIO::FileIO::ReadToByteArray("VertexShader.cso");
-	D3DReadFileToBlob(L"VertexShader.cso", &vsBlob);
+	D3DReadFileToBlob(L"Assets\\Shaders\\VertexShader.cso", &vsBlob);
 	m_D3D11Device->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &m_Vs);
 		
 	m_D3D11DeviceContext->VSSetShader(m_Vs.Get(), NULL, NULL);
