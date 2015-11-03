@@ -180,28 +180,4 @@
       <Filter>Source Files\Pommes 2D Engine\Graphics\Shader</Filter>
     </FxCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="External\SFML\bin32\openal32.dll" />
-    <None Include="External\SFML\bin32\sfml-audio-2.dll" />
-    <None Include="External\SFML\bin32\sfml-audio-d-2.dll" />
-    <None Include="External\SFML\bin32\sfml-graphics-2.dll" />
-    <None Include="External\SFML\bin32\sfml-graphics-d-2.dll" />
-    <None Include="External\SFML\bin32\sfml-network-2.dll" />
-    <None Include="External\SFML\bin32\sfml-network-d-2.dll" />
-    <None Include="External\SFML\bin32\sfml-system-2.dll" />
-    <None Include="External\SFML\bin32\sfml-system-d-2.dll" />
-    <None Include="External\SFML\bin32\sfml-window-2.dll" />
-    <None Include="External\SFML\bin32\sfml-window-d-2.dll" />
-    <None Include="External\SFML\bin64\openal32.dll" />
-    <None Include="External\SFML\bin64\sfml-audio-2.dll" />
-    <None Include="External\SFML\bin64\sfml-audio-d-2.dll" />
-    <None Include="External\SFML\bin64\sfml-graphics-2.dll" />
-    <None Include="External\SFML\bin64\sfml-graphics-d-2.dll" />
-    <None Include="External\SFML\bin64\sfml-network-2.dll" />
-    <None Include="External\SFML\bin64\sfml-network-d-2.dll" />
-    <None Include="External\SFML\bin64\sfml-system-2.dll" />
-    <None Include="External\SFML\bin64\sfml-system-d-2.dll" />
-    <None Include="External\SFML\bin64\sfml-window-2.dll" />
-    <None Include="External\SFML\bin64\sfml-window-d-2.dll" />
-  </ItemGroup>
 </Project>

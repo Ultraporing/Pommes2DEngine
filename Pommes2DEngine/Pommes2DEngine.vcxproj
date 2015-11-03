@@ -261,30 +261,6 @@ xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\open
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)Assets\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="External\SFML\bin32\openal32.dll" />
-    <None Include="External\SFML\bin32\sfml-audio-2.dll" />
-    <None Include="External\SFML\bin32\sfml-audio-d-2.dll" />
-    <None Include="External\SFML\bin32\sfml-graphics-2.dll" />
-    <None Include="External\SFML\bin32\sfml-graphics-d-2.dll" />
-    <None Include="External\SFML\bin32\sfml-network-2.dll" />
-    <None Include="External\SFML\bin32\sfml-network-d-2.dll" />
-    <None Include="External\SFML\bin32\sfml-system-2.dll" />
-    <None Include="External\SFML\bin32\sfml-system-d-2.dll" />
-    <None Include="External\SFML\bin32\sfml-window-2.dll" />
-    <None Include="External\SFML\bin32\sfml-window-d-2.dll" />
-    <None Include="External\SFML\bin64\openal32.dll" />
-    <None Include="External\SFML\bin64\sfml-audio-2.dll" />
-    <None Include="External\SFML\bin64\sfml-audio-d-2.dll" />
-    <None Include="External\SFML\bin64\sfml-graphics-2.dll" />
-    <None Include="External\SFML\bin64\sfml-graphics-d-2.dll" />
-    <None Include="External\SFML\bin64\sfml-network-2.dll" />
-    <None Include="External\SFML\bin64\sfml-network-d-2.dll" />
-    <None Include="External\SFML\bin64\sfml-system-2.dll" />
-    <None Include="External\SFML\bin64\sfml-system-d-2.dll" />
-    <None Include="External\SFML\bin64\sfml-window-2.dll" />
-    <None Include="External\SFML\bin64\sfml-window-d-2.dll" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
