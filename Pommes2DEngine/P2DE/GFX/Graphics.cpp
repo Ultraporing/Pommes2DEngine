@@ -4,7 +4,6 @@
 #include <comdef.h>
 #include <sstream>
 #include "../FileIO/FileIO.h"
-#include "d3dcompiler.h"
 #include "WICTextureLoader.h"
 #include "Drawables\BaseDrawable.h"
 
@@ -333,199 +332,6 @@ void Graphics::RenderDrawable(BaseDrawable * drawable)
 {
 }*/
 
-HRESULT Graphics::enumInputLayout(ID3DBlob * VSBlob)
-{
-	HRESULT hr = S_OK;
-
-	// Get description from precompiled shader
-	ID3D11ShaderReflection* vertReflect;
-	D3DReflect(
-		VSBlob->GetBufferPointer(),
-		VSBlob->GetBufferSize(),
-		IID_ID3D11ShaderReflection,
-		(void**)&vertReflect
-		);
-
-	D3D11_SHADER_DESC descVertex;
-	vertReflect->GetDesc(&descVertex);
-	
-	// save description of input parameters (attributes of vertex shader)
-	std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayoutArray;
-	std::uint32_t byteOffset = 0;
-	D3D11_SIGNATURE_PARAMETER_DESC input_desc;
-	for (unsigned int i = 0; i < descVertex.InputParameters; i++)
-	{
-		// get description of input parameter
-		vertReflect->GetInputParameterDesc(i, &input_desc);
-
-		// fill element description to create input layout later
-		D3D11_INPUT_ELEMENT_DESC ie;
-		ie.SemanticName = input_desc.SemanticName;
-		ie.SemanticIndex = input_desc.SemanticIndex;
-		ie.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-		ie.InputSlot = i;
-		ie.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		ie.InstanceDataStepRate = 0;
-		ie.AlignedByteOffset = byteOffset;
-
-		// determine correct format of input parameter and offset
-		if (input_desc.Mask == 1)
-		{
-			if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_UINT32)
-			{
-				ie.Format = DXGI_FORMAT_R32_UINT;
-			}
-			else if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_SINT32)
-			{
-				ie.Format = DXGI_FORMAT_R32_SINT;
-			}
-			else if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32)
-			{
-				ie.Format = DXGI_FORMAT_R32_FLOAT;
-			}
-			byteOffset += 4;
-		}
-		else if (input_desc.Mask <= 3)
-		{
-			if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_UINT32)
-			{
-				ie.Format = DXGI_FORMAT_R32G32_UINT;
-			}
-			else if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_SINT32)
-			{
-				ie.Format = DXGI_FORMAT_R32G32_SINT;
-			}
-			else if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32)
-			{
-				ie.Format = DXGI_FORMAT_R32G32_FLOAT;
-			}
-			byteOffset += 8;
-		}
-		else if (input_desc.Mask <= 7)
-		{
-			if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_UINT32)
-			{
-				ie.Format = DXGI_FORMAT_R32G32B32_UINT;
-			}
-			else if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_SINT32)
-			{
-				ie.Format = DXGI_FORMAT_R32G32B32_SINT;
-			}
-			else if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32)
-			{
-				ie.Format = DXGI_FORMAT_R32G32B32_FLOAT;
-			}
-			byteOffset += 12;
-		}
-		else if (input_desc.Mask <= 15)
-		{
-			if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_UINT32)
-			{
-				ie.Format = DXGI_FORMAT_R32G32B32A32_UINT;
-			}
-			else if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_SINT32)
-			{
-				ie.Format = DXGI_FORMAT_R32G32B32A32_SINT;
-			}
-			else if (input_desc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32)
-			{
-				ie.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-			}
-			byteOffset += 16;
-		}
-
-		inputLayoutArray.push_back(ie);
-
-		// you can save input_desc here (if needed)
-	}
-
-		// create input layout from previosly created description
-	unsigned int numElements = (unsigned int)inputLayoutArray.size();
-	hr = m_D3D11Device->CreateInputLayout(
-		inputLayoutArray.data(),
-		numElements,
-		VSBlob->GetBufferPointer(),
-		VSBlob->GetBufferSize(),
-		m_InputLayout.GetAddressOf()
-		);
-
-	if (FAILED(hr))
-	{
-		// impossible to create input layout
-		return hr;
-	}
-
-	return S_OK;
-}
-
-HRESULT Graphics::initializeConstantBuffers(ID3DBlob * blob, bool isVS)
-{
-	// get description of precompiled shader
-	ID3D11ShaderReflection* pReflector = NULL;
-	D3DReflect(
-		blob->GetBufferPointer(),
-		blob->GetBufferSize(),
-		IID_ID3D11ShaderReflection,
-		(void**)&pReflector
-		);
-
-	D3D11_SHADER_DESC desc;
-	pReflector->GetDesc(&desc);
-
-	// get description of each constant buffer in the shader
-	for (uint i = 0; i < desc.ConstantBuffers; i++)
-	{
-		// get description of constant buffer
-		D3D11_SHADER_BUFFER_DESC shaderBuffer;
-		ID3D11ShaderReflectionConstantBuffer * pConstBuffer =
-			pReflector->GetConstantBufferByIndex(i);
-		pConstBuffer->GetDesc(&shaderBuffer);
-
-		// you can save shaderBuffer here (if needed)
-
-		// get description of each variable in constant buffer
-		for (uint j = 0; j < shaderBuffer.Variables; j++)
-		{
-			// description of variable
-			ID3D11ShaderReflectionVariable * pVariable =
-				pConstBuffer->GetVariableByIndex(j);
-			D3D11_SHADER_VARIABLE_DESC varDesc;
-			pVariable->GetDesc(&varDesc);
-
-			// type of variable
-			D3D11_SHADER_TYPE_DESC varType;
-			ID3D11ShaderReflectionType * pType = pVariable->GetType();
-			pType->GetDesc(&varType);
-
-			// you can save varType and varDesc here (if needed)
-		}
-
-		// get binding description for constant buffer
-		D3D11_SHADER_INPUT_BIND_DESC bindingDesc;
-		pReflector->GetResourceBindingDescByName(shaderBuffer.Name, &bindingDesc);
-
-		// PS. You can save descriptions of constant buffers in following struct
-		//struct ConstantBufferDescription
-		//{
-		//	std::pair variables;
-		//	D3D11_SHADER_INPUT_BIND_DESC bindingDescription;
-		//}
-	}
-
-	///////////////////////////////////////////////////
-	/*
-	// Save description of textures and samplers
-	for (uint i = 0; i{
-		
-		D3D11_SHADER_INPUT_BIND_DESC inputBindDesc;
-		pReflector->GetResourceBindingDesc(i, &inputBindDesc);
-
-		// save description of textures and samplers here
-	}*/
-
-	return S_OK;
-}
-
 void Graphics::LoadShaders()
 {
 	
@@ -533,15 +339,15 @@ void Graphics::LoadShaders()
 	//ID3D11VertexShader* vs;
 	//ID3D11InputLayout* inp;
 	//ID3D11Buffer* buf;
-	ComPtr<ID3DBlob> psBlob, vsBlob;
+	//ComPtr<ID3DBlob> psBlob, vsBlob;
 
-	D3DReadFileToBlob(L"Assets\\Shaders\\PixelShader.cso", &psBlob);
-	//std::vector<char> binary = FILEIO::FileIO::ReadToByteArray("PixelShader.cso");
-	m_D3D11Device->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &m_Ps);
+	//D3DReadFileToBlob(L"Assets\\Shaders\\PixelShader.cso", &psBlob);
+	std::vector<char> binary = FILEIO::FileIO::ReadToByteArray("Assets\\Shaders\\PixelShader.cso");
+	m_D3D11Device->CreatePixelShader(&binary[0], binary.size(), nullptr, &m_Ps);
 
-	//binary = FILEIO::FileIO::ReadToByteArray("VertexShader.cso");
-	D3DReadFileToBlob(L"Assets\\Shaders\\VertexShader.cso", &vsBlob);
-	m_D3D11Device->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &m_Vs);
+	binary = FILEIO::FileIO::ReadToByteArray("Assets\\Shaders\\VertexShader.cso");
+	//D3DReadFileToBlob(L"Assets\\Shaders\\VertexShader.cso", &vsBlob);
+	m_D3D11Device->CreateVertexShader(&binary[0], binary.size(), nullptr, &m_Vs);
 		
 	m_D3D11DeviceContext->VSSetShader(m_Vs.Get(), NULL, NULL);
 	m_D3D11DeviceContext->PSSetShader(m_Ps.Get(), NULL, NULL);
@@ -552,7 +358,7 @@ void Graphics::LoadShaders()
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
-	HRESULT hr = m_D3D11Device->CreateInputLayout(positionLayout, 2, vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), m_InputLayout.GetAddressOf());
+	HRESULT hr = m_D3D11Device->CreateInputLayout(positionLayout, 2, &binary[0], binary.size(), m_InputLayout.GetAddressOf());
 	m_D3D11DeviceContext->IASetInputLayout(m_InputLayout.Get());
 
 	VERTEX OurVertices[] =
@@ -601,12 +407,6 @@ void Graphics::LoadShaders()
 	
 	m_D3D11Device->CreateRasterizerState(&rasterizerDesc, m_RasterizerState.GetAddressOf());
 	m_D3D11DeviceContext->RSSetState(m_RasterizerState.Get());
-
-	
-	//enumInputLayout(vsBlob.Get());
-	
-	//initializeConstantBuffers(vsBlob.Get(), true);
-	//initializeConstantBuffers(psBlob.Get(), false);
 }
 
 void Graphics::UnloadShaders()

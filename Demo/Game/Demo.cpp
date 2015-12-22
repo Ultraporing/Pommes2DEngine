@@ -15,7 +15,7 @@ namespace Demo
 		m_hWndGamewindow = hWndGamewindow;
 		P2DE_GFX.SetCurrentGame(this);
 		m_GameCrashed = false;
-
+		
 		m_GameCrashed = !LoadResources();
 		P2DE_INPUT.InitXboxControllers();
 	}

@@ -181,8 +181,7 @@ namespace P2DE
 			void LoadShaders();
 			void UnloadShaders();
 			void DisplayDx11DebugInfo();
-			HRESULT enumInputLayout(ID3DBlob * VSBlob);
-			HRESULT initializeConstantBuffers(ID3DBlob * blob, bool isVS);
+
 			#pragma region Begin/EndDraw/Clear
 			/// <summary>	Begins a draw. </summary>
 			///
