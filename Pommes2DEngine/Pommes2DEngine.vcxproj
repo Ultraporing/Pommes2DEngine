@@ -102,8 +102,7 @@
       <AdditionalDependencies>sfml-audio-s-d.lib</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>xcopy /i /e /s /y /f "$(WindowsSdkDir)redist\D3D\$(PlatformTargetAsMSBuildArchitecture)\d3dcompiler_47.dll" "$(OutputPath)"
-xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-audio-d-2.dll" "$(OutputPath)"
+      <Command>xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-audio-d-2.dll" "$(OutputPath)"
 xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-system-d-2.dll" "$(OutputPath)"
 xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\openal32.dll" "$(OutputPath)"</Command>
     </PostBuildEvent>
@@ -127,8 +126,7 @@ xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\open
       <AdditionalDependencies>sfml-audio-s-d.lib</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>xcopy /i /e /s /y /f "$(WindowsSdkDir)redist\D3D\$(PlatformTargetAsMSBuildArchitecture)\d3dcompiler_47.dll" "$(OutputPath)"
-xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-audio-d-2.dll" "$(OutputPath)"
+      <Command>xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-audio-d-2.dll" "$(OutputPath)"
 xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-system-d-2.dll" "$(OutputPath)"
 xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\openal32.dll" "$(OutputPath)"</Command>
     </PostBuildEvent>
@@ -156,8 +154,7 @@ xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\open
       <AdditionalDependencies>sfml-audio-s.lib</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>xcopy /i /e /s /y /f "$(WindowsSdkDir)redist\D3D\$(PlatformTargetAsMSBuildArchitecture)\d3dcompiler_47.dll" "$(OutputPath)"
-xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-audio-2.dll" "$(OutputPath)"
+      <Command>xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-audio-2.dll" "$(OutputPath)"
 xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-system-2.dll" "$(OutputPath)"
 xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\openal32.dll" "$(OutputPath)"</Command>
     </PostBuildEvent>
@@ -185,8 +182,7 @@ xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\open
       <AdditionalDependencies>sfml-audio-s.lib</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>xcopy /i /e /s /y /f "$(WindowsSdkDir)redist\D3D\$(PlatformTargetAsMSBuildArchitecture)\d3dcompiler_47.dll" "$(OutputPath)"
-xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-audio-2.dll" "$(OutputPath)"
+      <Command>xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-audio-2.dll" "$(OutputPath)"
 xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\sfml-system-2.dll" "$(OutputPath)"
 xcopy /i /e /s /y /f "$(ProjectDir)External\SFML\bin$(PlatformArchitecture)\openal32.dll" "$(OutputPath)"</Command>
     </PostBuildEvent>
