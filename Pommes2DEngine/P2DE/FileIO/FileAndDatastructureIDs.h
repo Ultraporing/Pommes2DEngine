@@ -1,13 +1,14 @@
 #pragma once
+#include "../Common.h"
 
-typedef unsigned int DatastructureID;
+typedef unsigned int P2DE_DECLSPEC DatastructureID;
 
-enum class FileIDs : DatastructureID
+enum class P2DE_DECLSPEC FileIDs : DatastructureID
 {
 
 };
 
-enum class DatastructureIDs : DatastructureID
+enum class P2DE_DECLSPEC DatastructureIDs : DatastructureID
 {
 	ImageProperties_START = 44198,
 	ImageProperties_END = 44199,

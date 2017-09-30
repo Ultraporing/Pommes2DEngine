@@ -7,7 +7,7 @@ namespace P2DE
 {
 	namespace FILEIO
 	{
-		class SerializeableDataStructure
+		class P2DE_DECLSPEC SerializeableDataStructure
 		{
 			protected:
 			DatastructureID ID_BLOCK_START;

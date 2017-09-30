@@ -43,7 +43,7 @@ namespace P2DE
 		/// <summary>	Graphics Class, Rendering and Wrapping DirectX. As well as helper functions for Rendering. </summary>
 		///
 		/// <remarks>	Tobias, 22.05.2015. </remarks>
-		class Graphics
+		class P2DE_DECLSPEC Graphics
 		{
 			private:
 			#pragma region Member_Variables

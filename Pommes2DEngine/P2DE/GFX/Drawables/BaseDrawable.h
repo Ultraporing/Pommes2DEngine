@@ -1,6 +1,7 @@
 #pragma once
 #include "..\D3D11Common.h"
 #include "SGeometry.h"
+#include "..\..\Common.h"
 
 namespace P2DE
 {
@@ -10,7 +11,7 @@ namespace P2DE
 		{
 			struct P2DE_Shader;
 
-			class BaseDrawable
+			class P2DE_DECLSPEC BaseDrawable
 			{
 				public:
 				virtual void Load() = 0;

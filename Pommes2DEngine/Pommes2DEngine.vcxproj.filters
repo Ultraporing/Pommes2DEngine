@@ -124,6 +124,9 @@
     <ClInclude Include="P2DE\GFX\Shader\P2DE_Shader.h">
       <Filter>Source Files\Pommes 2D Engine\Graphics\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="P2DE\Common.h">
+      <Filter>Source Files\Pommes 2D Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P2DE\GFX\Camera.cpp">

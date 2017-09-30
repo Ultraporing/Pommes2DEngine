@@ -5,6 +5,7 @@
 //#include <P2DE\GFX\SpritesheetAtlas.h>
 #include <P2DE\Input\InputManager.h>
 #include <P2DE\FileIO\FileIO.h>
+#include <P2DE\SFX\SoundManager.h>
 #include <P2DE\SFX\P2DE_Sound.h>
 
 namespace Demo
@@ -32,7 +33,7 @@ namespace Demo
 		//if (!P2DE::GFX::SpritesheetAtlas::AddLoadSpritesheet(L"Assets\\Graphics\\Spritesheets\\roguelikeSheet_transparent_Info.txt", m_Graphics))
 		//	return false;
 
-		if (!sound.LoadSoundfile("Assets\\Sound\\Fx\\pew.wav"))
+		if (!P2DE_SFX.CreateSound(L"pew", L"Assets\\Sound\\Fx\\pew.wav"))
 			return false;
 	//	else
 		//	sound.setBuffer(buffer);
@@ -282,10 +283,10 @@ namespace Demo
 		*/
 		if (P2DE_INPUT.IsKeyPressed(VK_KEY_U))
 		{
-			if (sound.GetPlaybackStatus() != P2DE::SFX::Status::Playing)
-				sound.Play();
+			if (P2DE_SFX.GetSound(L"pew")->GetPlaybackStatus() == P2DE::SFX::Status::Stopped)
+				P2DE_SFX.GetSound(L"pew")->Play();
 			else
-				sound.Stop();
+				P2DE_SFX.GetSound(L"pew")->Stop();
 		}
 		
 		if (P2DE_INPUT.IsKeyPressed(VK_KEY_I))

@@ -51,7 +51,7 @@ std::vector<char> FileIO::ReadToByteArray(char* filename)
 {
 	std::vector<char> data;
 	std::ifstream file(filename, std::ios::in | std::ios::binary | std::ios::ate);
-	data.resize(file.tellg());
+	data.resize((const unsigned int)file.tellg());
 	file.seekg(0, std::ios::beg);
 	file.read(&data[0], data.size());
 	return data;

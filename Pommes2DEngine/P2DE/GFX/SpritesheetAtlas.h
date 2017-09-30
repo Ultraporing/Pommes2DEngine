@@ -22,7 +22,7 @@
 				// TODO: Mac Code
 			#endif
 
-			class SpritesheetAtlas
+			class P2DE_DECLSPEC SpritesheetAtlas
 			{
 				#ifdef _WIN32
 					private:

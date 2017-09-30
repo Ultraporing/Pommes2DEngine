@@ -1,12 +1,13 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "../Common.h"
 
 namespace P2DE
 {
 	namespace FILEIO
 	{
-		class FileIO
+		class P2DE_DECLSPEC FileIO
 		{
 			public:
 			static bool ReadBinaryFile(std::wstring filePath, std::vector<unsigned char>* outputData);

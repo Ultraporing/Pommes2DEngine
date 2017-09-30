@@ -3,6 +3,7 @@
 //=================================================================================== 
 
 #pragma once
+#include "../Common.h"
 
 namespace P2DE
 {
@@ -14,7 +15,7 @@ namespace P2DE
 		/// <summary>	A base game. </summary>
 		///
 		/// <remarks>	Tobias, 22.05.2015. </remarks>
-		class BaseGame
+		class P2DE_DECLSPEC BaseGame
 		{
 			protected:
 			/// <summary>	true if game crashed. </summary>

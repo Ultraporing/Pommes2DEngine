@@ -4,6 +4,7 @@
 
 #pragma once
 #include <d2d1_1helper.h>
+#include "..\Common.h"
 
 namespace P2DE
 {
@@ -13,7 +14,7 @@ namespace P2DE
 		/// <summary>	A basic 2D Camera. </summary>
 		///
 		/// <remarks>	Tobias, 22.05.2015. </remarks>
-		class Camera
+		class P2DE_DECLSPEC Camera
 		{
 			private:
 			/// <summary>	The graphics class used. </summary>

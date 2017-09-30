@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include <Xinput.h>
+#include "../Common.h"
 
 #pragma comment(lib, "Xinput9_1_0.lib")
 
@@ -12,7 +13,7 @@ namespace P2DE
 		/// <summary>	XInput, Xbox controller class. </summary>
 		///
 		/// <remarks>	Tobias, 03.06.2015. </remarks>
-		class XboxController
+		class P2DE_DECLSPEC XboxController
 		{
 			private:
 			/// <summary>	State of the controller. </summary>

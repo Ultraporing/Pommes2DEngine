@@ -1,11 +1,12 @@
 #pragma once
 #include <vector>
+#include "../Common.h"
 
 namespace P2DE
 {
 	namespace FILEIO
 	{
-		class DataTypeConverter
+		class P2DE_DECLSPEC DataTypeConverter
 		{
 			public:
 			template<typename T>

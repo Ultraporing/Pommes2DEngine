@@ -34,7 +34,7 @@ namespace P2DE
 		/// <summary>	Information about the spritesheet. </summary>
 		///
 		/// <remarks>	Tobias, 18.05.2015. </remarks>
-		struct SpritesheetInfo
+		struct P2DE_DECLSPEC SpritesheetInfo
 		{
 			/// <summary>	The File name. </summary>
 			std::wstring m_FileName;

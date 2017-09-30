@@ -18,7 +18,7 @@ namespace P2DE
 		/// <summary>	Image Properties using an SourceImageRect, inheriting from BaseImageProperties. </summary>
 		///
 		/// <remarks>	Tobias, 09.06.2015. </remarks>
-		class ImageProperties : public P2DE::FILEIO::SerializeableDataStructure
+		class P2DE_DECLSPEC ImageProperties : public P2DE::FILEIO::SerializeableDataStructure
 		{
 			public:
 			enum ImagePropertiesDiffFlags

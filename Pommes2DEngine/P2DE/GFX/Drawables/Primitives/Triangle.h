@@ -9,7 +9,7 @@ namespace P2DE
 		{
 			namespace PRIMITIVES
 			{
-				class Triangle : public P2DE::GFX::DRAWABLES::BaseDrawable
+				class P2DE_DECLSPEC Triangle : public P2DE::GFX::DRAWABLES::BaseDrawable
 				{
 					public:
 					virtual void Load() override;

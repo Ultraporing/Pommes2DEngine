@@ -66,7 +66,7 @@ namespace P2DE
 		/// <summary>	Manager for inputs. Handles Mouse and Keyboard. </summary>
 		///
 		/// <remarks>	Tobias, 22.05.2015. </remarks>
-		class InputManager
+		class P2DE_DECLSPEC InputManager
 		{
 			private:
 			/// <summary>	The current keys pressed. </summary>

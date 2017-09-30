@@ -72,25 +72,25 @@
     <LinkIncremental>true</LinkIncremental>
     <SourcePath>$(SourcePath)</SourcePath>
     <IncludePath>..\Pommes2DEngine;$(IncludePath)</IncludePath>
-    <LibraryPath>..\Pommes2DEngine\External\SFML\lib\x86\;$(VC_LibraryPath_x86);$(UniversalCRT_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(UniversalCRT_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;..\$(Configuration)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <SourcePath>$(SourcePath)</SourcePath>
     <IncludePath>..\Pommes2DEngine;$(IncludePath)</IncludePath>
-    <LibraryPath>..\Pommes2DEngine\External\SFML\lib\x64\;$(VC_LibraryPath_x64);$(UniversalCRT_LibraryPath_x86);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <LibraryPath>..\Pommes2DEngine\External\SFML\lib\x64\;$(VC_LibraryPath_x64);$(UniversalCRT_LibraryPath_x86);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;..\x64\$(Configuration)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <SourcePath>$(SourcePath)</SourcePath>
     <IncludePath>..\Pommes2DEngine;$(IncludePath)</IncludePath>
-    <LibraryPath>..\Pommes2DEngine\External\SFML\lib\x86\;$(VC_LibraryPath_x86);$(UniversalCRT_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <LibraryPath>..\Pommes2DEngine\External\SFML\lib\x86\;$(VC_LibraryPath_x86);$(UniversalCRT_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;..\$(Configuration)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <SourcePath>$(SourcePath)</SourcePath>
     <IncludePath>..\Pommes2DEngine;$(IncludePath)</IncludePath>
-    <LibraryPath>..\Pommes2DEngine\External\SFML\lib\x64\;$(VC_LibraryPath_x64);$(UniversalCRT_LibraryPath_x86);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <LibraryPath>..\Pommes2DEngine\External\SFML\lib\x64\;$(VC_LibraryPath_x64);$(UniversalCRT_LibraryPath_x86);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;..\x64\$(Configuration)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -106,13 +106,11 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Pommes2DEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /i /e /s /y /f "$(ProjectDir)\Assets" "$(OutputPath)Assets"
-del "$(TargetDir)*.iobj"
-del "$(TargetDir)*.ipdb"
-del "$(TargetDir)*.lib"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -129,13 +127,11 @@ del "$(TargetDir)*.lib"</Command>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Pommes2DEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /i /e /s /y /f "$(ProjectDir)\Assets" "$(OutputPath)Assets"
-del "$(TargetDir)*.iobj"
-del "$(TargetDir)*.ipdb"
-del "$(TargetDir)*.lib"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -155,13 +151,11 @@ del "$(TargetDir)*.lib"</Command>
       <GenerateDebugInformation>No</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>sfml-audio.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Pommes2DEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /i /e /s /y /f "$(ProjectDir)\Assets" "$(OutputPath)Assets"
-del "$(TargetDir)*.iobj"
-del "$(TargetDir)*.ipdb"
-del "$(TargetDir)*.lib"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -181,13 +175,11 @@ del "$(TargetDir)*.lib"</Command>
       <GenerateDebugInformation>No</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>sfml-audio.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Pommes2DEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /i /e /s /y /f "$(ProjectDir)\Assets" "$(OutputPath)Assets"
-del "$(TargetDir)*.iobj"
-del "$(TargetDir)*.ipdb"
-del "$(TargetDir)*.lib"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -196,11 +188,6 @@ del "$(TargetDir)*.lib"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Demo.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Pommes2DEngine\Pommes2DEngine.vcxproj">
-      <Project>{95af8ce9-642b-46df-bd31-ccfe67dc1145}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -4,6 +4,7 @@
 
 #pragma once
 #include <chrono>
+#include "../Common.h"
 
 namespace P2DE
 {
@@ -15,7 +16,7 @@ namespace P2DE
 		/// <summary>	A High Resolution timer. </summary>
 		///
 		/// <remarks>	Tobias, 22.05.2015. </remarks>
-		class HrTimer
+		class P2DE_DECLSPEC HrTimer
 		{
 			/// <summary>	Defines an alias representing the time. </summary>
 			///

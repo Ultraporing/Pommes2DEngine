@@ -9,6 +9,7 @@
 #include "P2DE\Timing\HrTimer.h"
 #include "P2DE\Input\InputManager.h"
 #include "P2DE\Utilities\Minidump.h"
+#include <P2DE\SFX\SoundManager.h>
 
 
 #define WINDOW_TITLE L"Engine Demo"
@@ -78,6 +79,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		
 		if (msg.message == WM_QUIT)
 			break;
+
+		if (msg.message == MM_MCINOTIFY)
+		{
+			if (msg.wParam == MCI_NOTIFY_SUCCESSFUL)
+			{
+				MessageBoxW(NULL, L"", L"b", MB_OK);
+			}
+		}
 
 		hrTimer.Update();
 

@@ -1,13 +1,8 @@
 #pragma once
 #include <string>
 #include <wrl\client.h>
+#include "../Common.h"
 using namespace Microsoft::WRL;
-
-namespace sf
-{
-	class Sound;
-	class SoundBuffer;
-}
 
 namespace P2DE
 {
@@ -20,27 +15,32 @@ namespace P2DE
 			Playing  ///< Sound is playing
 		};
 
-		class P2DE_Sound
+		class P2DE_DECLSPEC P2DE_Sound
 		{
 			private:
-			sf::Sound* m_Sound;
-			sf::SoundBuffer* m_SoundBuffer;
+			std::wstring m_SoundID;
+			std::wstring m_FilePath;
+			Status m_PlaybackStatus;
 			bool m_Loaded;
+			bool m_HasError;
+
+			void SetPlaybackStatus(Status status);
+			void InitSound();
 
 			public:
 			P2DE_Sound();
-			P2DE_Sound(std::string path);
-			~P2DE_Sound();
+			P2DE_Sound(std::wstring path);
 
-			bool LoadSoundfile(std::string path);
+			bool LoadSoundfile(std::wstring path);
 			void UnloadSound();
 
-			void Play();
+			void Play(bool loop = false);
 			void Pause();
 			void Stop();
 
 			Status GetPlaybackStatus();
 			bool IsLoaded();
+			bool HasError();
 		};
 	}
 }
