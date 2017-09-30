@@ -103,9 +103,6 @@
     <ClInclude Include="P2DE\GFX\D3D11Common.h">
       <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="P2DE\GFX\P2DE_Shader.h">
-      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="P2DE\GFX\Drawables\SGeometry.h">
       <Filter>Source Files\Pommes 2D Engine\Graphics\Drawables</Filter>
     </ClInclude>
@@ -123,6 +120,9 @@
     </ClInclude>
     <ClInclude Include="P2DE\GFX\Drawables\Primitives\Triangle.h">
       <Filter>Source Files\Pommes 2D Engine\Graphics\Drawables\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\GFX\Shader\P2DE_Shader.h">
+      <Filter>Source Files\Pommes 2D Engine\Graphics\Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -156,9 +156,6 @@
     <ClCompile Include="P2DE\GFX\WICTextureLoader.cpp">
       <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="P2DE\GFX\P2DE_Shader.cpp">
-      <Filter>Source Files\Pommes 2D Engine\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="P2DE\SFX\SoundManager.cpp">
       <Filter>Source Files\Pommes 2D Engine\SFX</Filter>
     </ClCompile>
@@ -170,6 +167,9 @@
     </ClCompile>
     <ClCompile Include="P2DE\GFX\Drawables\Primitives\Triangle.cpp">
       <Filter>Source Files\Pommes 2D Engine\Graphics\Drawables\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="P2DE\GFX\Shader\P2DE_Shader.cpp">
+      <Filter>Source Files\Pommes 2D Engine\Graphics\Shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

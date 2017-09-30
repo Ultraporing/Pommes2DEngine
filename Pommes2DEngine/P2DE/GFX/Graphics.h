@@ -8,6 +8,8 @@ using namespace Microsoft::WRL;
 #include "..\Game\BaseGame.h"
 #include "D3D11Common.h"
 #include <d3d11.h>
+#include <map>
+#include "Shader\P2DE_Shader.h"
 
 #pragma comment (lib, "D3D11.lib")
 #pragma comment (lib, "dxguid.lib")
@@ -74,14 +76,18 @@ namespace P2DE
 
 			/// <summary>	The current game. </summary>
 			P2DE::GAME::BaseGame* m_CurrentGame;
-			#pragma endregion
 
-			private:
 			ComPtr<ID3D11PixelShader> m_Ps;
 			ComPtr<ID3D11VertexShader> m_Vs;
 			ComPtr<ID3D11Buffer> m_VertexBuffer;
 			ComPtr<ID3D11Buffer> m_IndexBuffer;
 			ComPtr<ID3D11InputLayout> m_InputLayout;
+
+			#define TYPEID_HASH(x) typeid(x).hash_code()
+
+			std::map<byte, P2DE::GFX::SHADER::P2DE_Shader*> m_ShaderMap;
+			#pragma endregion
+
 			#pragma region DirectX_Helper
 			/// <summary>	Reloads DirectX, for changing Window Size ect. </summary>
 			///
@@ -178,6 +184,9 @@ namespace P2DE
 			#pragma endregion
 
 			void RenderDrawable();
+			void AddShaderToShaderMap(P2DE::GFX::SHADER::EShaderID shaderID);
+			void AddAllShaders();
+			void RemoveAllShaders();
 			void LoadShaders();
 			void UnloadShaders();
 			void DisplayDx11DebugInfo();

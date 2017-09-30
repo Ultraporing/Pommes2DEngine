@@ -6,6 +6,7 @@
 #include "../FileIO/FileIO.h"
 #include "WICTextureLoader.h"
 #include "Drawables\BaseDrawable.h"
+#include "Drawables\Primitives\Triangle.h"
 
 using namespace P2DE::GFX;
 using namespace P2DE::GFX::DRAWABLES;
@@ -332,9 +333,48 @@ void Graphics::RenderDrawable(BaseDrawable * drawable)
 {
 }*/
 
+void Graphics::AddShaderToShaderMap(P2DE::GFX::SHADER::EShaderID shaderID)
+{
+	if (m_ShaderMap.find(shaderID) != m_ShaderMap.end())
+		return;
+
+	switch (shaderID)
+	{
+		case P2DE::GFX::SHADER::EShaderID::BASE:
+			m_ShaderMap[shaderID] = new P2DE::GFX::SHADER::P2DE_Shader();
+			m_ShaderMap[shaderID]->LoadShader();
+			return;
+		case P2DE::GFX::SHADER::EShaderID::COLOR:
+			m_ShaderMap[shaderID] = new P2DE::GFX::SHADER::MyClass();
+			m_ShaderMap[shaderID]->LoadShader();
+			return;
+	}
+}
+
+void Graphics::AddAllShaders()
+{
+	for (byte fooByte = P2DE::GFX::SHADER::EShaderID::BASE; fooByte != P2DE::GFX::SHADER::EShaderID::_LAST; fooByte++)
+	{
+		AddShaderToShaderMap((P2DE::GFX::SHADER::EShaderID)fooByte);
+	}
+}
+
+void Graphics::RemoveAllShaders()
+{
+	for (std::map<byte, P2DE::GFX::SHADER::P2DE_Shader*>::iterator it = m_ShaderMap.begin(); it != m_ShaderMap.end(); ++it)
+	{
+		it->second->UnloadShader();
+		delete(it->second);
+	}
+
+	m_ShaderMap.clear();
+}
+
 void Graphics::LoadShaders()
 {
 	
+	AddAllShaders();
+	RemoveAllShaders();
 	//ID3D11PixelShader* ps;
 	//ID3D11VertexShader* vs;
 	//ID3D11InputLayout* inp;

@@ -6,14 +6,6 @@
 #include "P2DE\GFX\Camera.h"
 #include <P2DE\Game\BaseGame.h>
 
-namespace P2DE
-{
-	namespace GFX
-	{
-		class Graphics;
-	}
-}
-
 namespace Demo
 {
 	class Demo : public P2DE::GAME::BaseGame

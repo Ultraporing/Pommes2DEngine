@@ -189,3 +189,9 @@ _Pvt_Extensions/
 ModelManifest.xml
 !*.dll
 !*.lib
+/.vs/Pommes2DEngine/v15
+/Pommes2DEngine/External/SFML/readme.txt
+/Pommes2DEngine/External/SFML/examples
+/Pommes2DEngine/External/SFML/doc
+/Pommes2DEngine/External/SFML/cmake/Modules
+/Pommes2DEngine.VC.db

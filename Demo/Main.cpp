@@ -84,7 +84,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		if (demo.Update(hrTimer.GetDeltaTime())) // Shutdown game if TRUE is returned
 			PostQuitMessage(0);
 
-		//TODO: SOMEWHERE IN ENGINE RENDERING IS AN MEMORY LEAK!
 		demo.Render();
 	}
 
