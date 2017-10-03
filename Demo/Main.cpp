@@ -80,14 +80,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		if (msg.message == WM_QUIT)
 			break;
 
-		if (msg.message == MM_MCINOTIFY)
-		{
-			if (msg.wParam == MCI_NOTIFY_SUCCESSFUL)
-			{
-				MessageBoxW(NULL, L"", L"b", MB_OK);
-			}
-		}
-
 		hrTimer.Update();
 
 		if (demo.Update(hrTimer.GetDeltaTime())) // Shutdown game if TRUE is returned

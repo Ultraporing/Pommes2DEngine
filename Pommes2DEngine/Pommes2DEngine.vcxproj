@@ -69,27 +69,27 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>$(LibraryPath)</LibraryPath>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)External/Freealut/lib/Win32;$(ProjectDir)External/Freealut/libs/Win64;$(ProjectDir)External/Freealut/libs/Win64/EFX-Util_MTDLL;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)External/Freealut/include;$(ProjectDir)External/OpenAL 1.1 SDK/include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LibraryPath>$(LibraryPath)</LibraryPath>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)External/Freealut/lib/Win32;$(ProjectDir)External/Freealut/libs/Win64;$(ProjectDir)External/Freealut/libs/Win64/EFX-Util_MTDLL;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)External/Freealut/include;$(ProjectDir)External/OpenAL 1.1 SDK/include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(IncludePath)</IncludePath>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)External/Freealut/include;$(ProjectDir)External/OpenAL 1.1 SDK/include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)External/Freealut/lib/x64;$(ProjectDir)External/Freealut/libs/Win64;$(ProjectDir)External/Freealut/libs/Win64/EFX-Util_MTDLL;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>$(LibraryPath)</LibraryPath>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)External/Freealut/lib/x64;$(ProjectDir)External/Freealut/libs/Win64;$(ProjectDir)External/Freealut/libs/Win64/EFX-Util_MTDLL;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)External/Freealut/include;$(ProjectDir)External/OpenAL 1.1 SDK/include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0601;LIB_P2DE_DYNAMIC;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_X86_;WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0601;LIB_P2DE_DYNAMIC;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <XMLDocumentationFileName>$(ProjectDir)Documentation\</XMLDocumentationFileName>
@@ -98,15 +98,15 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>Winmm.lib;Rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Winmm.lib;Rpcrt4.lib;freealut.lib;OpenAL32.lib;EFX-Util.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <AdditionalDependencies>
       </AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>xcopy "$(ProjectDir)External\SDL_Mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /i /y
+xcopy "$(ProjectDir)External\SDL2-2.0.6\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /i /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -114,7 +114,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0601;LIB_P2DE_DYNAMIC;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_AMD64_;WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0601;LIB_P2DE_DYNAMIC;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <XMLDocumentationFileName>$(ProjectDir)Documentation\</XMLDocumentationFileName>
@@ -122,15 +122,15 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>Winmm.lib;Rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Winmm.lib;Rpcrt4.lib;freealut.lib;OpenAL32.lib;EFX-Util.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <AdditionalDependencies>
       </AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>xcopy "$(ProjectDir)External\SDL_Mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /i /y
+xcopy "$(ProjectDir)External\SDL2-2.0.6\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /i /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -140,7 +140,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0601;LIB_P2DE_DYNAMIC;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_X86_;WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0601;LIB_P2DE_DYNAMIC;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <XMLDocumentationFileName>$(ProjectDir)Documentation\</XMLDocumentationFileName>
@@ -151,14 +151,14 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>Winmm.lib;Rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Winmm.lib;Rpcrt4.lib;freealut.lib;OpenAL32.lib;EFX-Util.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <AdditionalDependencies>sfml-audio-s.lib</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>xcopy "$(ProjectDir)External\SDL_Mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /i /y
+xcopy "$(ProjectDir)External\SDL2-2.0.6\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /i /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -168,7 +168,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0601;LIB_P2DE_DYNAMIC;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_AMD64_;WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0601;LIB_P2DE_DYNAMIC;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <XMLDocumentationFileName>$(ProjectDir)Documentation\</XMLDocumentationFileName>
@@ -179,14 +179,14 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>Winmm.lib;Rpcrt4.lib;</AdditionalDependencies>
+      <AdditionalDependencies>Winmm.lib;Rpcrt4.lib;freealut.lib;OpenAL32.lib;EFX-Util.lib;</AdditionalDependencies>
     </Link>
     <Lib>
       <AdditionalDependencies>sfml-audio-s.lib</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>xcopy "$(ProjectDir)External\SDL_Mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /i /y
+xcopy "$(ProjectDir)External\SDL2-2.0.6\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /i /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -197,6 +197,7 @@
     <ClInclude Include="P2DE\FileIO\FileAndDatastructureIDs.h" />
     <ClInclude Include="P2DE\FileIO\DataTypeConverter.h" />
     <ClInclude Include="P2DE\FileIO\SerializeableData.h" />
+    <ClInclude Include="P2DE\SFX\SoundDefines.h" />
     <ClInclude Include="P2DE\Utilities\Minidump.h" />
     <ClInclude Include="P2DE\GFX\ImagePropertiesAndEnums\ImageProperties.h" />
     <ClInclude Include="P2DE\Game\BaseGame.h" />
@@ -215,9 +216,9 @@
     <ClInclude Include="P2DE\GFX\Drawables\SGeometry.h" />
     <ClInclude Include="P2DE\GFX\Shader\P2DE_Shader.h" />
     <ClInclude Include="P2DE\GFX\Drawables\Primitives\Triangle.h" />
-    <ClInclude Include="P2DE\SFX\SoundManager.h" />
-    <ClInclude Include="P2DE\SFX\P2DE_Music.h" />
-    <ClInclude Include="P2DE\SFX\P2DE_Sound.h" />
+    <ClInclude Include="P2DE\SFX\P2DE_SoundSource.h" />
+    <ClInclude Include="P2DE\SFX\Sound.h" />
+    <ClInclude Include="P2DE\Utilities\StringConversion.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P2DE\FileIO\FileIO.cpp" />
@@ -232,9 +233,8 @@
     <ClCompile Include="P2DE\GFX\SpritesheetAtlas.cpp" />
     <ClCompile Include="P2DE\GFX\Shader\P2DE_Shader.cpp" />
     <ClCompile Include="P2DE\GFX\Drawables\Primitives\Triangle.cpp" />
-    <ClCompile Include="P2DE\SFX\SoundManager.cpp" />
-    <ClCompile Include="P2DE\SFX\P2DE_Music.cpp" />
-    <ClCompile Include="P2DE\SFX\P2DE_Sound.cpp" />
+    <ClCompile Include="P2DE\SFX\P2DE_SoundSource.cpp" />
+    <ClCompile Include="P2DE\SFX\Sound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="P2DE\GFX\Shader\PixelShader.hlsl">
