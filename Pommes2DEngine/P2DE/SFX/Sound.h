@@ -42,6 +42,7 @@ namespace P2DE
 			ALCcontext* GetContext() { return m_Context; }
 			bool IsInit();
 			
+			// See Documentation here for reference: https://www.openal.org/documentation/OpenAL_Programmers_Guide.pdf
 			#pragma region Listener Property Methods
 			// Set Listener position. X, Y, Z position.
 			void SetListenerPos(float x, float y, float z);
