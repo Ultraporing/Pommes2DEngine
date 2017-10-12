@@ -9,7 +9,7 @@ using namespace Microsoft::WRL;
 #include "D3D11Common.h"
 #include <d3d11.h>
 #include <map>
-#include "Shader\P2DE_Shader.h"
+#include "Shader\Shader.h"
 
 #pragma comment (lib, "D3D11.lib")
 #pragma comment (lib, "dxguid.lib")
@@ -85,7 +85,7 @@ namespace P2DE
 
 			#define TYPEID_HASH(x) typeid(x).hash_code()
 
-			std::map<byte, P2DE::GFX::SHADER::P2DE_Shader*> m_ShaderMap;
+			std::map<byte, P2DE::GFX::SHADER::Shader*> m_ShaderMap;
 			#pragma endregion
 
 			#pragma region DirectX_Helper

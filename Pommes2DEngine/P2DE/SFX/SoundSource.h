@@ -1,9 +1,7 @@
 #pragma once
 #include <string>
-#include <wrl\client.h>
 #include <array>
 #include "../Common.h"
-using namespace Microsoft::WRL;
 
 namespace P2DE
 {
@@ -24,7 +22,7 @@ namespace P2DE
 			Stopped	 // Sound is not playing
 		};
 
-		class P2DE_DECLSPEC P2DE_SoundSource
+		class P2DE_DECLSPEC SoundSource
 		{
 			friend class SoundManager;
 
@@ -38,8 +36,8 @@ namespace P2DE
 			void InitSound();
 
 			public:
-			P2DE_SoundSource();
-			P2DE_SoundSource(std::wstring path);
+			SoundSource();
+			SoundSource(std::wstring path);
 
 			// Load WAV, AIFF, RIFF, OGG or VOC sound file
 			bool LoadSoundfile(std::wstring path);
@@ -71,7 +69,7 @@ namespace P2DE
 			// Set Source max distance. used with the Inverse Clamped Distance Model to set the distance where there will no longer be any attenuation of the source.
 			void SetSourceMaxDistance(float maxDistance);
 			// Set Source max distance. used with the Inverse Clamped Distance Model to set the distance where there will no longer be any attenuation of the source.
-			void SetSourceMaxDistance(int maxDistance) { SetSourceMaxDistance(maxDistance); }
+			void SetSourceMaxDistance(int maxDistance) { SetSourceMaxDistance((float)maxDistance); }
 
 			// Get Source max distance. used with the Inverse Clamped Distance Model to set the distance where there will no longer be any attenuation of the source.
 			float GetSourceMaxDistance();
@@ -79,7 +77,7 @@ namespace P2DE
 			// Set Source rolloff factor. the rolloff rate for the source default is 1.0.
 			void SetSourceRolloffFactor(float rolloffFactor);
 			// Set Source rolloff factor. the rolloff rate for the source default is 1.0.
-			void SetSourceRolloffFactor(int rolloffFactor) { SetSourceRolloffFactor(rolloffFactor); }
+			void SetSourceRolloffFactor(int rolloffFactor) { SetSourceRolloffFactor((float)rolloffFactor); }
 
 			// Get Source rolloff factor. the rolloff rate for the source default is 1.0.
 			float GetSourceRolloffFactor();
@@ -87,7 +85,7 @@ namespace P2DE
 			// Set Source reference distance. the distance under which the volume for the source would normally drop by half(before being influenced by rolloff factor or AL_MAX_DISTANCE).
 			void SetSourceReferenceDistance(float referenceDistance);
 			// Set Source reference distance. the distance under which the volume for the source would normally drop by half(before being influenced by rolloff factor or AL_MAX_DISTANCE).
-			void SetSourceReferenceDistance(int referenceDistance) { SetSourceReferenceDistance(referenceDistance); }
+			void SetSourceReferenceDistance(int referenceDistance) { SetSourceReferenceDistance((float)referenceDistance); }
 
 			// Get Source reference distance. the distance under which the volume for the source would normally drop by half(before being influenced by rolloff factor or AL_MAX_DISTANCE).
 			float GetReferenceDistance();
@@ -113,7 +111,7 @@ namespace P2DE
 			// Set Source cone inner angle. inner angle of the sound cone, in degrees default is 360.
 			void SetSourceConeInnerAngle(float coneInnerAngle);
 			// Set Source cone inner angle. inner angle of the sound cone, in degrees default is 360.
-			void SetSourceConeInnerAngle(int coneInnerAngle) { SetSourceConeInnerAngle(coneInnerAngle); }
+			void SetSourceConeInnerAngle(int coneInnerAngle) { SetSourceConeInnerAngle((float)coneInnerAngle); }
 
 			// Get Source cone inner angle. inner angle of the sound cone, in degrees default is 360.
 			float GetConeInnerAngle();
@@ -121,7 +119,7 @@ namespace P2DE
 			// Set Source cone outer angle. outer angle of the sound cone, in degrees default is 360.
 			void SetSourceConeOuterAngle(float coneOuterAngle);
 			// Set Source cone outer angle. outer angle of the sound cone, in degrees default is 360.
-			void SetSourceConeOuterAngle(int coneOuterAngle) { SetSourceConeOuterAngle(coneOuterAngle); }
+			void SetSourceConeOuterAngle(int coneOuterAngle) { SetSourceConeOuterAngle((float)coneOuterAngle); }
 
 			// Get Source cone outer angle. outer angle of the sound cone, in degrees default is 360.
 			float GetConeOuterAngle();

@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 #include <array>
-#include "SoundDefines.h"
 #include "../Common.h"
 
 typedef struct ALCdevice_struct ALCdevice;

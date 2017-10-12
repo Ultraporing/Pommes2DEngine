@@ -341,7 +341,7 @@ void Graphics::AddShaderToShaderMap(P2DE::GFX::SHADER::EShaderID shaderID)
 	switch (shaderID)
 	{
 		case P2DE::GFX::SHADER::EShaderID::BASE:
-			m_ShaderMap[shaderID] = new P2DE::GFX::SHADER::P2DE_Shader();
+			m_ShaderMap[shaderID] = new P2DE::GFX::SHADER::Shader();
 			m_ShaderMap[shaderID]->LoadShader();
 			return;
 		case P2DE::GFX::SHADER::EShaderID::COLOR:
@@ -361,7 +361,7 @@ void Graphics::AddAllShaders()
 
 void Graphics::RemoveAllShaders()
 {
-	for (std::map<byte, P2DE::GFX::SHADER::P2DE_Shader*>::iterator it = m_ShaderMap.begin(); it != m_ShaderMap.end(); ++it)
+	for (std::map<byte, P2DE::GFX::SHADER::Shader*>::iterator it = m_ShaderMap.begin(); it != m_ShaderMap.end(); ++it)
 	{
 		it->second->UnloadShader();
 		delete(it->second);
@@ -403,9 +403,9 @@ void Graphics::LoadShaders()
 
 	VERTEX OurVertices[] =
 	{
-		{ 0.0f, 0.5f, 0.0f, P2DE_COLOR4(1.0f, 0.0f, 0.0f, 1.0f) },
-		{ 0.45f, -0.5, 0.0f, P2DE_COLOR4(0.0f, 1.0f, 0.0f, 1.0f) },
-		{ -0.45f, -0.5f, 0.0f, P2DE_COLOR4(0.0f, 0.0f, 1.0f, 1.0f) }
+		{ 0.0f, 0.5f, 0.0f, COLOR4(1.0f, 0.0f, 0.0f, 1.0f) },
+		{ 0.45f, -0.5, 0.0f, COLOR4(0.0f, 1.0f, 0.0f, 1.0f) },
+		{ -0.45f, -0.5f, 0.0f, COLOR4(0.0f, 0.0f, 1.0f, 1.0f) }
 	};
 
 	D3D11_BUFFER_DESC bd;

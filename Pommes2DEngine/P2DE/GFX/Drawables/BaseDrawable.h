@@ -9,7 +9,7 @@ namespace P2DE
 	{
 		namespace DRAWABLES
 		{
-			struct P2DE_Shader;
+			struct Shader;
 
 			class P2DE_DECLSPEC BaseDrawable
 			{
@@ -19,10 +19,10 @@ namespace P2DE
 				virtual void Draw() = 0;
 
 				protected:
-				P2DE_VEC3F m_Pos;
-				P2DE_COLOR4 m_TintColor;
+				VEC3F m_Pos;
+				COLOR4 m_TintColor;
 				SGeometry m_Geometry;
-				P2DE_Shader* m_Shader;
+				Shader* m_Shader;
 			};
 		}
 	}

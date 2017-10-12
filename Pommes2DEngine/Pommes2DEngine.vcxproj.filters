@@ -112,9 +112,6 @@
     <ClInclude Include="P2DE\GFX\Drawables\Primitives\Triangle.h">
       <Filter>Source Files\Pommes 2D Engine\Graphics\Drawables\Primitives</Filter>
     </ClInclude>
-    <ClInclude Include="P2DE\GFX\Shader\P2DE_Shader.h">
-      <Filter>Source Files\Pommes 2D Engine\Graphics\Shader</Filter>
-    </ClInclude>
     <ClInclude Include="P2DE\Common.h">
       <Filter>Source Files\Pommes 2D Engine</Filter>
     </ClInclude>
@@ -124,11 +121,17 @@
     <ClInclude Include="P2DE\Utilities\StringConversion.h">
       <Filter>Source Files\Pommes 2D Engine\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="P2DE\SFX\P2DE_SoundSource.h">
-      <Filter>Source Files\Pommes 2D Engine\SFX</Filter>
-    </ClInclude>
     <ClInclude Include="P2DE\SFX\SoundDefines.h">
       <Filter>Source Files\Pommes 2D Engine\SFX</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\SFX\SoundSource.h">
+      <Filter>Source Files\Pommes 2D Engine\SFX</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\GFX\Shader\Shader.h">
+      <Filter>Source Files\Pommes 2D Engine\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="P2DE\Utilities\UUIDHelper.h">
+      <Filter>Source Files\Pommes 2D Engine\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -165,14 +168,17 @@
     <ClCompile Include="P2DE\GFX\Drawables\Primitives\Triangle.cpp">
       <Filter>Source Files\Pommes 2D Engine\Graphics\Drawables\Primitives</Filter>
     </ClCompile>
-    <ClCompile Include="P2DE\GFX\Shader\P2DE_Shader.cpp">
-      <Filter>Source Files\Pommes 2D Engine\Graphics\Shader</Filter>
-    </ClCompile>
     <ClCompile Include="P2DE\SFX\Sound.cpp">
       <Filter>Source Files\Pommes 2D Engine\SFX</Filter>
     </ClCompile>
-    <ClCompile Include="P2DE\SFX\P2DE_SoundSource.cpp">
+    <ClCompile Include="P2DE\SFX\SoundSource.cpp">
       <Filter>Source Files\Pommes 2D Engine\SFX</Filter>
+    </ClCompile>
+    <ClCompile Include="P2DE\GFX\Shader\Shader.cpp">
+      <Filter>Source Files\Pommes 2D Engine\Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="P2DE\Utilities\StringConversion.cpp">
+      <Filter>Source Files\Pommes 2D Engine\Utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

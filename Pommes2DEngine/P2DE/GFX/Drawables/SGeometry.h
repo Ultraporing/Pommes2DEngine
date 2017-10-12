@@ -10,7 +10,7 @@ namespace P2DE
 			struct VERTEX
 			{
 				float X, Y, Z;      // position
-				P2DE_COLOR4 Color;    // color
+				COLOR4 Color;    // color
 			};
 
 			struct SGeometry

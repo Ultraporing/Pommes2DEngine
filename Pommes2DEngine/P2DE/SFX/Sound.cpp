@@ -2,7 +2,6 @@
 #include <iostream>
 #include <al.h>
 #include <alc.h>
-#include <AL\alut.h>
 #include <Windows.h>
 #include "../Utilities/StringConversion.h"
 
@@ -29,16 +28,16 @@ bool Sound::InitSound(const std::wstring deviceName)
 		m_Device = alcOpenDevice(NULL);
 		if (!m_Device)
 		{
-			MessageBox(NULL, StringToWString(alutGetErrorString(alGetError())).c_str(), L"Error", MB_ICONERROR);
+			MessageBox(NULL, (LPCWSTR)alGetError(), L"Error", MB_ICONERROR);
 			return false;
 		}
 	}
 	else
 	{
-		m_Device = alcOpenDevice(WStringToString(deviceName).c_str());
+		m_Device = alcOpenDevice(UTILITIES::WStringToString(deviceName).c_str());
 		if (!m_Device)
 		{
-			MessageBox(NULL, StringToWString(alutGetErrorString(alGetError())).c_str(), L"Error", MB_ICONERROR);
+			MessageBox(NULL, (LPCWSTR)alGetError(), L"Error", MB_ICONERROR);
 			return false;
 		}
 	}
@@ -59,7 +58,7 @@ bool Sound::InitContext(const int * contextAttributes)
 	m_Context = alcCreateContext(m_Device, contextAttributes);
 	if (!alcMakeContextCurrent(m_Context))
 	{
-		MessageBox(NULL, StringToWString(alutGetErrorString(alGetError())).c_str(), L"Error", MB_ICONERROR);
+		MessageBox(NULL, (LPCWSTR)alGetError(), L"Error", MB_ICONERROR);
 		return false;
 	}
 
@@ -77,7 +76,7 @@ void Sound::SetListenerPos(float x, float y, float z)
 	ALenum error = alGetError();
 	if (error != AL_NO_ERROR)
 	{
-		MessageBox(NULL, StringToWString(alutGetErrorString(error)).c_str(), L"Error", MB_ICONERROR);
+		MessageBox(NULL, (LPCWSTR)error, L"Error", MB_ICONERROR);
 	}
 }
 
@@ -88,7 +87,7 @@ std::array<float, 3> Sound::GetListenerPos()
 	ALenum error = alGetError();
 	if (error != AL_NO_ERROR)
 	{
-		MessageBox(NULL, StringToWString(alutGetErrorString(error)).c_str(), L"Error", MB_ICONERROR);
+		MessageBox(NULL, (LPCWSTR)error, L"Error", MB_ICONERROR);
 	}
 
 	return oA;
@@ -100,7 +99,7 @@ void Sound::SetListenerVel(float x, float y, float z)
 	ALenum error = alGetError();
 	if (error != AL_NO_ERROR)
 	{
-		MessageBox(NULL, StringToWString(alutGetErrorString(error)).c_str(), L"Error", MB_ICONERROR);
+		MessageBox(NULL, (LPCWSTR)error, L"Error", MB_ICONERROR);
 	}
 }
 
@@ -111,7 +110,7 @@ std::array<float, 3> Sound::GetListenerVel()
 	ALenum error = alGetError();
 	if (error != AL_NO_ERROR)
 	{
-		MessageBox(NULL, StringToWString(alutGetErrorString(error)).c_str(), L"Error", MB_ICONERROR);
+		MessageBox(NULL, (LPCWSTR)error, L"Error", MB_ICONERROR);
 	}
 
 	return oA;
@@ -124,7 +123,7 @@ void Sound::SetListenerOri(float x, float y, float z, float xUp, float yUp, floa
 	ALenum error = alGetError();
 	if (error != AL_NO_ERROR)
 	{
-		MessageBox(NULL, StringToWString(alutGetErrorString(error)).c_str(), L"Error", MB_ICONERROR);
+		MessageBox(NULL, (LPCWSTR)error, L"Error", MB_ICONERROR);
 	}
 }
 
@@ -135,7 +134,7 @@ std::array<float, 6> Sound::GetListenerOri()
 	ALenum error = alGetError();
 	if (error != AL_NO_ERROR)
 	{
-		MessageBox(NULL, StringToWString(alutGetErrorString(error)).c_str(), L"Error", MB_ICONERROR);
+		MessageBox(NULL, (LPCWSTR)error, L"Error", MB_ICONERROR);
 	}
 
 	return oA;
@@ -147,7 +146,8 @@ void P2DE::SFX::Sound::SetListenerGain(float gain)
 	ALenum error = alGetError();
 	if (error != AL_NO_ERROR)
 	{
-		MessageBox(NULL, StringToWString(alutGetErrorString(error)).c_str(), L"Error", MB_ICONERROR);
+		
+		MessageBox(NULL, (LPCWSTR)error, L"Error", MB_ICONERROR);
 	}
 }
 
@@ -158,7 +158,7 @@ float P2DE::SFX::Sound::GetListenerGain()
 	ALenum error = alGetError();
 	if (error != AL_NO_ERROR)
 	{
-		MessageBox(NULL, StringToWString(alutGetErrorString(error)).c_str(), L"Error", MB_ICONERROR);
+		MessageBox(NULL, (LPCWSTR)error, L"Error", MB_ICONERROR);
 	}
 
 	return oA;
@@ -180,7 +180,7 @@ std::vector<std::wstring> Sound::GetAudioDeviceNames()
 	size_t len = 0;
 
 	while (device && *device != '\0' && next && *next != '\0') {
-		outDevices.push_back(StringToWString(device));
+		outDevices.push_back(UTILITIES::StringToWString(device));
 		len = strlen(device);
 		device += (len + 1);
 		next += (len + 2);

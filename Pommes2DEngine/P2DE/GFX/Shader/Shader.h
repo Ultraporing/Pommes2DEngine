@@ -16,18 +16,18 @@ namespace P2DE
 				_LAST
 			};
 
-			class P2DE_DECLSPEC P2DE_Shader
+			class P2DE_DECLSPEC Shader
 			{
 				public:
-				P2DE_Shader();
-				~P2DE_Shader();
+				Shader();
+				~Shader();
 
 				public:
 				virtual void LoadShader() {};
 				virtual void UnloadShader() {};
 			};
 
-			class P2DE_DECLSPEC MyClass : public P2DE::GFX::SHADER::P2DE_Shader
+			class P2DE_DECLSPEC MyClass : public P2DE::GFX::SHADER::Shader
 			{
 				public:
 				void LoadShader() override {}
